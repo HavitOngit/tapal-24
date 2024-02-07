@@ -1,2 +1,12 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import { db } from '$lib/db';
+
+	let name: string;
+</script>
+
+<input type="text" bind:value={name} class="border-cyan-950" />
+<button
+	on:click={async () => {
+		await db.group.add({ name: name });
+	}}>ADD</button
+>
