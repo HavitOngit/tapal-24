@@ -32,9 +32,9 @@ export interface Usage {
     id?: number,
     date: Date,
     name: string,
-    usage_amount: number,
-    past_storage_amount: number,
-    remaining_storage_amount: number,
+    amount: number,
+    before_amount: number,
+    after_amount: number,
     rate: number,
     group_id: number
 }
