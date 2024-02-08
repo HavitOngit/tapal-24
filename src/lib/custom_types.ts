@@ -62,3 +62,8 @@ export interface Anajlist_init {
     image: string
 }
 
+export interface Storage_Anajs {
+    name: string,
+    amount: number
+}
+
