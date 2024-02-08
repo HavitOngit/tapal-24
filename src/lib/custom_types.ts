@@ -2,6 +2,7 @@
 export interface Group {
     id?: number,
     name: string
+    storage_unit_id: number
 }
 
 export interface Attendance {
@@ -10,14 +11,14 @@ export interface Attendance {
     boys: number,
     girls: number,
     total: number,
-    group_id: number
+    group_id: number,
 }
 
 export interface Storage {
     id?: number,
     name: string,
     amount: number,
-    group_id: number
+    usedBy?: Group[]
 }
 
 export interface StorageHistory {
@@ -25,7 +26,7 @@ export interface StorageHistory {
     date: Date,
     name: string,
     amount: number,
-    group_id: number
+    storage_unit_id: number
 }
 
 export interface Usage {

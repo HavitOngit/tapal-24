@@ -7,6 +7,6 @@
 <input type="text" bind:value={name} class="border-cyan-950" />
 <button
 	on:click={async () => {
-		await db.group.add({ name: name });
+		await db.group.add({ name: name, storage_unit_id: 1 });
 	}}>ADD</button
 >

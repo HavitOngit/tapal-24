@@ -14,10 +14,10 @@ export class AnajDB extends Dexie {
         super('AnajDB');
 
         this.version(1).stores({
-            group: '++id, name',
+            group: '++id, name, storage_unit_id',
             attendance: '++id, date, boys, girls, total, group_id',
-            storage: '++id, name, amount, group_id',
-            storage_history: '++id, date, name, amount, group_id',
+            storage: '++id, name, amount',
+            storage_history: '++id, date, name, amount, storage_unit_id',
             usage: '++id, date, name, amount, before_amount, after_amount, rate, group_id',
             rates: '++id, day, name, rate, group_id',
             backup: '++id, date, start, end, action'
