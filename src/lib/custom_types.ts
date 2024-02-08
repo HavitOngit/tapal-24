@@ -57,3 +57,8 @@ export interface BackUp {
     action: "Upload" | "Download"
 }
 
+export interface Anajlist_init {
+    name: string,
+    image: string
+}
+
