@@ -3,6 +3,7 @@
 	import { AppleIcon } from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 	import { anajlist } from '$lib/predefined';
+	import Input from './ui/input/input.svelte';
 
 	export let anaj: Storage;
 </script>
@@ -19,7 +20,10 @@
 		<div>
 			{anaj.name}
 		</div>
-		<div>Amount : {anaj.amount}</div>
+		<div class="flex flex-row">
+			<div>Amount :</div>
+			<div><input bind:value={anaj.amount} /></div>
+		</div>
 	</div>
 	<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
 </div>

@@ -6,6 +6,7 @@
 	import Input from './ui/input/input.svelte';
 	import AnajSlot from './AnajSlot.svelte';
 	import Button from './ui/button/button.svelte';
+	import { LogIn } from 'lucide-svelte';
 
 	let selected_anaj: Storage[] = [];
 
@@ -13,11 +14,11 @@
 
 	async function save() {
 		const unit = await db.storage_unit.put(storage_unit);
+
+		// set ref of storage unit
 		await selected_anaj.forEach((obj) => (obj.storage_unit_id = unit));
 
 		const anajs = await db.storage.bulkAdd(selected_anaj);
-
-		console.log(selected_anaj);
 	}
 </script>
 
@@ -25,12 +26,14 @@
 
 Selected Anaj:
 {#each selected_anaj as anaj}
-	<AnajSlot {anaj}></AnajSlot>
+	<AnajSlot bind:anaj></AnajSlot>
 {/each}
 
 <AnajSelection bind:selected={selected_anaj}></AnajSelection>
 
 <Button on:click={save}>Create</Button>
+
+<Button on:click={() => console.log(selected_anaj)}>TEST</Button>
 
 <!-- selected
 <div class="flex flex-col">
