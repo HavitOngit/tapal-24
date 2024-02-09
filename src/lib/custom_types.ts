@@ -1,8 +1,8 @@
 
 export interface Group {
     id?: number,
-    name: string
-    storage_unit_id: number
+    name: string,
+    storage_unit_id: number,
     currently_used: true | false
 }
 
@@ -15,12 +15,19 @@ export interface Attendance {
     group_id: number,
 }
 
+export interface StorageUnit {
+    id?: number,
+    name: string,
+    usedBy?: Group[]
+}
 export interface Storage {
     id?: number,
     name: string,
     amount: number,
-    usedBy?: Group[]
+    storage_unit_id: number
+
 }
+
 
 export interface StorageHistory {
     id?: number,
@@ -64,6 +71,6 @@ export interface Anajlist_init {
 
 export interface Storage_Anajs {
     name: string,
-    amount: number
+    amount: number,
 }
 
