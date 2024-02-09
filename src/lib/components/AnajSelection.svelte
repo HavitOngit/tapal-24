@@ -1,25 +1,29 @@
 <script lang="ts">
 	import type { Anajlist_init, Storage_Anajs } from '$lib/custom_types';
 	import { anajlist } from '$lib/predefined';
+	import AnajCard from './AnajCard.svelte';
+	import Button from './ui/button/button.svelte';
 
 	export let selected: Storage_Anajs[] = [];
 
+	const cache = new Map();
 	function addToList(name: string) {
-		selected = [...selected, { name: name, amount: 0 }];
+		if (!cache.has(name)) {
+			cache.set(name, true);
+			selected = [...selected, { name: name, amount: 0 }];
+		} else {
+			cache.delete(name);
+			selected = selected.filter((obj) => obj.name !== name);
+		}
 	}
+
+	let btn_clicked = false;
 </script>
 
-{#each anajlist as anaj}
-	<form>
-		<div class="flex h-12 flex-row justify-between">
-			<div>
-				<img src={anaj.image} alt={anaj.name} class="h-10 w-[100%]" />
-			</div>
-			<h1>
-				{anaj.name}
-			</h1>
-
-			<input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} />
+<div class="grid grid-cols-2 gap-1">
+	{#each anajlist as anaj}
+		<div on:click={() => addToList(anaj.name)}>
+			<AnajCard {anaj}></AnajCard>
 		</div>
-	</form>
-{/each}
+	{/each}
+</div>
