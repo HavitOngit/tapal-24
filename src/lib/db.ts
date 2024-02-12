@@ -21,7 +21,7 @@ export class AnajDB extends Dexie {
             storage: '++id, name, amount, storage_unit_id',
             storage_history: '++id, date, name, amount, storage_unit_id',
             usage: '++id, date, name, amount, before_amount, after_amount, rate, group_id',
-            rates: '++id, day, name, rate, group_id',
+            rates: '++id, name, ratelist',
             backup: '++id, date, start, end, action'
         })
     }
