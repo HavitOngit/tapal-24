@@ -19,14 +19,30 @@
 	// 		await db.univarsalList.add({ name: name });
 	// 	}
 	// }
+	const unimap = new Map();
 
+	onMount(async () => {
+		const list = await db.univarsalList.toArray();
+		list.forEach((obj) => unimap.set(obj.name, obj.id));
+	});
+
+	let newUniList: any = [];
 	async function save() {
 		const unit = await db.storage_unit.put(storage_unit);
 
 		// set ref of storage unit
-		await selected_anaj.forEach((obj) => (obj.storage_unit_id = unit));
+		await selected_anaj.forEach((obj) => {
+			obj.storage_unit_id = unit;
+			if (!unimap.has(obj.name)) {
+				newUniList.push({ name: obj.name });
+				unimap.set(obj.name, true);
+			}
+		});
+
+		console.log(newUniList);
 
 		const anajs = await db.storage.bulkAdd(selected_anaj);
+		const uniupload = await db.univarsalList.bulkAdd(newUniList);
 		// const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
 		// console.log(addtounivarasal);
 	}
@@ -43,7 +59,7 @@ Selected Anaj:
 
 <Button on:click={save}>Create</Button>
 
-<Button on:click={() => console.log(selected_anaj)}>TEST</Button>
+<Button on:click={() => console.log(newUniList, unimap)}>TEST</Button>
 
 <!-- selected
 <div class="flex flex-col">
