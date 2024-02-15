@@ -5,8 +5,6 @@
 	import { liveQuery } from 'dexie';
 
 	const storage_units = liveQuery(() => db.storage_unit.toArray());
-
-	export let data: PageData;
 </script>
 
 {#each $storage_units || [] as unit}

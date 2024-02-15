@@ -7,24 +7,18 @@
 	import AnajSlot from './AnajSlot.svelte';
 	import Button from './ui/button/button.svelte';
 	import { liveQuery } from 'dexie';
+	import { onMount } from 'svelte';
 
 	let selected_anaj: Storage[] = [];
 
 	let storage_unit: StorageUnit = { name: '' };
 
-	const univarsalList = new Map();
-	const current_uni_list = liveQuery(() => db.univarsalList.toArray());
-
-	if ($current_uni_list) {
-		$current_uni_list.map((obj) => univarsalList.set(obj.name, true));
-	}
-
-	async function handle_univarsal_list(name: string) {
-		if (!univarsalList.has(name)) {
-			await db.univarsalList.add({ name: name });
-			univarsalList.set(name, true);
-		}
-	}
+	// async function handle_univarsal_list(name: string) {
+	// 	if (!univarsalList.has(name)) {
+	// 		univarsalList.set(name, true);
+	// 		await db.univarsalList.add({ name: name });
+	// 	}
+	// }
 
 	async function save() {
 		const unit = await db.storage_unit.put(storage_unit);
@@ -33,8 +27,8 @@
 		await selected_anaj.forEach((obj) => (obj.storage_unit_id = unit));
 
 		const anajs = await db.storage.bulkAdd(selected_anaj);
-		const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
-		console.log(addtounivarasal);
+		// const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
+		// console.log(addtounivarasal);
 	}
 </script>
 
