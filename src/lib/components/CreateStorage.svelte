@@ -43,6 +43,9 @@
 
 		const anajs = await db.storage.bulkAdd(selected_anaj);
 		const uniupload = await db.univarsalList.bulkAdd(newUniList);
+		if (uniupload) {
+			newUniList = [];
+		}
 		// const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
 		// console.log(addtounivarasal);
 	}

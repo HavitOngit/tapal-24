@@ -4,7 +4,8 @@ import * as custom_types from "$lib/custom_types";
 
 export interface univarsalList {
     id?: number,
-    name: string
+    name: string,
+    image?: string
 }
 export class AnajDB extends Dexie {
     group!: Table<custom_types.Group>;
