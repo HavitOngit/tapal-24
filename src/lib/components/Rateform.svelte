@@ -9,6 +9,7 @@
 	let show = deleteMode ? '' : `disebled`;
 
 	$: ratelist = temp_anajlist;
+
 	// tempo
 
 	import { DeleteIcon } from 'lucide-svelte';
@@ -27,7 +28,7 @@
 
 	function remove(index: number) {
 		const slice = temp_anajlist.splice(index, 1);
-		temp_anajlist = temp_anajlist;
+		temp_anajlist = [...temp_anajlist];
 	}
 
 	let unilist: univarsalList;

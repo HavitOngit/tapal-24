@@ -4,6 +4,7 @@
 	import AnajCard from './AnajCard.svelte';
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
+	import Input from './ui/input/input.svelte';
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -13,11 +14,11 @@
 
 	selected.forEach((obj) => cache.set(obj.name, true));
 
-	function addToList(name: string) {
+	function addToList(name: string, rate: number = 0) {
 		if (!cache.has(name)) {
 			cache.set(name, true);
 			if (useForRates) {
-				selected = [...selected, { name: name, rate: 0 }];
+				selected = [...selected, { name: name, rate: rate }];
 			} else {
 				selected = [...selected, { name: name, amount: 0, storage_unit_id: 0 }];
 			}
@@ -28,18 +29,45 @@
 	}
 
 	let btn_clicked = false;
+	let addingNewField = false;
+	let name: string = 'enter name';
+	let amount: number = 0;
 </script>
 
 <Drawer.Root>
 	<Drawer.Trigger>ADD</Drawer.Trigger>
 	<Drawer.Content>
-		<div class="grid grid-cols-2 gap-1">
-			{#each anajlist as anaj}
-				<div on:click={() => addToList(anaj.name)}>
-					<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
-				</div>
-			{/each}
-		</div>
+		{#if !useForRates}
+			<div>
+				<div></div>
+				<Button
+					on:click={() => {
+						addingNewField = !addingNewField;
+					}}>{addingNewField ? 'Cancel' : 'Add'}</Button
+				>
+			</div>
+		{/if}
+		{#if addingNewField}
+			<div class="flex">
+				<Input bind:value={name} />
+				<Input bind:value={amount} placeholder="enter rate" />
+			</div>
+			<Button
+				on:click={() => {
+					addToList(name, amount);
+					addingNewField = false;
+					anajlist = [...anajlist, { name: name, amount: amount }];
+				}}>Create</Button
+			>
+		{:else}
+			<div class="grid grid-cols-2 gap-1">
+				{#each anajlist as anaj}
+					<div on:click={() => addToList(anaj.name)}>
+						<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
+					</div>
+				{/each}
+			</div>
+		{/if}
 
 		<Drawer.Footer>
 			<Drawer.Close>Done</Drawer.Close>
