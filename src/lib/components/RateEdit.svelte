@@ -3,7 +3,20 @@
 	export let Ratedetails: Rate;
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import type { Rate, oneRate } from '$lib/custom_types';
+	import { db } from '$lib/db';
 	import Rateform from './Rateform.svelte';
+
+	async function update() {
+		const data = {
+			id: Ratedetails.id,
+			day: Ratedetails.day,
+			ratelist: Ratedetails.ratelist,
+			rate_unit_id: Ratedetails.rate_unit_id
+		};
+
+		const status = await db.rate.put(data);
+		console.log(status);
+	}
 </script>
 
 <AlertDialog.Root>
@@ -16,7 +29,7 @@
 		<Rateform forInit={false} anajlist={Ratedetails.ratelist} ratelist={current_list}></Rateform>
 		<AlertDialog.Footer class="flex flex-row justify-around">
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action>Save Changes</AlertDialog.Action>
+			<AlertDialog.Action on:click={update}>Save Changes</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>
