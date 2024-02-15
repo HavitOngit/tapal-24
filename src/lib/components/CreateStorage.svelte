@@ -34,7 +34,8 @@
 		await selected_anaj.forEach((obj) => {
 			obj.storage_unit_id = unit;
 			if (!unimap.has(obj.name)) {
-				newUniList.push({ name: obj.name });
+				const reqobj = anajlist.find((item) => obj.name == item.name);
+				newUniList.push(reqobj);
 				unimap.set(obj.name, true);
 			}
 		});
