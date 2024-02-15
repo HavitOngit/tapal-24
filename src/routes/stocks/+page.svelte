@@ -15,4 +15,4 @@
 	</a>
 {/each}
 
-<!-- <CreateStorage></CreateStorage> -->
+<CreateStorage></CreateStorage>

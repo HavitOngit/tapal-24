@@ -1,6 +1,11 @@
 import Dexie, { type Table } from "dexie";
 import * as custom_types from "$lib/custom_types";
 
+
+export interface univarsalList {
+    id?: number,
+    name: string
+}
 export class AnajDB extends Dexie {
     group!: Table<custom_types.Group>;
     attendance!: Table<custom_types.Attendance>;
@@ -11,6 +16,7 @@ export class AnajDB extends Dexie {
     rates!: Table<custom_types.Rates>;
     rate!: Table<custom_types.Rate>;
     backup!: Table<custom_types.BackUp>;
+    univarsalList!: Table<univarsalList>;
 
     constructor() {
         super('AnajDB');
@@ -24,7 +30,8 @@ export class AnajDB extends Dexie {
             usage: '++id, date, name, amount, before_amount, after_amount, rate, group_id',
             rates: '++id, name, completed',
             rate: '++id, day, ratelist, rate_unit_id',
-            backup: '++id, date, start, end, action'
+            backup: '++id, date, start, end, action',
+            univarsalList: '++id, name'
         })
     }
 }

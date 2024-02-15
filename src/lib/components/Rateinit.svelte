@@ -7,6 +7,7 @@
 	import { liveQuery } from 'dexie';
 	import { onMount } from 'svelte';
 	import type { Rate, oneRate } from '$lib/custom_types';
+	import { anajlist } from '$lib/predefined';
 
 	// for rate profile
 	let next = false;
@@ -75,7 +76,7 @@
 			<div class="text-xl">✅ Done</div>
 		{:else}
 			{days[current_day]}
-			<Rateform bind:ratelist></Rateform>
+			<Rateform bind:ratelist {anajlist}></Rateform>
 		{/if}
 
 		<Button on:click={Save}>Save</Button>

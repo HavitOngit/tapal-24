@@ -10,7 +10,9 @@
 {#each $rates || [] as unit}
 	{#if unit.completed}
 		<a href="/rates/{unit.id}">
-			{unit.name}
+			<div>
+				{unit.name}
+			</div>
 		</a>
 	{/if}
 {/each}
