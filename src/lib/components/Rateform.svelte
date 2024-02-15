@@ -50,6 +50,7 @@
 
 					{#if deleteMode}
 						<Button
+							class="m-1 rounded-full"
 							variant="secondary"
 							on:click={() => {
 								remove(i);

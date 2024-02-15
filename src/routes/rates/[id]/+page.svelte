@@ -16,7 +16,7 @@
 
 <div class="flex flex-col items-center justify-center">
 	{#each $list || [] as detail}
-		<RateView rateDetails={detail}></RateView>
-		<!-- <Rateslot rateDetails={detail}></Rateslot> -->
+		<!-- <RateView rateDetails={detail}></RateView> -->
+		<Rateslot rateDetails={detail}></Rateslot>
 	{/each}
 </div>
