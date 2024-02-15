@@ -9,6 +9,7 @@ export class AnajDB extends Dexie {
     storage_history!: Table<custom_types.StorageHistory>;
     usage!: Table<custom_types.Usage>;
     rates!: Table<custom_types.Rates>;
+    rate!: Table<custom_types.Rate>;
     backup!: Table<custom_types.BackUp>;
 
     constructor() {
@@ -21,7 +22,8 @@ export class AnajDB extends Dexie {
             storage: '++id, name, amount, storage_unit_id',
             storage_history: '++id, date, name, amount, storage_unit_id',
             usage: '++id, date, name, amount, before_amount, after_amount, rate, group_id',
-            rates: '++id, name, ratelist',
+            rates: '++id, name, completed',
+            rate: '++id, day, ratelist, rate_unit_id',
             backup: '++id, date, start, end, action'
         })
     }

@@ -48,17 +48,23 @@ export interface Usage {
     group_id: number
 }
 
-export interface Rate {
-    id?: number,
-    day: "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | "Sun",
+export interface oneRate {
     name: string,
     rate: number
+}
+export interface Rate {
+    id?: number,
+    day: string,
+
+    ratelist: oneRate[],
+    rate_unit_id: number
 }
 
 export interface Rates {
     id?: number,
     name: string,
-    ratelist: Rate[]
+    completed: true | false,
+    used_by?: Group[]
 }
 
 export interface BackUp {
