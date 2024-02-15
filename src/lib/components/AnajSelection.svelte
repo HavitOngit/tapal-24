@@ -27,7 +27,7 @@
 		<div class="grid grid-cols-2 gap-1">
 			{#each anajlist as anaj}
 				<div on:click={() => addToList(anaj.name)}>
-					<AnajCard {anaj}></AnajCard>
+					<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
 				</div>
 			{/each}
 		</div>

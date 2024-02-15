@@ -3,7 +3,7 @@
 	import Button from './ui/button/button.svelte';
 
 	export let anaj: Anajlist_init;
-	let btn_clicked = false;
+	export let btn_clicked: boolean;
 </script>
 
 <Button
