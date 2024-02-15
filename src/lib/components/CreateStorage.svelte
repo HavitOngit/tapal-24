@@ -59,7 +59,7 @@ Selected Anaj:
 	<AnajSlot bind:anaj></AnajSlot>
 {/each}
 
-<AnajSelection bind:selected={selected_anaj}></AnajSelection>
+<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
 
 <Button on:click={save}>Create</Button>
 

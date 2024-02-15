@@ -1,17 +1,26 @@
 <script lang="ts">
 	import type { Anajlist_init, Storage } from '$lib/custom_types';
-	import { anajlist } from '$lib/predefined';
+
 	import AnajCard from './AnajCard.svelte';
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
 
-	export let selected: Storage[] = [];
+	export let selected: any = [];
+	export let anajlist: any;
+	export let useForRates: boolean = false;
 
 	const cache = new Map();
+
+	selected.forEach((obj) => cache.set(obj.name, true));
+
 	function addToList(name: string) {
 		if (!cache.has(name)) {
 			cache.set(name, true);
-			selected = [...selected, { name: name, amount: 0, storage_unit_id: 0 }];
+			if (useForRates) {
+				selected = [...selected, { name: name, rate: 0 }];
+			} else {
+				selected = [...selected, { name: name, amount: 0, storage_unit_id: 0 }];
+			}
 		} else {
 			cache.delete(name);
 			selected = selected.filter((obj) => obj.name !== name);

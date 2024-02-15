@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
 
-	export let ratelist;
+	export let ratelist: any;
 	export let anajlist;
 	export let forInit: boolean = true;
 	export let deleteMode: boolean = true;
@@ -14,6 +14,9 @@
 	import { DeleteIcon } from 'lucide-svelte';
 	import Input from './ui/input/input.svelte';
 	import Button from './ui/button/button.svelte';
+	import AnajSelection from './AnajSelection.svelte';
+	import { onMount } from 'svelte';
+	import { db, type univarsalList } from '$lib/db';
 
 	let temp_anajlist = anajlist;
 	if (forInit) {
@@ -26,6 +29,11 @@
 		const slice = temp_anajlist.splice(index, 1);
 		temp_anajlist = temp_anajlist;
 	}
+
+	let unilist: univarsalList;
+	onMount(async () => {
+		unilist = await db.univarsalList.toArray();
+	});
 </script>
 
 <Table.Root>
@@ -64,3 +72,5 @@
 		{/each}
 	</Table.Body>
 </Table.Root>
+
+<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true}></AnajSelection>
