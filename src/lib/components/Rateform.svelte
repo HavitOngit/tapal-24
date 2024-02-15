@@ -6,6 +6,8 @@
 	export let forInit: boolean = true;
 	export let deleteMode: boolean = true;
 
+	let show = deleteMode ? '' : `disebled`;
+
 	$: ratelist = temp_anajlist;
 	// tempo
 
@@ -37,8 +39,14 @@
 		{#each temp_anajlist as anaj, i}
 			<Table.Row>
 				<Table.Cell class="font-medium">{anaj.name}</Table.Cell>
-				<Table.Cell class="flex justify-evenly"
-					><Input bind:value={anaj.rate} placeholder="enter rate" />
+				<Table.Cell class="flex justify-evenly">
+					{#if deleteMode}
+						<Input bind:value={anaj.rate} type="number" placeholder="enter rate" />
+					{:else}
+						<div class=" w-52 pl-3">
+							{anaj.rate}
+						</div>
+					{/if}
 
 					{#if deleteMode}
 						<Button
