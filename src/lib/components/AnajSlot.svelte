@@ -16,8 +16,7 @@
 
 	async function addToStore() {
 		const status = await db.storage.update(anaj.id, { amount: sum });
-		console.log(status);
-		console.log(typeof addAmount, typeof anaj.amount);
+		addAmount = 0;
 	}
 </script>
 
