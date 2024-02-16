@@ -3,6 +3,7 @@ export interface Group {
     id?: number,
     name: string,
     storage_unit_id: number,
+    rate_unit_id: number,
     currently_used: true | false
 }
 

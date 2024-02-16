@@ -20,6 +20,9 @@
 <div>
 	<a href="/rates">rates </a>
 </div>
+<div>
+	<a href="/reg">Registers</a>
+</div>
 
 <Button
 	class="mt-[95%]"

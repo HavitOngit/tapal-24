@@ -23,7 +23,7 @@ export class AnajDB extends Dexie {
         super('AnajDB');
 
         this.version(1).stores({
-            group: '++id, name, storage_unit_id, currently_used',
+            group: '++id, name, storage_unit_id, rate_unit_id, currently_used',
             attendance: '++id, date, boys, girls, total, group_id',
             storage_unit: '++id, name',
             storage: '++id, name, amount, storage_unit_id',
