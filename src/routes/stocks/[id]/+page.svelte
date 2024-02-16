@@ -6,6 +6,7 @@
 	import type { StorageUnit } from '$lib/custom_types';
 	import { onMount } from 'svelte';
 	import { liveQuery } from 'dexie';
+	import AnajSlot from '$lib/components/AnajSlot.svelte';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -20,5 +21,5 @@
 {unit?.name}
 
 {#each $list || [] as anaj}
-	<p>{anaj.name}</p>
+	<AnajSlot {anaj} forStorageView={true}></AnajSlot>
 {/each}

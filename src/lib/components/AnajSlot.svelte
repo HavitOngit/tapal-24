@@ -4,26 +4,58 @@
 	import Button from './ui/button/button.svelte';
 	import { anajlist } from '$lib/predefined';
 	import Input from './ui/input/input.svelte';
+	import { db } from '$lib/db';
+	import * as Card from '$lib/components/ui/card';
 
 	export let anaj: Storage;
+	export let forStorageView: boolean = false;
+
+	let addAmount: number = 0;
+
+	$: sum = Number(addAmount) + Number(anaj.amount);
+
+	async function addToStore() {
+		const status = await db.storage.update(anaj.id, { amount: sum });
+		console.log(status);
+		console.log(typeof addAmount, typeof anaj.amount);
+	}
 </script>
 
-<div class=" flex h-full w-full flex-row">
-	<div class="box-border h-28 w-28">
-		<img
-			src={anajlist.find((obj) => obj.name == anaj.name)?.image}
-			alt={anaj.name}
-			class="h-full w-full object-cover p-2"
-		/>
-	</div>
-	<div class="mt-2 flex flex-col flex-wrap">
-		<div>
-			{anaj.name}
+<Card.Root class="m-2">
+	<Card.Content>
+		<div class=" flex h-full w-full flex-row">
+			<div class="box-border h-28 w-28">
+				<img
+					src={anajlist.find((obj) => obj.name == anaj.name)?.image}
+					alt={anaj.name}
+					class="h-full w-full object-cover p-2"
+				/>
+			</div>
+			<div class="mt-2 flex flex-col flex-wrap">
+				<div>
+					{anaj.name}
+				</div>
+				{#if forStorageView}
+					<div class="flex flex-col">
+						<div>Amount : {anaj.amount}</div>
+						<div class="flex flex-row justify-between">
+							<Input
+								bind:value={addAmount}
+								placeholder="Enter Amount in kg"
+								type="number"
+								min="1"
+							/>
+							<Button on:click={addToStore}>Add</Button>
+						</div>
+					</div>
+				{:else}
+					<div class="flex flex-row">
+						<div>Amount :</div>
+						<div><input bind:value={anaj.amount} /></div>
+					</div>
+				{/if}
+			</div>
+			<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
 		</div>
-		<div class="flex flex-row">
-			<div>Amount :</div>
-			<div><input bind:value={anaj.amount} /></div>
-		</div>
-	</div>
-	<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
-</div>
+	</Card.Content>
+</Card.Root>
