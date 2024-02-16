@@ -86,3 +86,14 @@ export interface Storage_Anajs {
     amount: number,
 }
 
+export interface RegForm {
+    name: string,
+    storage_unit_id: number,
+    rate_unit_id: number,
+    currently_used: true | false
+}
+
+export interface Selector {
+    id: number,
+    name: string
+}

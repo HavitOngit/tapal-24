@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { liveQuery } from 'dexie';
-	import type { PageData } from './$types';
+
 	import { db } from '$lib/db';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
-
-	export let data: PageData;
 
 	const regilist = liveQuery(() => db.group.toArray());
 </script>
