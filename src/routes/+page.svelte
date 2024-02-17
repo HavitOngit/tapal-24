@@ -23,6 +23,9 @@
 <div>
 	<a href="/reg">Registers</a>
 </div>
+<div>
+	<a href="/dailywork">DailyWork</a>
+</div>
 
 <Button
 	class="mt-[95%]"
