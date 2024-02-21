@@ -11,10 +11,16 @@
 	import UsageTable from './UsageTable.svelte';
 	import { Item } from '../ui/select';
 	import { updated } from '$app/stores';
+	import Layout from '../../../routes/+layout.svelte';
+	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
-	dayjs.locale('gu');
+	dayjs.extend(isSameOrBefore);
+	dayjs.locale('en');
 	let current = dayjs();
 
+	export let LastDate: Date;
+
+	let workingDate = dayjs(LastDate);
 	export let data: Group;
 
 	let boys: number;
@@ -44,7 +50,7 @@
 			name: obj.name,
 			amount: obj.rate * total,
 			rate: Number(obj.rate),
-			date: current.toDate()
+			date: workingDate.toDate()
 		}));
 		const acc_eff = usage.forEach((obj) => {
 			const unit = stock.find((item) => item.name == obj.name);
@@ -72,8 +78,15 @@
 
 	async function SaveToDB() {
 		console.log(usage);
-
-		const status = await db.usage.bulkAdd(usage);
+		if (workingDate.isSameOrBefore(current)) {
+			const status = await db.usage.bulkAdd(usage);
+			if (status && workingDate.add(1, 'day').isBefore(current)) {
+				workingDate = workingDate.add(1, 'day');
+				if (workingDate.isSame(current, 'day')) {
+					upToDate = true;
+				}
+			}
+		}
 	}
 
 	onMount(async () => {
@@ -82,37 +95,42 @@
 
 	//behavior
 	let showRate: boolean = false;
+
+	let upToDate = false;
 </script>
 
+{#if upToDate}
+	<p class="text-yellow-400">UpToDate</p>
+{/if}
 <div class="flex justify-between">
 	<div>
 		<div>{data.name}</div>
 	</div>
 	<div class="flex flex-col">
-		{current.format('DD/MM/YYYY')}
+		{workingDate.format('DD/MM/YYYY')}
 
 		<!-- for update functionality -->
-		<!-- <div class="flex">
+		<div class="flex">
 			<Button
 				variant="outline"
 				on:click={() => {
-					current = current.subtract(1, 'day');
+					workingDate = workingDate.subtract(1, 'day');
 				}}>-</Button
 			>
 			<Button
 				variant="outline"
 				on:click={() => {
-					current = current.add(1, 'day');
+					workingDate = workingDate.add(1, 'day');
 				}}>+</Button
 			>
-		</div> -->
+		</div>
 	</div>
 </div>
 
 <Attendance bind:boys bind:girls></Attendance>
 
 <AlertDialog.Root>
-	<AlertDialog.Trigger>Submit</AlertDialog.Trigger>
+	<AlertDialog.Trigger on:click={cal_usage}>Submit</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header class="flex ">
 			<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
@@ -138,4 +156,8 @@
 	</AlertDialog.Content>
 </AlertDialog.Root>
 
-<Button on:click={cal_usage}>Status</Button>
+<Button
+	on:click={() => {
+		console.log(LastDate);
+	}}>Status</Button
+>
