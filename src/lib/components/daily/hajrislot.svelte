@@ -1,12 +1,20 @@
 <script lang="ts">
-	import type { Group, Rate, oneRate, Storage } from '$lib/custom_types';
+	import type { Group, Rate, oneRate, Storage, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import moment from 'moment';
+	import dayjs from 'dayjs';
+	import 'dayjs/locale/gu';
 	import Button from '../ui/button/button.svelte';
 	import Attendance from './Attendance.svelte';
 	import { onMount } from 'svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import Rateform from '../Rateform.svelte';
+	import UsageTable from './UsageTable.svelte';
+	import { Item } from '../ui/select';
+	import { updated } from '$app/stores';
 
-	const current = moment();
+	dayjs.locale('gu');
+	let current = dayjs();
+
 	export let data: Group;
 
 	let boys: number;
@@ -26,31 +34,108 @@
 
 	// usage cal
 
+	let forStoarageUpdate: any = [];
+	let before_afterlist: any = [];
+	let usage: any = [];
+	let finalData: Usage[] = [];
+
 	async function cal_usage() {
-		const usage = rate.map((obj) => ({ name: obj.name, amount: obj.rate * total }));
-		const before_afterlist: any = [];
-		const forStoarageUpdate = [];
+		usage = rate.map((obj) => ({
+			name: obj.name,
+			amount: obj.rate * total,
+			rate: Number(obj.rate),
+			date: current.toDate()
+		}));
 		const acc_eff = usage.forEach((obj) => {
 			const unit = stock.find((item) => item.name == obj.name);
-			before_afterlist.push({
-				before_amount: unit?.amount,
-				after_amount: unit?.amount - obj.amount
-			});
+
+			// adding
+			obj.before_amount = Number(unit?.amount);
+			obj.after_amount = unit?.amount - obj.amount;
+			obj.group_id = data.id;
+
+			// before_afterlist.push({
+			// 	before_amount: unit?.amount,
+			// 	after_amount: unit?.amount - obj.amount,
+			// 	name: unit?.name
+			// });
 			forStoarageUpdate.push({
 				amount: unit?.amount - obj.amount,
 				id: unit?.id
 			});
 		});
-		console.log(usage, stock, forStoarageUpdate, before_afterlist);
+
+		console.log(rate);
+
+		showRate = false;
 	}
+
+	async function SaveToDB() {
+		console.log(usage);
+
+		const status = await db.usage.bulkAdd(usage);
+	}
+
 	onMount(async () => {
 		await getInfo();
 	});
+
+	//behavior
+	let showRate: boolean = false;
 </script>
 
-<div>
-	<div>{data.name}</div>
+<div class="flex justify-between">
+	<div>
+		<div>{data.name}</div>
+	</div>
+	<div class="flex flex-col">
+		{current.format('DD/MM/YYYY')}
+
+		<!-- for update functionality -->
+		<!-- <div class="flex">
+			<Button
+				variant="outline"
+				on:click={() => {
+					current = current.subtract(1, 'day');
+				}}>-</Button
+			>
+			<Button
+				variant="outline"
+				on:click={() => {
+					current = current.add(1, 'day');
+				}}>+</Button
+			>
+		</div> -->
+	</div>
 </div>
 
 <Attendance bind:boys bind:girls></Attendance>
+
+<AlertDialog.Root>
+	<AlertDialog.Trigger>Submit</AlertDialog.Trigger>
+	<AlertDialog.Content>
+		<AlertDialog.Header class="flex ">
+			<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
+			<AlertDialog.Description
+				><Button
+					on:click={() => {
+						showRate = !showRate;
+					}}
+					variant="link">Change Rate</Button
+				></AlertDialog.Description
+			>
+		</AlertDialog.Header>
+
+		{#if showRate}
+			<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
+			<Button on:click={cal_usage}>Apply</Button>
+		{/if}
+		<UsageTable bind:usageData={usage}></UsageTable>
+		<AlertDialog.Footer class="flex flex-row justify-around">
+			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
+
 <Button on:click={cal_usage}>Status</Button>

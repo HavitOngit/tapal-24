@@ -5,4 +5,6 @@
 	export let data: PageData;
 </script>
 
-{$page.params.id}
+<a href="/reg/{$page.params.id}/view">
+	{$page.params.id}
+</a>

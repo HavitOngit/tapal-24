@@ -9,8 +9,13 @@
 	$: total = Number(boys) + Number(girls);
 </script>
 
-<Input bind:value={boys} placeholder="Enter Attendance" type="number" />
-<Input bind:value={girls} placeholder="Enter Attendance" type="number" />
-Total:{total}
-
-<Button on:click={() => {}}></Button>
+<div class="flex flex-row space-x-3">
+	<Input bind:value={boys} placeholder="Enter Attendance" type="number" />
+	<Input bind:value={girls} placeholder="Enter Attendance" type="number" />
+	<div class=" flex w-[40%] flex-row items-center">
+		<div>Total:</div>
+		<div>
+			{total}
+		</div>
+	</div>
+</div>
