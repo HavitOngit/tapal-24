@@ -41,6 +41,7 @@ export interface StorageHistory {
 export interface Usage {
     id?: number,
     date: Date,
+    date_id: number,
     name: string,
     amount: number,
     before_amount: number,

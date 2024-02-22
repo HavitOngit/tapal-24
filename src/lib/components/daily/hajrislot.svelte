@@ -13,6 +13,7 @@
 	import { updated } from '$app/stores';
 	import Layout from '../../../routes/+layout.svelte';
 	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+	import { getDateID } from '$lib/api';
 
 	dayjs.extend(isSameOrBefore);
 	dayjs.locale('en');
@@ -59,6 +60,7 @@
 			obj.before_amount = Number(unit?.amount);
 			obj.after_amount = unit?.amount - obj.amount;
 			obj.group_id = data.id;
+			obj.date_id = getDateID(workingDate.toDate());
 
 			// before_afterlist.push({
 			// 	before_amount: unit?.amount,

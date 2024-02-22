@@ -12,3 +12,9 @@ export async function getImage(name: string) {
     cache.set(name, image)
     return image
 }
+
+export function getDateID(date: Date) {
+    const id = `${date.getFullYear()}${date.getMonth()}${date.getDate()}`
+
+    return Number(id)
+}
