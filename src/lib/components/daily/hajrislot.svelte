@@ -78,18 +78,22 @@
 		showRate = false;
 	}
 
+	let upToDate = false;
+
 	async function SaveToDB() {
 		console.log(usage);
 		if (workingDate.isSameOrBefore(current) && !upToDate) {
 			const status = await db.usage.bulkAdd(usage);
+			if (status && workingDate.isSame(current, 'day')) {
+				upToDate = true;
+			}
 			if (status && workingDate.add(1, 'day').isBefore(current)) {
 				workingDate = workingDate.add(1, 'day');
-				if (workingDate.isSame(current, 'day')) {
-					upToDate = true;
-				}
 			}
 		}
 	}
+
+	$: console.log(upToDate);
 
 	onMount(async () => {
 		await getInfo();
@@ -97,8 +101,6 @@
 
 	//behavior
 	let showRate: boolean = false;
-
-	let upToDate = false;
 </script>
 
 {#if upToDate}
