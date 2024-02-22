@@ -78,7 +78,7 @@
 
 	async function SaveToDB() {
 		console.log(usage);
-		if (workingDate.isSameOrBefore(current)) {
+		if (workingDate.isSameOrBefore(current) && !upToDate) {
 			const status = await db.usage.bulkAdd(usage);
 			if (status && workingDate.add(1, 'day').isBefore(current)) {
 				workingDate = workingDate.add(1, 'day');
