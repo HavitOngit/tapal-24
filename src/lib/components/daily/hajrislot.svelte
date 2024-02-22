@@ -28,11 +28,12 @@
 	let girls: number;
 	$: total = Number(boys) + Number(girls);
 
-	export let day = current.format('ddd');
 	let rate: oneRate[];
 	let stock: Storage[];
 	async function getInfo() {
-		const rates = await db.rate.where({ rate_unit_id: data.rate_unit_id, day: day }).toArray();
+		const rates = await db.rate
+			.where({ rate_unit_id: data.rate_unit_id, day: workingDate.format('ddd') })
+			.toArray();
 		const stocks = await db.storage.where({ storage_unit_id: data.storage_unit_id }).toArray();
 		rate = rates[0].ratelist;
 		stock = stocks;
@@ -89,6 +90,7 @@
 			}
 			if (status && workingDate.add(1, 'day').isBefore(current)) {
 				workingDate = workingDate.add(1, 'day');
+				await getInfo(); // get and sets new rates
 			}
 		}
 	}
