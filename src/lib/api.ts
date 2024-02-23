@@ -18,3 +18,4 @@ export function getDateID(date: Date) {
 
     return clean_date.getTime()
 }
+

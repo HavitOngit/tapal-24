@@ -10,6 +10,7 @@ export interface Group {
 export interface Attendance {
     id?: number,
     date: Date,
+    date_id: number,
     boys: number,
     girls: number,
     total: number,
@@ -33,6 +34,7 @@ export interface Storage {
 export interface StorageHistory {
     id?: number,
     date: Date,
+    date_id: number,
     name: string,
     amount: number,
     storage_unit_id: number
@@ -72,6 +74,7 @@ export interface Rates {
 export interface BackUp {
     id?: number,
     date: Date,
+    date_id: number,
     start: Date,
     end: Date,
     action: "Upload" | "Download"

@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@internationalized/date": "^3.5.2",
 		"bits-ui": "^0.17.0",
 		"clsx": "^2.1.0",
 		"dayjs": "^1.11.10",

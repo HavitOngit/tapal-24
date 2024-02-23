@@ -52,7 +52,7 @@
 			.where({ date_id: getDateID(workingDate.toDate()), group_id: data.id })
 			.toArray();
 
-		console.log(workingDateData);
+		// console.log(workingDateData);
 	}
 
 	// usage cal
@@ -111,7 +111,7 @@
 		}
 	}
 
-	$: console.log(upToDate);
+	// $: console.log(upToDate);
 
 	onMount(async () => {
 		await getInfo();
@@ -139,6 +139,7 @@
 				on:click={() => {
 					workingDate = workingDate.subtract(1, 'day');
 					ifdbhasData();
+					getInfo();
 				}}>-</Button
 			>
 			<Button
@@ -146,6 +147,7 @@
 				on:click={() => {
 					workingDate = workingDate.add(1, 'day');
 					ifdbhasData();
+					getInfo();
 				}}>+</Button
 			>
 		</div>

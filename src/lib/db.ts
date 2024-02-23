@@ -24,14 +24,14 @@ export class AnajDB extends Dexie {
 
         this.version(1).stores({
             group: '++id, name, storage_unit_id, rate_unit_id, currently_used',
-            attendance: '++id, date, boys, girls, total, group_id',
+            attendance: '++id, date, date_id, boys, girls, total, group_id',
             storage_unit: '++id, name',
             storage: '++id, name, amount, storage_unit_id',
-            storage_history: '++id, date, name, amount, storage_unit_id',
+            storage_history: '++id, date, date_id, name, amount, storage_unit_id',
             usage: '++id, date, date_id, name, amount, before_amount, after_amount, rate, group_id',
             rates: '++id, name, completed',
             rate: '++id, day, ratelist, rate_unit_id',
-            backup: '++id, date, start, end, action',
+            backup: '++id, date, date_id, start, end, action',
             univarsalList: '++id, name'
         })
     }
@@ -39,4 +39,5 @@ export class AnajDB extends Dexie {
 
 
 export const db = new AnajDB();
+
 
