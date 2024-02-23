@@ -9,11 +9,10 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Rateform from '../Rateform.svelte';
 	import UsageTable from './UsageTable.svelte';
-	import { Item } from '../ui/select';
-	import { updated } from '$app/stores';
-	import Layout from '../../../routes/+layout.svelte';
+
 	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 	import { getDateID } from '$lib/api';
+	import { liveQuery } from 'dexie';
 
 	dayjs.extend(isSameOrBefore);
 	dayjs.locale('en');
@@ -38,6 +37,22 @@
 		rate = rates[0].ratelist;
 		stock = stocks;
 		console.log(rate, stock, boys, girls);
+	}
+
+	// check if data already exist
+
+	// const dataOnDB = liveQuery(() =>
+	// 	db.usage.where({ date_id: getDateID(workingDate.toDate()), group_id: data.id }).toArray()
+	// );
+
+	let workingDateData: Usage[] = [];
+
+	async function ifdbhasData() {
+		workingDateData = await db.usage
+			.where({ date_id: getDateID(workingDate.toDate()), group_id: data.id })
+			.toArray();
+
+		console.log(workingDateData);
 	}
 
 	// usage cal
@@ -91,6 +106,7 @@
 			if (status && workingDate.add(1, 'day').isBefore(current)) {
 				workingDate = workingDate.add(1, 'day');
 				await getInfo(); // get and sets new rates
+				await ifdbhasData();
 			}
 		}
 	}
@@ -99,6 +115,7 @@
 
 	onMount(async () => {
 		await getInfo();
+		await ifdbhasData();
 	});
 
 	//behavior
@@ -121,12 +138,14 @@
 				variant="outline"
 				on:click={() => {
 					workingDate = workingDate.subtract(1, 'day');
+					ifdbhasData();
 				}}>-</Button
 			>
 			<Button
 				variant="outline"
 				on:click={() => {
 					workingDate = workingDate.add(1, 'day');
+					ifdbhasData();
 				}}>+</Button
 			>
 		</div>
@@ -164,6 +183,14 @@
 
 <Button
 	on:click={() => {
-		console.log(LastDate);
+		console.log(workingDateData);
 	}}>Status</Button
 >
+
+<!-- {#if $dataOnDB && $dataOnDB.length > 0}
+	Already Exist
+{/if} -->
+
+{#if workingDateData.length > 0}
+	Already Exist
+{/if}

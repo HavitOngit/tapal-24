@@ -14,7 +14,7 @@ export async function getImage(name: string) {
 }
 
 export function getDateID(date: Date) {
-    const id = `${date.getFullYear()}${date.getMonth()}${date.getDate()}`
+    const clean_date = new Date(date.toLocaleDateString())
 
-    return Number(id)
+    return clean_date.getTime()
 }
