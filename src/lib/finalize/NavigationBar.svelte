@@ -26,9 +26,9 @@
 	];
 </script>
 
-<div>
+<!-- <div>
 	{$page.url.pathname}
-</div>
+</div> -->
 <!-- <div class="grid w-[100%] grid-cols-4">
 	<div>
 		<a href="/stocks">stocks</a>

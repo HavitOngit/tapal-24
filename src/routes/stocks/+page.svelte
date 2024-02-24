@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
+	import PlusButton from '$lib/finalize/PlusButton.svelte';
 
 	const storage_units = liveQuery(() => db.storage_unit.toArray());
 </script>
@@ -15,4 +16,6 @@
 	{/each}
 </div>
 
-<!-- <CreateStorage></CreateStorage> -->
+<PlusButton>
+	<CreateStorage></CreateStorage>
+</PlusButton>

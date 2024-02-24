@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Rateinit from '$lib/components/Rateinit.svelte';
 	import { db } from '$lib/db';
+	import PlusButton from '$lib/finalize/PlusButton.svelte';
 
 	import { liveQuery } from 'dexie';
 
@@ -16,5 +17,3 @@
 		</a>
 	{/if}
 {/each}
-
-<Rateinit></Rateinit>
