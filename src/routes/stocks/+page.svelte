@@ -7,10 +7,12 @@
 	const storage_units = liveQuery(() => db.storage_unit.toArray());
 </script>
 
-{#each $storage_units || [] as unit}
-	<a href="/stocks/{unit.id}">
-		{unit.name}
-	</a>
-{/each}
+<div>
+	{#each $storage_units || [] as unit}
+		<a href="/stocks/{unit.id}">
+			{unit.name}
+		</a>
+	{/each}
+</div>
 
-<CreateStorage></CreateStorage>
+<!-- <CreateStorage></CreateStorage> -->
