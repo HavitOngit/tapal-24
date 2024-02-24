@@ -11,17 +11,19 @@
 	let storage_unit_id: number = 1;
 	let rate_unit_id: number = 1;
 
-	let data: RegForm = {
+	export let useForUpdaate: boolean = false;
+
+	export let data: RegForm = {
 		name: '',
 		storage_unit_id: 0,
 		rate_unit_id: 0,
 		currently_used: true
 	};
 	async function Save() {
-		const status = await db.group.add(data);
+		const status = await db.group.put(data);
 		console.log(status);
 	}
 </script>
 
 <Regform bind:data></Regform>
-<Button on:click={Save}>Create</Button>
+<Button on:click={Save}>{useForUpdaate ? 'Update' : 'Create'}</Button>

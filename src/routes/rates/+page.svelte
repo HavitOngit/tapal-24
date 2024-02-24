@@ -5,7 +5,6 @@
 	import { liveQuery } from 'dexie';
 
 	const rates = liveQuery(() => db.rates.toArray());
-
 </script>
 
 {#each $rates || [] as unit}

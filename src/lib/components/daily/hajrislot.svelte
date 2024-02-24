@@ -99,15 +99,31 @@
 	async function SaveToDB() {
 		console.log(usage);
 		if (workingDate.isSameOrBefore(current) && !upToDate) {
+			// attendance
+			const save_atendance = await db.attendance.add({
+				boys: boys,
+				girls: girls,
+				total: total,
+				group_id: data.id,
+				date: workingDate.toDate(),
+				date_id: getDateID(workingDate.toDate())
+			});
+
+			// usage
 			const status = await db.usage.bulkAdd(usage);
+
+			// update stored anajs
+
+			const update_anaj = await db.storage.bulkUpdate(forStoarageUpdate);
+
 			if (status && workingDate.isSame(current, 'day')) {
 				upToDate = true;
 			}
 			if (status && workingDate.add(1, 'day').isBefore(current)) {
 				workingDate = workingDate.add(1, 'day');
 				await getInfo(); // get and sets new rates
-				await ifdbhasData();
 			}
+			await ifdbhasData();
 		}
 	}
 
