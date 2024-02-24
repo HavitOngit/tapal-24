@@ -52,21 +52,23 @@
 	}
 </script>
 
-<Input name="name" type="text" max="50" bind:value={storage_unit.name} class="m-1" />
+<div>
+	<Input name="name" type="text" max="50" bind:value={storage_unit.name} class="m-1" />
 
-Selected Anaj:
-{#each selected_anaj as anaj}
-	<AnajSlot bind:anaj></AnajSlot>
-{/each}
+	Selected Anaj:
+	{#each selected_anaj as anaj}
+		<AnajSlot bind:anaj></AnajSlot>
+	{/each}
 
-<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
+	<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
 
-<Button on:click={save}>Create</Button>
+	<Button on:click={save}>Create</Button>
 
-<Button on:click={() => console.log(newUniList, unimap)}>TEST</Button>
+	<!-- <Button on:click={() => console.log(newUniList, unimap)}>TEST</Button> -->
+</div>
 
 <!-- selected
-<div class="flex flex-col">
+		<div class="flex flex-col">
 	{#each selected_anaj as anaj}
 		<h2>{anaj.name}</h2>
 	{/each}

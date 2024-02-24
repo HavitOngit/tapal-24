@@ -16,6 +16,4 @@
 	{/each}
 </div>
 
-<PlusButton>
-	<CreateStorage></CreateStorage>
-</PlusButton>
+<PlusButton></PlusButton>

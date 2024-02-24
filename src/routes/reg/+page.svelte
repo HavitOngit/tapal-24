@@ -3,7 +3,9 @@
 
 	import { db } from '$lib/db';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
-	import PlusButton from '$lib/finalize/PlusButton.svelte';
+
+	import PlusButtonAlert from '$lib/finalize/PlusButtonAlert.svelte';
+	import type { RegForm } from '$lib/custom_types';
 
 	const regilist = liveQuery(() => db.group.toArray());
 </script>
@@ -14,6 +16,6 @@
 	</a>
 {/each}
 
-<PlusButton>
+<PlusButtonAlert>
 	<RegiCreateForm></RegiCreateForm>
-</PlusButton>
+</PlusButtonAlert>
