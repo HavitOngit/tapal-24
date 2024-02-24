@@ -6,11 +6,14 @@
 	export let list: Selector[];
 	export let name: string;
 	export let selected: number;
+	export let saved: number | undefined;
+
+	const saved_name = list.find((item) => item.id == saved);
 </script>
 
 <Select.Root>
 	<Select.Trigger class="w-[180px]">
-		<Select.Value placeholder="Select a {name}" />
+		<Select.Value placeholder={saved ? saved_name?.name : `Select a ${name}`} />
 	</Select.Trigger>
 	<Select.Content>
 		<Select.Group>

@@ -35,9 +35,17 @@
 	<Card.Content>
 		<Input bind:value={data.name} placeholder="Enter Name" />
 		{#if !isLoading}
-			<ListSelector bind:list={stocklist} name="Stock" bind:selected={data.storage_unit_id}
+			<ListSelector
+				bind:list={stocklist}
+				name="Stock"
+				bind:selected={data.storage_unit_id}
+				saved={data.storage_unit_id}
 			></ListSelector>
-			<ListSelector bind:list={ratelist} name="Rate" bind:selected={data.rate_unit_id}
+			<ListSelector
+				bind:list={ratelist}
+				name="Rate"
+				bind:selected={data.rate_unit_id}
+				saved={data.rate_unit_id}
 			></ListSelector>
 		{/if}
 	</Card.Content>
