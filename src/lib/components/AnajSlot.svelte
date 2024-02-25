@@ -20,9 +20,9 @@
 	}
 </script>
 
-<Card.Root class="m-2">
+<Card.Root>
 	<Card.Content>
-		<div class="flex space-x-6">
+		<div class="flex space-x-3">
 			<div class=" mt-4 h-24 w-24 flex-none bg-orange-500">
 				<img
 					src={anajlist.find((obj) => obj.name == anaj.name)?.image}

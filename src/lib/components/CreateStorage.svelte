@@ -53,12 +53,14 @@
 </script>
 
 <div>
-	<Input name="name" type="text" max="50" bind:value={storage_unit.name} class="m-1" />
+	<Input name="name" type="text" max="50" bind:value={storage_unit.name} />
 
 	Selected Anaj:
-	{#each selected_anaj as anaj}
-		<AnajSlot bind:anaj></AnajSlot>
-	{/each}
+	<div class="w-auto">
+		{#each selected_anaj as anaj}
+			<AnajSlot bind:anaj></AnajSlot>
+		{/each}
+	</div>
 
 	<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
 
@@ -66,14 +68,3 @@
 
 	<!-- <Button on:click={() => console.log(newUniList, unimap)}>TEST</Button> -->
 </div>
-
-<!-- selected
-		<div class="flex flex-col">
-	{#each selected_anaj as anaj}
-		<h2>{anaj.name}</h2>
-	{/each}
-</div>
-
-<AnajSelection bind:selected={selected_anaj}></AnajSelection>
-
-<button on:click={() => console.log(selected_anaj)}>save</button> -->
