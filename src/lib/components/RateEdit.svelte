@@ -1,11 +1,11 @@
 <script lang="ts">
-	let current_list: oneRate[];
-	export let Ratedetails: Rate;
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import type { Rate, oneRate } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import Rateform from './Rateform.svelte';
 
+	let current_list: oneRate[];
+	export let Ratedetails: Rate;
 	async function update() {
 		const data = {
 			id: Ratedetails.id,
@@ -26,7 +26,8 @@
 			<AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title>
 			<!-- <AlertDialog.Description></AlertDialog.Description> -->
 		</AlertDialog.Header>
-		<Rateform forInit={false} anajlist={Ratedetails.ratelist} ratelist={current_list}></Rateform>
+		<Rateform forInit={false} anajlist={Ratedetails.ratelist} bind:ratelist={Ratedetails.ratelist}
+		></Rateform>
 		<AlertDialog.Footer class="flex flex-row justify-around">
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 			<AlertDialog.Action on:click={update}>Save Changes</AlertDialog.Action>
