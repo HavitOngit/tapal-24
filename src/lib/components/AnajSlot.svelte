@@ -22,15 +22,15 @@
 
 <Card.Root class="m-2">
 	<Card.Content>
-		<div class=" flex h-full w-full flex-row">
-			<div class="box-border h-28 w-28">
+		<div class="flex space-x-6">
+			<div class=" mt-4 h-24 w-24 flex-none bg-orange-500">
 				<img
 					src={anajlist.find((obj) => obj.name == anaj.name)?.image}
 					alt={anaj.name}
-					class="h-full w-full object-cover p-2"
+					class="h-24 w-24 object-fill"
 				/>
 			</div>
-			<div class="mt-2 flex flex-col flex-wrap">
+			<div class="mt-3 flex flex-col flex-wrap">
 				<div>
 					{anaj.name}
 				</div>
@@ -49,7 +49,7 @@
 					</div>
 				{:else}
 					<div class="flex flex-row">
-						<div>Amount :</div>
+						<div>Amount:</div>
 						<div><input bind:value={anaj.amount} /></div>
 					</div>
 				{/if}

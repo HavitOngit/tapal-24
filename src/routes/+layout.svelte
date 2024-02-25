@@ -8,7 +8,7 @@
 </div>
 
 <slot />
-
+<div class="h-32"></div>
 <div class="fixed bottom-0">
 	<NavigationBar></NavigationBar>
 </div>
