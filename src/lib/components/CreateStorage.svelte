@@ -56,11 +56,12 @@
 	<Input name="name" type="text" max="50" bind:value={storage_unit.name} />
 
 	Selected Anaj:
-	<div class="w-auto">
-		{#each selected_anaj as anaj}
+
+	{#each selected_anaj as anaj}
+		<div class="m-2">
 			<AnajSlot bind:anaj></AnajSlot>
-		{/each}
-	</div>
+		</div>
+	{/each}
 
 	<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
 

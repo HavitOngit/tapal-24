@@ -50,7 +50,7 @@
 				{:else}
 					<div class="flex flex-row">
 						<div>Amount:</div>
-						<div><input bind:value={anaj.amount} /></div>
+						<div><input bind:value={anaj.amount} class="w-full" /></div>
 					</div>
 				{/if}
 			</div>
