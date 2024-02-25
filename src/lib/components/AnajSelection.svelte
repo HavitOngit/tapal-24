@@ -10,7 +10,7 @@
 	export let anajlist: any;
 	export let useForRates: boolean = false;
 
-	const cache = new Map();
+	export let cache = new Map();
 
 	selected.forEach((obj) => cache.set(obj.name, true));
 

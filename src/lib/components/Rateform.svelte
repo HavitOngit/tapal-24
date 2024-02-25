@@ -6,6 +6,10 @@
 	export let forInit: boolean = true;
 	export let deleteMode: boolean = true;
 
+	// for delete binding
+
+	let cache = new Map();
+
 	let show = deleteMode ? '' : `disebled`;
 
 	$: ratelist = temp_anajlist;
@@ -26,12 +30,14 @@
 		});
 	}
 
-	function remove(index: number) {
+	function remove(index: number, name: string) {
+		cache.delete(name);
 		const slice = temp_anajlist.splice(index, 1);
+
 		temp_anajlist = [...temp_anajlist];
 	}
 
-	let unilist: univarsalList;
+	let unilist: univarsalList[];
 	onMount(async () => {
 		unilist = await db.univarsalList.toArray();
 	});
@@ -62,7 +68,7 @@
 							class="m-1 rounded-full"
 							variant="secondary"
 							on:click={() => {
-								remove(i);
+								remove(i, anaj.name);
 							}}
 						>
 							X
@@ -74,4 +80,5 @@
 	</Table.Body>
 </Table.Root>
 
-<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true}></AnajSelection>
+<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true} bind:cache
+></AnajSelection>
