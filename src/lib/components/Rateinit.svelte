@@ -59,6 +59,19 @@
 		}
 	}
 
+	const visitedDays = new Map();
+	let anajlist_Ref = [...anajlist];
+	async function Next() {
+		visitedDays.set(days[current_day], ratelist);
+		current_day += 1;
+
+		console.log(visitedDays);
+	}
+
+	function Back() {
+		current_day -= 1;
+	}
+
 	let show_continue = false;
 	// onMount(async () => {
 	// 	saved_days = await db.rate.where({ rate_unit_id: rateProfile_id }).toArray();
@@ -70,15 +83,23 @@
 
 <Card.Root>
 	<Card.Content>
-		{#if !next}
+		<!-- {#if !next}
 			<Input type="text" bind:value={name} />
-		{:else if svaedData.has('Sun')}
-			<div class="text-xl">✅ Done</div>
 		{:else}
 			{days[current_day]}
 			<Rateform bind:ratelist {anajlist}></Rateform>
 		{/if}
 
-		<Button on:click={Save}>Save</Button>
+		<Button on:click={Save}>Save</Button> -->
+		{days[current_day]}
+		{#if visitedDays.has(days[current_day])}
+			<Rateform bind:ratelist bind:anajlist={visitedDays.get(days[current_day])}></Rateform>
+		{:else}
+			<Rateform bind:ratelist bind:anajlist={anajlist_Ref}></Rateform>
+		{/if}
 	</Card.Content>
+	<Card.Footer class="flex justify-around">
+		<Button on:click={Back}>Back</Button>
+		<Button on:click={Next}>Next</Button>
+	</Card.Footer>
 </Card.Root>
