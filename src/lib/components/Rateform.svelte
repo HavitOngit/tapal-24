@@ -16,7 +16,7 @@
 
 	// tempo
 
-	import { DeleteIcon } from 'lucide-svelte';
+	import { Trash2 } from 'lucide-svelte';
 	import Input from './ui/input/input.svelte';
 	import Button from './ui/button/button.svelte';
 	import AnajSelection from './AnajSelection.svelte';
@@ -54,7 +54,7 @@
 		{#each temp_anajlist as anaj, i}
 			<Table.Row>
 				<Table.Cell class="font-medium">{anaj.name}</Table.Cell>
-				<Table.Cell class="flex justify-evenly">
+				<Table.Cell class="flex gap-2">
 					{#if deleteMode}
 						<Input bind:value={anaj.rate} type="number" placeholder="enter rate" />
 					{:else}
@@ -65,13 +65,13 @@
 
 					{#if deleteMode}
 						<Button
-							class="m-1 rounded-full"
-							variant="secondary"
+							class=" rounded-sm"
+							variant="ghost"
 							on:click={() => {
 								remove(i, anaj.name);
 							}}
 						>
-							X
+							<Trash2></Trash2>
 						</Button>
 					{/if}
 				</Table.Cell>

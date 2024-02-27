@@ -8,12 +8,18 @@
 	import { onMount } from 'svelte';
 	import type { Rate, oneRate } from '$lib/custom_types';
 	import { anajlist } from '$lib/predefined';
+	import type { CarouselAPI } from '$lib/components/ui/carousel/context';
+	import * as Carousel from '$lib/components/ui/carousel/index.js';
+
+	import { Footer } from './ui/alert-dialog';
+	import { SaveIcon } from 'lucide-svelte';
 
 	// for rate profile
 	let next = false;
 	let name: string;
 	let ratelist: oneRate[];
 	export let rateProfile_id: number = 1;
+	export let api: CarouselAPI;
 
 	const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	let current_day = 0;
@@ -61,18 +67,60 @@
 
 	const visitedDays = new Map();
 	let anajlist_Ref = [...anajlist];
-	async function Next() {
-		visitedDays.set(days[current_day], ratelist);
-		current_day += 1;
-
-		console.log(visitedDays);
+	function Next() {
+		if (current_day < 7) {
+			visitedDays.set(days[current_day], ratelist);
+			current_day += 1;
+			api.scrollNext();
+		}
 	}
 
 	function Back() {
-		current_day -= 1;
+		if (current_day > 0) {
+			current_day -= 1;
+			api.scrollPrev();
+		}
 	}
 
-	let show_continue = false;
+	/**
+	 * Problem: We have only one ratelist which is binded to all days
+	 * so when any one day ratelist is changed we have to reset binded ratalist
+	 * otherwise after that day all other day ratelist is effected
+	 */
+	function ratelistFIX() {
+		if (firstSub) {
+			ratelist_insi = [...ratelist];
+		}
+	}
+	let ratelist_insi: oneRate[];
+	let firstSub = true;
+
+	let isSaving = false;
+	let saved = false;
+
+	async function SaveToDB() {
+		isSaving = true;
+		// storing rateProfile
+		const id = await db.rates.add({ name: name, completed: false });
+		rateProfile_id = parseInt(id);
+
+		if (rateProfile_id) {
+			// preparing data
+			const data: Rate[] = [];
+			await visitedDays.forEach((v, k) => {
+				data.push({ day: k, ratelist: v, rate_unit_id: rateProfile_id });
+			});
+
+			const status = await db.rate.bulkAdd(data);
+
+			if (status) {
+				saved = true;
+			}
+		}
+		isSaving = false;
+	}
+
+	let show_save_button = false;
 	// onMount(async () => {
 	// 	saved_days = await db.rate.where({ rate_unit_id: rateProfile_id }).toArray();
 	// 	if (saved_days.length > 0) {
@@ -81,9 +129,7 @@
 	// });
 </script>
 
-<Card.Root>
-	<Card.Content>
-		<!-- {#if !next}
+<!-- {#if !next}
 			<Input type="text" bind:value={name} />
 		{:else}
 			{days[current_day]}
@@ -91,15 +137,36 @@
 		{/if}
 
 		<Button on:click={Save}>Save</Button> -->
-		{days[current_day]}
-		{#if visitedDays.has(days[current_day])}
-			<Rateform bind:ratelist bind:anajlist={visitedDays.get(days[current_day])}></Rateform>
+<!-- {days[current_day]} -->
+<div class="flex w-full flex-col">
+	<div>
+		<Carousel.Root bind:api>
+			<Carousel.Content>
+				{#each days as day}
+					<Carousel.Item>
+						<Card.Root>
+							<Card.Content>
+								{day}
+								<Rateform bind:ratelist anajlist={anajlist_Ref}></Rateform>
+							</Card.Content>
+						</Card.Root>
+					</Carousel.Item>
+				{/each}
+			</Carousel.Content>
+		</Carousel.Root>
+	</div>
+</div>
+
+<div class="fixed bottom-24 w-full">
+	<div class="mx-4 flex justify-between">
+		<Button variant="outline" on:click={Back}>Back</Button>
+
+		{#if current_day == 6}
+			<Button on:click={SaveToDB} class=" w-[50%] rounded-xl"
+				><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
+			>
 		{:else}
-			<Rateform bind:ratelist bind:anajlist={anajlist_Ref}></Rateform>
+			<Button on:click={Next}>Next</Button>
 		{/if}
-	</Card.Content>
-	<Card.Footer class="flex justify-around">
-		<Button on:click={Back}>Back</Button>
-		<Button on:click={Next}>Next</Button>
-	</Card.Footer>
-</Card.Root>
+	</div>
+</div>

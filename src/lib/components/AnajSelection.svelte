@@ -5,6 +5,7 @@
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import Input from './ui/input/input.svelte';
+	import { Plus } from 'lucide-svelte';
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -35,7 +36,12 @@
 </script>
 
 <Drawer.Root>
-	<Drawer.Trigger>ADD</Drawer.Trigger>
+	<Drawer.Trigger>
+		<Button>
+			<Plus class="mr-2 size-4"></Plus>
+			Add
+		</Button>
+	</Drawer.Trigger>
 	<Drawer.Content>
 		{#if !useForRates}
 			<div>

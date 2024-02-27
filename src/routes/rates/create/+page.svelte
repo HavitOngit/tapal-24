@@ -5,4 +5,6 @@
 	export let data: PageData;
 </script>
 
-<Rateinit></Rateinit>
+<div class="m-2 flex items-center justify-center">
+	<Rateinit></Rateinit>
+</div>
