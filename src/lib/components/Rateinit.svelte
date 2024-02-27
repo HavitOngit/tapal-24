@@ -22,6 +22,9 @@
 	export let api: CarouselAPI;
 
 	const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+	const preDATA = days.map((name) => {
+		return { day: name, ratelist: [], rate_unit_id: 0 };
+	});
 	let current_day = 0;
 
 	const svaedData = new Map();
@@ -68,6 +71,7 @@
 	const visitedDays = new Map();
 	let anajlist_Ref = [...anajlist];
 	function Next() {
+		window.preDATA = preDATA;
 		if (current_day < 7) {
 			visitedDays.set(days[current_day], ratelist);
 			current_day += 1;
@@ -87,12 +91,8 @@
 	 * so when any one day ratelist is changed we have to reset binded ratalist
 	 * otherwise after that day all other day ratelist is effected
 	 */
-	function ratelistFIX() {
-		if (firstSub) {
-			ratelist_insi = [...ratelist];
-		}
-	}
-	let ratelist_insi: oneRate[];
+	function ratelistFIX() {}
+	let ratelist_insi;
 	let firstSub = true;
 
 	let isSaving = false;
@@ -142,12 +142,12 @@
 	<div>
 		<Carousel.Root bind:api>
 			<Carousel.Content>
-				{#each days as day}
+				{#each preDATA as obj}
 					<Carousel.Item>
 						<Card.Root>
 							<Card.Content>
-								{day}
-								<Rateform bind:ratelist anajlist={anajlist_Ref}></Rateform>
+								{obj.day}
+								<Rateform bind:ratelist={obj.ratelist} anajlist={anajlist_Ref}></Rateform>
 							</Card.Content>
 						</Card.Root>
 					</Carousel.Item>
