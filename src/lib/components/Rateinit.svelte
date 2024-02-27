@@ -18,62 +18,51 @@
 	let next = false;
 	let name: string;
 	let ratelist: oneRate[];
-	export let rateProfile_id: number = 1;
+	let rateProfile_id: number = 1;
 	export let api: CarouselAPI;
 
 	const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	const preDATA = days.map((name) => {
-		return { day: name, ratelist: [], rate_unit_id: 0 };
+		return { day: name, ratelist: [] };
 	});
 	let current_day = 0;
 
-	const svaedData = new Map();
+	const allUsedAnajs = new Map();
 
 	// resume for days if form half copleted
-
+	let isSaving = false;
 	async function Save() {
-		if (!next) {
-			const id = await db.rates.add({ name: name, completed: false });
-			rateProfile_id = parseInt(id);
-			if (rateProfile_id) {
-				next = true;
-			}
-			console.log(next, rateProfile_id);
-		} else {
-			// adding impo fields
+		isSaving = true;
 
-			if (days[current_day] == 'Sun') {
-				await db.rates.update(rateProfile_id, { completed: true });
-			}
+		// saving profile name to db
+		const id = await db.rates.add({ name: name });
+		rateProfile_id = parseInt(id);
 
-			const final_obj = {
-				day: days[current_day],
-				ratelist: ratelist,
+		const DATA = await preDATA.map((obj) => {
+			obj.ratelist.forEach((item) => {
+				allUsedAnajs.set(item.name, true);
+				item.rate = parseInt(item.rate);
+			});
+
+			return {
+				...obj,
 				rate_unit_id: rateProfile_id
 			};
+		});
 
-			if (svaedData.has(days[current_day])) {
-				final_obj.id = svaedData.get(days[current_day]);
-			}
+		const usedAnajlist = allUsedAnajs.keys().toArray();
 
-			const status = await db.rate.put(final_obj);
-			console.log(status);
-
-			if (status && !svaedData.has(days[current_day])) {
-				svaedData.set(days[current_day], status);
-			}
-			if (status && !(days[current_day] == 'Sun')) {
-				current_day += 1;
-			}
+		const status = await db.rate.bulkAdd(DATA);
+		if (status) {
+			await db.rates.update(rateProfile_id, { used_anaj: usedAnajlist });
+			isSaving = false;
+			saved = true;
 		}
 	}
 
-	const visitedDays = new Map();
-	let anajlist_Ref = [...anajlist];
 	function Next() {
 		window.preDATA = preDATA;
 		if (current_day < 7) {
-			visitedDays.set(days[current_day], ratelist);
 			current_day += 1;
 			api.scrollNext();
 		}
@@ -86,47 +75,7 @@
 		}
 	}
 
-	/**
-	 * Problem: We have only one ratelist which is binded to all days
-	 * so when any one day ratelist is changed we have to reset binded ratalist
-	 * otherwise after that day all other day ratelist is effected
-	 */
-	function ratelistFIX() {}
-	let ratelist_insi;
-	let firstSub = true;
-
-	let isSaving = false;
 	let saved = false;
-
-	async function SaveToDB() {
-		isSaving = true;
-		// storing rateProfile
-		const id = await db.rates.add({ name: name, completed: false });
-		rateProfile_id = parseInt(id);
-
-		if (rateProfile_id) {
-			// preparing data
-			const data: Rate[] = [];
-			await visitedDays.forEach((v, k) => {
-				data.push({ day: k, ratelist: v, rate_unit_id: rateProfile_id });
-			});
-
-			const status = await db.rate.bulkAdd(data);
-
-			if (status) {
-				saved = true;
-			}
-		}
-		isSaving = false;
-	}
-
-	let show_save_button = false;
-	// onMount(async () => {
-	// 	saved_days = await db.rate.where({ rate_unit_id: rateProfile_id }).toArray();
-	// 	if (saved_days.length > 0) {
-	// 		show_continue = true;
-	// 	}
-	// });
 </script>
 
 <!-- {#if !next}
@@ -146,8 +95,18 @@
 					<Carousel.Item>
 						<Card.Root>
 							<Card.Content>
-								{obj.day}
-								<Rateform bind:ratelist={obj.ratelist} anajlist={anajlist_Ref}></Rateform>
+								{#if isSaving}
+									<div class="flex min-h-96 items-center justify-center">
+										{#if saved}
+											<div>saved</div>
+										{:else}
+											Saving...
+										{/if}
+									</div>
+								{:else}
+									{obj.day}
+									<Rateform bind:ratelist={obj.ratelist} {anajlist}></Rateform>
+								{/if}
 							</Card.Content>
 						</Card.Root>
 					</Carousel.Item>
@@ -162,7 +121,7 @@
 		<Button variant="outline" on:click={Back}>Back</Button>
 
 		{#if current_day == 6}
-			<Button on:click={SaveToDB} class=" w-[50%] rounded-xl"
+			<Button on:click={Save} class=" w-[50%] rounded-xl"
 				><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
 			>
 		{:else}

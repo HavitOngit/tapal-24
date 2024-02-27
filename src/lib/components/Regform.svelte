@@ -20,9 +20,7 @@
 		});
 		const rates = await db.rates.toArray();
 		ratelist = await rates.map((obj) => {
-			if (obj.completed) {
-				return { id: obj.id, name: obj.name };
-			}
+			return { id: obj.id, name: obj.name };
 		});
 
 		console.log(stocklist, ratelist);

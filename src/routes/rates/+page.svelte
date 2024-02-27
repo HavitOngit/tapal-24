@@ -9,13 +9,11 @@
 </script>
 
 {#each $rates || [] as unit}
-	{#if unit.completed}
-		<a href="/rates/{unit.id}">
-			<div>
-				{unit.name}
-			</div>
-		</a>
-	{/if}
+	<a href="/rates/{unit.id}">
+		<div>
+			{unit.name}
+		</div>
+	</a>
 {/each}
 
 <PlusButton></PlusButton>

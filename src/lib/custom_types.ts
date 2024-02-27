@@ -67,8 +67,8 @@ export interface Rate {
 export interface Rates {
     id?: number,
     name: string,
-    completed: true | false,
-    used_by?: Group[]
+    used_by?: Group[],
+    used_anaj?: []
 }
 
 export interface BackUp {
