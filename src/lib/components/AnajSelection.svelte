@@ -31,7 +31,7 @@
 
 	let btn_clicked = false;
 	let addingNewField = false;
-	let name: string = 'enter name';
+	let name: string = '';
 	let amount: number = 0;
 </script>
 
@@ -44,8 +44,7 @@
 	</Drawer.Trigger>
 	<Drawer.Content>
 		{#if !useForRates}
-			<div>
-				<div></div>
+			<div class="flex justify-end">
 				<Button
 					on:click={() => {
 						addingNewField = !addingNewField;
@@ -55,8 +54,7 @@
 		{/if}
 		{#if addingNewField}
 			<div class="flex">
-				<Input bind:value={name} />
-				<Input bind:value={amount} placeholder="enter rate" />
+				<Input bind:value={name} placeholder="Enter Name" />
 			</div>
 			<Button
 				on:click={() => {

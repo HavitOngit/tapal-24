@@ -13,6 +13,7 @@
 
 	import { Footer } from './ui/alert-dialog';
 	import { SaveIcon } from 'lucide-svelte';
+	import Label from './ui/label/label.svelte';
 
 	// for rate profile
 	let next = false;
@@ -61,7 +62,7 @@
 	}
 
 	function Next() {
-		window.preDATA = preDATA;
+		window.name = name;
 		if (current_day < 7) {
 			current_day += 1;
 			api.scrollNext();
@@ -78,16 +79,11 @@
 	let saved = false;
 </script>
 
-<!-- {#if !next}
-			<Input type="text" bind:value={name} />
-		{:else}
-			{days[current_day]}
-			<Rateform bind:ratelist {anajlist}></Rateform>
-		{/if}
-
-		<Button on:click={Save}>Save</Button> -->
-<!-- {days[current_day]} -->
-<div class="flex w-full flex-col">
+<div class="flex w-full flex-col gap-2">
+	<div class="flex items-center gap-2">
+		<Label>Name:</Label>
+		<Input bind:value={name} placeholder="Enter Profile Name" />
+	</div>
 	<div>
 		<Carousel.Root bind:api>
 			<Carousel.Content>
