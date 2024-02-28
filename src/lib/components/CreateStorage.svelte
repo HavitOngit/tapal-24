@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Anajlist_init, Storage_Anajs, Storage, StorageUnit } from '$lib/custom_types';
+	import type { Storage, StorageUnit } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import AnajSelection from './AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
-	import Input from './ui/input/input.svelte';
+	import { onMount } from 'svelte';
+	import AnajSelection from './AnajSelection.svelte';
 	import AnajSlot from './AnajSlot.svelte';
 	import Button from './ui/button/button.svelte';
-	import { liveQuery } from 'dexie';
-	import { onMount } from 'svelte';
+	import Input from './ui/input/input.svelte';
+	import { Label } from '$lib/components/ui/label';
 
 	let selected_anaj: Storage[] = [];
 
@@ -52,20 +52,28 @@
 	}
 </script>
 
-<div>
-	<Input name="name" type="text" max="50" bind:value={storage_unit.name} />
+<div class="mx-2 flex flex-col gap-2">
+	<div class="flex items-center gap-2">
+		<Label>Name:</Label>
+		<Input
+			name="name"
+			type="text"
+			placeholder="Enter Storage Name"
+			bind:value={storage_unit.name}
+		/>
+	</div>
 
 	Selected Anaj:
 
 	{#each selected_anaj as anaj}
-		<div class="m-2">
+		<div class="">
 			<AnajSlot bind:anaj></AnajSlot>
 		</div>
 	{/each}
-
-	<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
-
-	<Button on:click={save}>Create</Button>
+	<div class="flex justify-end gap-2">
+		<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
+		<Button on:click={save} class="  rounded-lg">Create</Button>
+	</div>
 
 	<!-- <Button on:click={() => console.log(newUniList, unimap)}>TEST</Button> -->
 </div>

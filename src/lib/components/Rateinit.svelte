@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { db } from '$lib/db';
 	import * as Card from '$lib/components/ui/card';
-	import Input from './ui/input/input.svelte';
-	import Button from './ui/button/button.svelte';
-	import Rateform from './Rateform.svelte';
-	import { liveQuery } from 'dexie';
-	import { onMount } from 'svelte';
-	import type { Rate, oneRate } from '$lib/custom_types';
-	import { anajlist } from '$lib/predefined';
 	import type { CarouselAPI } from '$lib/components/ui/carousel/context';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
+	import type { oneRate } from '$lib/custom_types';
+	import { db } from '$lib/db';
+	import { anajlist } from '$lib/predefined';
+	import Rateform from './Rateform.svelte';
+	import Button from './ui/button/button.svelte';
+	import Input from './ui/input/input.svelte';
 
-	import { Footer } from './ui/alert-dialog';
 	import { SaveIcon } from 'lucide-svelte';
 	import Label from './ui/label/label.svelte';
 
@@ -20,7 +17,7 @@
 	let name: string;
 	let ratelist: oneRate[];
 	let rateProfile_id: number = 1;
-	export let api: CarouselAPI;
+	let api: CarouselAPI;
 
 	const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	const preDATA = days.map((name) => {

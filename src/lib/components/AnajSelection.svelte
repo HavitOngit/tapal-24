@@ -29,7 +29,6 @@
 		}
 	}
 
-	let btn_clicked = false;
 	let addingNewField = false;
 	let name: string = '';
 	let amount: number = 0;
