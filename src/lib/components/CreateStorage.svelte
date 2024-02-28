@@ -62,8 +62,10 @@
 			bind:value={storage_unit.name}
 		/>
 	</div>
-
 	Selected Anaj:
+	{#if selected_anaj.length == 0}
+		<img src="/in_app/clickonAdd.png" alt="click on Add Button" />
+	{/if}
 
 	{#each selected_anaj as anaj}
 		<div class="">

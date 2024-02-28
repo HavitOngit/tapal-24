@@ -40,31 +40,34 @@
 	let showEdit: boolean = false;
 </script>
 
-<Card.Root>
-	<Card.Content class="flex flex-row justify-between">
-		{#if showEdit}
-			<Input bind:value={unit.name} placeholder="Enter Stock Name" class="m-1" />
-			<Button variant="secondary" on:click={nameUpdate}>Save</Button>
-			<Button
-				variant="outline"
-				on:click={() => {
-					showEdit = false;
-					unit.name = stockName;
-				}}>Cancel</Button
-			>
-		{:else}
-			<div>{unit?.name}</div>
-			<Button
-				variant="outline"
-				on:click={() => {
-					showEdit = !showEdit;
-				}}>Edit</Button
-			>
-		{/if}
-	</Card.Content>
-</Card.Root>
-<Button on:click={DeleteM}>Delete</Button>
-
-{#each $list || [] as anaj}
-	<AnajSlot {anaj} forStorageView={true}></AnajSlot>
-{/each}
+<div class="m-2 flex flex-col gap-2">
+	<Card.Root>
+		<Card.Content class="flex flex-row items-center justify-between">
+			{#if showEdit}
+				<Input bind:value={unit.name} placeholder="Enter Stock Name" class="m-1" />
+				<Button variant="secondary" on:click={nameUpdate}>Save</Button>
+				<Button
+					variant="outline"
+					on:click={() => {
+						showEdit = false;
+						unit.name = stockName;
+					}}>Cancel</Button
+				>
+			{:else}
+				<div>{unit?.name}</div>
+				<Button
+					variant="outline"
+					on:click={() => {
+						showEdit = !showEdit;
+					}}>Edit</Button
+				>
+			{/if}
+		</Card.Content>
+	</Card.Root>
+	<!-- <Button on:click={DeleteM}>Delete</Button> -->
+	<div class="flex flex-col gap-2">
+		{#each $list || [] as anaj}
+			<AnajSlot {anaj} forStorageView={true}></AnajSlot>
+		{/each}
+	</div>
+</div>

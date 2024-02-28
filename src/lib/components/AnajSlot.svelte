@@ -36,14 +36,14 @@
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
-						<div>Amount : {anaj.amount}</div>
-						<div class="flex flex-row justify-between">
+						<div>Amount : {anaj.amount} kg</div>
+						<div class="flex flex-row items-baseline justify-between gap-2">
 							<Input
 								bind:value={addAmount}
 								placeholder="Enter Amount in kg"
 								type="number"
 								min="1"
-							/>
+							/>kg
 							<Button on:click={addToStore}>Add</Button>
 						</div>
 					</div>
