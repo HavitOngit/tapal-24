@@ -22,5 +22,4 @@
 	<RegiCreateForm useForUpdaate={true} data={$reg_data[0]}></RegiCreateForm>
 {/if}
 
-<Button on:click={() => console.log($reg_data[0])}>status</Button>
 <!-- <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->

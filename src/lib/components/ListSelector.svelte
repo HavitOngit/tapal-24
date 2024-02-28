@@ -2,6 +2,7 @@
 	import * as Select from '$lib/components/ui/select';
 	import type { Selector, Storage_Anajs } from '$lib/custom_types';
 	import Button from './ui/button/button.svelte';
+	import Label from './ui/label/label.svelte';
 
 	export let list: Selector[];
 	export let name: string;
@@ -11,6 +12,7 @@
 	const saved_name = list.find((item) => item.id == saved);
 </script>
 
+<Label class="mt-2">Select {name}:</Label>
 <Select.Root>
 	<Select.Trigger class="w-[180px]">
 		<Select.Value placeholder={saved ? saved_name?.name : `Select a ${name}`} />
@@ -29,9 +31,3 @@
 	</Select.Content>
 	<Select.Input {name} />
 </Select.Root>
-
-<Button
-	on:click={() => {
-		console.log(selected);
-	}}>Status</Button
->

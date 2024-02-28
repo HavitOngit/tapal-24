@@ -26,4 +26,6 @@
 </script>
 
 <Regform bind:data></Regform>
-<Button on:click={Save}>{useForUpdaate ? 'Update' : 'Create'}</Button>
+<div class="mx-4 flex justify-end">
+	<Button on:click={Save}>{useForUpdaate ? 'Update' : 'Create'}</Button>
+</div>

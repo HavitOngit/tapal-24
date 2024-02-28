@@ -8,6 +8,7 @@
 	import { onMount } from 'svelte';
 	import { db } from '$lib/db';
 	import ListSelector from './ListSelector.svelte';
+	import Label from './ui/label/label.svelte';
 
 	export let data: RegForm;
 	let stocklist: any;
@@ -29,22 +30,27 @@
 	});
 </script>
 
-<Card.Root>
-	<Card.Content>
-		<Input bind:value={data.name} placeholder="Enter Name" />
+<Card.Root class="m-2">
+	<Card.Content class=" flex flex-col gap-2 p-4">
+		<div class="flex items-center gap-2">
+			<Label>Name:</Label>
+			<Input bind:value={data.name} placeholder="Enter Name" />
+		</div>
 		{#if !isLoading}
-			<ListSelector
-				bind:list={stocklist}
-				name="Stock"
-				bind:selected={data.storage_unit_id}
-				saved={data.storage_unit_id}
-			></ListSelector>
-			<ListSelector
-				bind:list={ratelist}
-				name="Rate"
-				bind:selected={data.rate_unit_id}
-				saved={data.rate_unit_id}
-			></ListSelector>
+			<div>
+				<ListSelector
+					bind:list={stocklist}
+					name="Stock"
+					bind:selected={data.storage_unit_id}
+					saved={data.storage_unit_id}
+				></ListSelector>
+				<ListSelector
+					bind:list={ratelist}
+					name="Rate"
+					bind:selected={data.rate_unit_id}
+					saved={data.rate_unit_id}
+				></ListSelector>
+			</div>
 		{/if}
 	</Card.Content>
 </Card.Root>
