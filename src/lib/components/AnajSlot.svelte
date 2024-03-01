@@ -23,11 +23,11 @@
 <Card.Root>
 	<Card.Content>
 		<div class="flex space-x-3">
-			<div class=" mt-4 h-24 w-24 flex-none bg-orange-500">
+			<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
 				<img
-					src={anajlist.find((obj) => obj.name == anaj.name)?.image}
+					src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
 					alt={anaj.name}
-					class="h-24 w-24 object-fill"
+					class=" h-24 w-24 object-fill"
 				/>
 			</div>
 			<div class="mt-3 flex flex-col flex-wrap">

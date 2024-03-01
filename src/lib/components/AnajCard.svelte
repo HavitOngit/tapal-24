@@ -15,7 +15,11 @@
 >
 	<div class=" flex h-full w-full flex-row">
 		<div class="box-border h-28 w-28">
-			<img src={anaj.image} alt={anaj.name} class="h-full w-full object-cover p-2" />
+			<img
+				src={anaj.image || '/anaj_images/avg.png'}
+				alt={anaj.name}
+				class="h-full w-full object-cover p-2"
+			/>
 		</div>
 		<div class="mt-2">
 			{anaj.name}
