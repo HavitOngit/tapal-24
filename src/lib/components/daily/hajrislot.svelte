@@ -65,7 +65,7 @@
 	async function cal_usage() {
 		usage = rate.map((obj) => ({
 			name: obj.name,
-			amount: obj.rate * total,
+			amount: (obj.rate * total) / 1000,
 			rate: Number(obj.rate),
 			date: workingDate.toDate()
 		}));
@@ -74,7 +74,7 @@
 
 			// adding
 			obj.before_amount = Number(unit?.amount);
-			obj.after_amount = unit?.amount - obj.amount;
+			obj.after_amount = obj.before_amount - obj.amount;
 			obj.group_id = data.id;
 			obj.date_id = getDateID(workingDate.toDate());
 
@@ -84,8 +84,8 @@
 			// 	name: unit?.name
 			// });
 			forStoarageUpdate.push({
-				amount: unit?.amount - obj.amount,
-				id: unit?.id
+				key: unit?.id,
+				changes: { amount: obj.after_amount }
 			});
 		});
 
@@ -110,11 +110,10 @@
 			});
 
 			// usage
+			const update_anaj = await db.storage.bulkUpdate(forStoarageUpdate);
 			const status = await db.usage.bulkAdd(usage);
 
 			// update stored anajs
-
-			const update_anaj = await db.storage.bulkUpdate(forStoarageUpdate);
 
 			if (status && workingDate.isSame(current, 'day')) {
 				upToDate = true;
@@ -201,7 +200,7 @@
 
 <Button
 	on:click={() => {
-		console.log(workingDateData);
+		console.log(forStoarageUpdate);
 	}}>Status</Button
 >
 

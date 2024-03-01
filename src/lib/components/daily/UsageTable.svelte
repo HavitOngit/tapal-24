@@ -19,7 +19,7 @@
 		{#each usageData as usage}
 			<Table.Row>
 				<Table.Cell class="font-medium">{usage.name}</Table.Cell>
-				<Table.Cell>{usage.amount}</Table.Cell>
+				<Table.Cell>{usage.amount}kg</Table.Cell>
 			</Table.Row>
 		{/each}
 	</Table.Body>
