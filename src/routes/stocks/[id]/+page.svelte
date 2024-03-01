@@ -3,13 +3,15 @@
 	import { page } from '$app/stores';
 	import * as Card from '$lib/components/ui/card';
 	import { db } from '$lib/db';
-	import type { StorageUnit } from '$lib/custom_types';
+	import type { Storage, StorageUnit } from '$lib/custom_types';
 	import { onMount } from 'svelte';
-	import { liveQuery } from 'dexie';
+	import { liveQuery, type Observable } from 'dexie';
 	import AnajSlot from '$lib/components/AnajSlot.svelte';
 	import { Content } from '$lib/components/ui/alert-dialog';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
+	import AnajSelection from '$lib/components/AnajSelection.svelte';
+	import { anajlist } from '$lib/predefined';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -38,6 +40,29 @@
 	export let data: PageData;
 	let stockName: string;
 	let showEdit: boolean = false;
+
+	// to add new items
+	let newlySelected: Storage[] = [];
+
+	let filtered_list: any = [];
+	$: if ($list) {
+		filtered_list = anajlist.map((obj) => {
+			if (!$list.find((item) => item.name == obj.name)) {
+				return { ...obj };
+			}
+		});
+	}
+
+	async function SaveNewAnajs() {
+		newlySelected.forEach((obj) => {
+			obj.storage_unit_id = id;
+		});
+		const status = await db.storage.bulkAdd(newlySelected);
+
+		if (status) {
+			newlySelected.length = 0;
+		}
+	}
 </script>
 
 <div class="m-2 flex flex-col gap-2">
@@ -71,3 +96,22 @@
 		{/each}
 	</div>
 </div>
+
+<div id="newlyAdded">
+	{#if newlySelected.length > 0}
+		<div class="flex">New anajs</div>
+
+		{#each newlySelected as anaj}
+			<AnajSlot {anaj}></AnajSlot>
+		{/each}
+	{/if}
+	<div class="m-2 flex justify-end">
+		<AnajSelection bind:selected={newlySelected} anajlist={filtered_list}></AnajSelection>
+	</div>
+</div>
+
+{#if newlySelected.length > 0}
+	<div class=" fixed bottom-24 flex w-full">
+		<Button on:click={SaveNewAnajs} class="mx-2 w-full">Save Changes</Button>
+	</div>
+{/if}

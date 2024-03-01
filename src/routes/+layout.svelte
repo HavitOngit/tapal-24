@@ -11,7 +11,7 @@
 	Loading...
 {/if}
 <slot />
-<div class="h-32"></div>
+<div class="h-40"></div>
 <div class="fixed bottom-0">
 	<NavigationBar></NavigationBar>
 </div>
