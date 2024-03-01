@@ -42,38 +42,49 @@
 		</Button>
 	</Drawer.Trigger>
 	<Drawer.Content>
-		{#if !useForRates}
-			<div class="flex justify-end">
-				<Button
-					on:click={() => {
-						addingNewField = !addingNewField;
-					}}>{addingNewField ? 'Cancel' : 'Add'}</Button
-				>
-			</div>
-		{/if}
-		{#if addingNewField}
-			<div class="flex">
-				<Input bind:value={name} placeholder="Enter Name" />
-			</div>
-			<Button
-				on:click={() => {
-					addToList(name, amount);
-					addingNewField = false;
-					anajlist = [...anajlist, { name: name, amount: amount }];
-				}}>Create</Button
-			>
-		{:else}
-			<div class="grid grid-cols-2 gap-1">
-				{#each anajlist as anaj}
-					{#if anaj}
-						<div on:click={() => addToList(anaj.name)}>
-							<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
-						</div>
+		<div class="mx-2">
+			{#if !useForRates}
+				<div class="mx-2 my-4 flex justify-end">
+					{#if addingNewField}
+						<Button
+							variant="secondary"
+							on:click={() => {
+								addingNewField = !addingNewField;
+							}}>cancel</Button
+						>
+					{:else}
+						<Button
+							on:click={() => {
+								addingNewField = !addingNewField;
+							}}>Add</Button
+						>
 					{/if}
-				{/each}
-			</div>
-		{/if}
-
+				</div>
+			{/if}
+			{#if addingNewField}
+				<div class="mx-4 flex h-24">
+					<Input bind:value={name} placeholder="Enter Name" />
+				</div>
+				<Button
+					class="w-full"
+					on:click={() => {
+						addToList(name, amount);
+						addingNewField = false;
+						anajlist = [...anajlist, { name: name, amount: amount }];
+					}}>Create</Button
+				>
+			{:else}
+				<div class="grid grid-cols-2 gap-1">
+					{#each anajlist as anaj}
+						{#if anaj}
+							<div on:click={() => addToList(anaj.name)}>
+								<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
+							</div>
+						{/if}
+					{/each}
+				</div>
+			{/if}
+		</div>
 		<Drawer.Footer>
 			<Drawer.Close>Done</Drawer.Close>
 		</Drawer.Footer>
