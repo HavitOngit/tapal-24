@@ -12,11 +12,8 @@
 	const reg_data = liveQuery(() => db.group.where({ id: Number($page.params.id) }).toArray());
 </script>
 
-<a href="/reg/{$page.params.id}/view">
-	{$page.params.id}
-</a>
-
 <!-- // for update -->
+<a href="/reg/{$page.params.id}/view"> View Details </a>
 
 {#if $reg_data}
 	<RegiCreateForm useForUpdaate={true} data={$reg_data[0]}></RegiCreateForm>

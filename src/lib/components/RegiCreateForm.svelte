@@ -6,6 +6,8 @@
 	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
 	import type { RegForm } from '$lib/custom_types';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { Plus, Settings } from 'lucide-svelte';
 
 	let name: string;
 	let storage_unit_id: number = 1;
@@ -25,7 +27,34 @@
 	}
 </script>
 
-<Regform bind:data></Regform>
-<div class=" flex {useForUpdaate ? 'mx-4' : ''}">
-	<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
-</div>
+<AlertDialog.Root>
+	<AlertDialog.Trigger
+		class=" {!useForUpdaate
+			? 'flex size-14 items-center justify-center rounded-lg bg-blue-200'
+			: ''}"
+	>
+		{#if useForUpdaate}
+			<Settings></Settings>
+		{:else}
+			<Plus></Plus>
+		{/if}
+	</AlertDialog.Trigger>
+	<AlertDialog.Content>
+		<!-- <AlertDialog.Header>
+	<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+	<AlertDialog.Description>
+	  This action cannot be undone. This will permanently delete your account
+	  and remove your data from our servers.
+	</AlertDialog.Description>
+  </AlertDialog.Header> -->
+
+		<Regform bind:data></Regform>
+
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action>
+				<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>

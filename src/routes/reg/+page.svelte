@@ -16,6 +16,6 @@
 	</a>
 {/each}
 
-<PlusButtonAlert>
+<div class="fixed bottom-24 right-3">
 	<RegiCreateForm></RegiCreateForm>
-</PlusButtonAlert>
+</div>
