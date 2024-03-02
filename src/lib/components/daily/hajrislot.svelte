@@ -13,7 +13,11 @@
 	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 	import { getDateID } from '$lib/api';
 	import { liveQuery } from 'dexie';
-
+	import Card from '../ui/card/card.svelte';
+	import CardTitle from '../ui/card/card-title.svelte';
+	import CardHeader from '../ui/card/card-header.svelte';
+	import CardContent from '$lib/components/ui/card/card-content.svelte';
+	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
 	dayjs.extend(isSameOrBefore);
 	dayjs.locale('en');
 	let current = dayjs();
@@ -21,6 +25,8 @@
 	export let LastDate: Date;
 
 	let workingDate = dayjs(LastDate);
+	workingDate = workingDate.add(1, 'day');
+
 	export let data: Group;
 
 	let boys: number;
@@ -137,77 +143,87 @@
 	let showRate: boolean = false;
 </script>
 
-{#if upToDate}
-	<p class="text-yellow-400">UpToDate</p>
-{/if}
-<div class="flex justify-between">
-	<div>
-		<div>{data.name}</div>
-	</div>
-	<div class="flex flex-col">
-		{workingDate.format('DD/MM/YYYY')}
-
-		<!-- for update functionality -->
-		<div class="flex">
-			<Button
-				variant="outline"
-				on:click={() => {
-					workingDate = workingDate.subtract(1, 'day');
-					ifdbhasData();
-					getInfo();
-				}}>-</Button
-			>
-			<Button
-				variant="outline"
-				on:click={() => {
-					workingDate = workingDate.add(1, 'day');
-					ifdbhasData();
-					getInfo();
-				}}>+</Button
-			>
-		</div>
-	</div>
-</div>
-
-<Attendance bind:boys bind:girls></Attendance>
-
-<AlertDialog.Root>
-	<AlertDialog.Trigger on:click={cal_usage}>Submit</AlertDialog.Trigger>
-	<AlertDialog.Content>
-		<AlertDialog.Header class="flex ">
-			<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
-			<AlertDialog.Description
-				><Button
-					on:click={() => {
-						showRate = !showRate;
-					}}
-					variant="link">Change Rate</Button
-				></AlertDialog.Description
-			>
-		</AlertDialog.Header>
-
-		{#if showRate}
-			<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-			<Button on:click={cal_usage}>Apply</Button>
+<Card>
+	<div class="flex flex-col gap-2">
+		{#if upToDate}
+			<p class="text-yellow-400">UpToDate</p>
 		{/if}
-		<UsageTable bind:usageData={usage}></UsageTable>
-		<AlertDialog.Footer class="flex flex-row justify-around">
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
 
-<Button
-	on:click={() => {
-		console.log(forStoarageUpdate);
-	}}>Status</Button
->
+		<CardHeader class="flex flex-col">
+			<CardTitle class="flex w-full justify-between">
+				<div>{data.name}</div>
+				<div class="justify-end">
+					{workingDate.format('DD/MM/YYYY')}
+				</div>
+			</CardTitle>
 
-<!-- {#if $dataOnDB && $dataOnDB.length > 0}
-	Already Exist
-{/if} -->
+			<!-- <div class="flex flex-col">
+				<div class="flex justify-end gap-2">
+					<Button
+						variant="outline"
+						on:click={() => {
+							workingDate = workingDate.subtract(1, 'day');
+							ifdbhasData();
+							getInfo();
+						}}>-</Button
+					>
+					<Button
+						variant="outline"
+						on:click={() => {
+							workingDate = workingDate.add(1, 'day');
+							ifdbhasData();
+							getInfo();
+						}}>+</Button
+					>
+				</div>
+			</div> -->
+		</CardHeader>
 
-{#if workingDateData.length > 0}
-	Already Exist
-{/if}
+		<CardContent>
+			<Attendance bind:boys bind:girls></Attendance>
+		</CardContent>
+
+		<CardFooter class="flex justify-end">
+			<AlertDialog.Root>
+				<AlertDialog.Trigger on:click={cal_usage}
+					><Button class="w-full">Submit</Button></AlertDialog.Trigger
+				>
+				<AlertDialog.Content>
+					<AlertDialog.Header class="flex ">
+						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
+						<AlertDialog.Description
+							><Button
+								on:click={() => {
+									showRate = !showRate;
+								}}
+								variant="link">Change Rate</Button
+							></AlertDialog.Description
+						>
+					</AlertDialog.Header>
+
+					{#if showRate}
+						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
+						<Button on:click={cal_usage}>Apply</Button>
+					{/if}
+					<UsageTable bind:usageData={usage}></UsageTable>
+					<AlertDialog.Footer class="flex flex-row justify-around">
+						<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+						<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
+					</AlertDialog.Footer>
+				</AlertDialog.Content>
+			</AlertDialog.Root>
+			{#if workingDateData.length > 0}
+				Already Exist
+			{/if}
+		</CardFooter>
+		<!-- <Button
+			on:click={() => {
+				console.log(forStoarageUpdate);
+			}}>Status</Button
+			> -->
+
+		<!-- {#if $dataOnDB && $dataOnDB.length > 0}
+				Already Exist
+				{/if} -->
+	</div>
+</Card>

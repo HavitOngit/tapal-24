@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Storage } from '$lib/custom_types';
-	import { AppleIcon } from 'lucide-svelte';
+	import { AppleIcon, Trash2 } from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 	import { anajlist } from '$lib/predefined';
 	import Input from './ui/input/input.svelte';

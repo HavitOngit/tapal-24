@@ -63,6 +63,12 @@
 			newlySelected.length = 0;
 		}
 	}
+
+	const deleteMap = new Map();
+	async function Delete() {
+		const delList = deleteMap.entries();
+		console.log(delList);
+	}
 </script>
 
 <div class="m-2 flex flex-col gap-2">
@@ -114,4 +120,8 @@
 	<div class=" fixed bottom-24 flex w-full">
 		<Button on:click={SaveNewAnajs} class="mx-2 w-full">Save Changes</Button>
 	</div>
+{/if}
+
+{#if showEdit}
+	<Button on:click={Delete}>Delete</Button>
 {/if}
