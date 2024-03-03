@@ -1,4 +1,5 @@
 <script lang="ts">
+	import RateProfile from '$lib/components/RateProfile.svelte';
 	import Rateinit from '$lib/components/Rateinit.svelte';
 	import { db } from '$lib/db';
 	import PlusButton from '$lib/finalize/PlusButton.svelte';
@@ -8,12 +9,12 @@
 	const rates = liveQuery(() => db.rates.toArray());
 </script>
 
-{#each $rates || [] as unit}
-	<a href="/rates/{unit.id}">
-		<div>
-			{unit.name}
-		</div>
-	</a>
-{/each}
+<div class="m-2 flex flex-col gap-2">
+	{#each $rates || [] as unit}
+		<a href="/rates/{unit.id}">
+			<RateProfile rate={unit}></RateProfile>
+		</a>
+	{/each}
+</div>
 
 <PlusButton></PlusButton>
