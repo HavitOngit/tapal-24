@@ -14,10 +14,10 @@
 </script>
 
 <!-- // for update -->
-<a href="/reg/{$page.params.id}/view"> View Details </a>
-
-{#if $reg_data}
-	<Regslot forUpdate={true} regi={$reg_data[0]}></Regslot>
-{/if}
-
+<div class="m-2 gap-2">
+	{#if $reg_data}
+		<Regslot forUpdate={true} regi={$reg_data[0]}></Regslot>
+	{/if}
+	<a href="/reg/{$page.params.id}/view"> View Details </a>
+</div>
 <!-- <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
