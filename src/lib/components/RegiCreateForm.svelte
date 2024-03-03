@@ -21,6 +21,7 @@
 		rate_unit_id: 0,
 		currently_used: true
 	};
+
 	async function Save() {
 		const status = await db.group.put(data);
 		console.log(status);

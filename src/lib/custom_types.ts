@@ -20,7 +20,7 @@ export interface Attendance {
 export interface StorageUnit {
     id?: number,
     name: string,
-    usedBy?: Group[]
+
 }
 export interface Storage {
     id?: number,
@@ -67,7 +67,7 @@ export interface Rate {
 export interface Rates {
     id?: number,
     name: string,
-    used_by?: Group[],
+
     used_anaj?: []
 }
 
