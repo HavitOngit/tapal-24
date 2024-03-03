@@ -6,6 +6,7 @@
 	import { db } from '$lib/db';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
+	import Regslot from '$lib/components/reg/regslot.svelte';
 
 	export let data: PageData;
 
@@ -16,7 +17,7 @@
 <a href="/reg/{$page.params.id}/view"> View Details </a>
 
 {#if $reg_data}
-	<RegiCreateForm useForUpdaate={true} data={$reg_data[0]}></RegiCreateForm>
+	<Regslot forUpdate={true} regi={$reg_data[0]}></Regslot>
 {/if}
 
 <!-- <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->

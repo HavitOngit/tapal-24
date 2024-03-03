@@ -7,6 +7,8 @@
 	import ListSelector from './ListSelector.svelte';
 	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
+	import Switch from './ui/switch/switch.svelte';
+	import Badge from './ui/badge/badge.svelte';
 
 	export let data: RegForm;
 	let stocklist: any;
@@ -46,6 +48,16 @@
 
 <Card.Root class="m-2">
 	<Card.Content class=" flex flex-col gap-2 p-4">
+		<div class="flex items-center justify-end gap-2">
+			<Badge
+				variant="outline"
+				class="border {data.currently_used
+					? 'border-green-400 text-green-600'
+					: 'border-yellow-400 text-yellow-600'}"
+				>{data.currently_used ? 'Active' : 'not in Use'}</Badge
+			>
+			<Switch bind:checked={data.currently_used}></Switch>
+		</div>
 		<div class="flex items-center gap-2">
 			<Label>Name:</Label>
 			<Input bind:value={data.name} placeholder="Enter Name" />
@@ -65,6 +77,7 @@
 					saved={data.rate_unit_id}
 				></ListSelector>
 			</div>
+
 			{competable}
 		{/if}
 	</Card.Content>

@@ -34,7 +34,7 @@
 			: ''}"
 	>
 		{#if useForUpdaate}
-			<Settings></Settings>
+			<Settings strokeWidth={1}></Settings>
 		{:else}
 			<Plus></Plus>
 		{/if}

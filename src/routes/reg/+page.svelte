@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { liveQuery } from 'dexie';
 
-	import { db } from '$lib/db';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
-
-	import PlusButtonAlert from '$lib/finalize/PlusButtonAlert.svelte';
-	import type { RegForm } from '$lib/custom_types';
+	import { db } from '$lib/db';
+	import Regslot from '$lib/components/reg/regslot.svelte';
 
 	const regilist = liveQuery(() => db.group.toArray());
 </script>
 
-{#each $regilist || [] as regi}
-	<a href="/reg/{regi.id}">
-		{regi.name}
-	</a>
-{/each}
+<div class="m-2 flex flex-col gap-2">
+	{#each $regilist || [] as regi}
+		<a href="/reg/{regi.id}">
+			<Regslot {regi}></Regslot>
+		</a>
+	{/each}
+</div>
 
 <div class="fixed bottom-24 right-3">
 	<RegiCreateForm></RegiCreateForm>
