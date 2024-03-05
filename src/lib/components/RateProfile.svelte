@@ -17,7 +17,7 @@
 <Card>
 	<CardHeader><CardTitle>{rate.name}</CardTitle></CardHeader>
 	<CardContent class="flex flex-col gap-2">
-		{#if $regis}
+		{#if $regis && $regis.length > 0}
 			<div class="mt-2 flex gap-2" id="used_ anaj_list">
 				<Label>usedBy:</Label>
 				<div class="flex flex-wrap gap-2">

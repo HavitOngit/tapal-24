@@ -11,6 +11,7 @@
 
 	import { SaveIcon } from 'lucide-svelte';
 	import Label from './ui/label/label.svelte';
+	import { getAllUsedAnajs } from '$lib/api';
 
 	// for rate profile
 	let next = false;
@@ -36,7 +37,7 @@
 		const id = await db.rates.add({ name: name });
 		rateProfile_id = parseInt(id);
 
-		const DATA = await preDATA.map((obj) => {
+		const DATA = preDATA.map((obj) => {
 			obj.ratelist.forEach((item) => {
 				allUsedAnajs.set(item.name, true);
 				item.rate = parseInt(item.rate);
@@ -48,9 +49,8 @@
 			};
 		});
 
-		const usedAnajlist = allUsedAnajs.keys().toArray();
-
 		const status = await db.rate.bulkAdd(DATA);
+		const usedAnajlist = await getAllUsedAnajs(rateProfile_id);
 		if (status) {
 			await db.rates.update(rateProfile_id, { used_anaj: usedAnajlist });
 			isSaving = false;
