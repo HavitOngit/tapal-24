@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
-	import type { Rates, RegForm } from '$lib/custom_types';
+	import type { Rate, Rates, RegForm } from '$lib/custom_types';
 
 	import { db } from '$lib/db';
 	import { onMount } from 'svelte';
@@ -9,12 +9,14 @@
 	import Label from './ui/label/label.svelte';
 	import Switch from './ui/switch/switch.svelte';
 	import Badge from './ui/badge/badge.svelte';
+	import Button from './ui/button/button.svelte';
 
 	export let data: RegForm;
 	let stocklist: any;
 	let ratelist: any;
 	let isLoading = true;
 	let dbratelist: Rates[];
+	let diff: Rates[] = [];
 
 	let competable: boolean = true;
 
@@ -25,7 +27,10 @@
 
 		const rates = dbratelist.find((obj) => rateUnit == obj.id)?.used_anaj;
 
-		competable = rates?.every((name) => stocks.includes(name)) || false;
+		diff = rates?.filter((name) => !stocks.includes(name));
+		console.log(diff);
+
+		competable = diff?.length == 0;
 	}
 
 	$: check_requrments(data.rate_unit_id, data.storage_unit_id);
@@ -78,7 +83,19 @@
 				></ListSelector>
 			</div>
 
-			{competable}
+			{#if !competable}
+				<div class="flex items-center gap-2">
+					<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
+						>Some Anaj not in selected Stock</Badge
+					>
+
+					<Button>Fix</Button>
+				</div>
+
+				{#each diff as item}
+					{item}
+				{/each}
+			{/if}
 		{/if}
 	</Card.Content>
 </Card.Root>

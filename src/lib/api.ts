@@ -38,3 +38,10 @@ export async function getAllUsedAnajs(rate_unit_id: number) {
 
 }
 
+export async function UpdateUnivarsalList(list: Storage[]) {
+    const saved_data = await db.univarsalList.toArray()
+
+
+
+}
+
