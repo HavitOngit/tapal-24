@@ -12,6 +12,7 @@
 	const id = parseInt($page.params.id);
 
 	const list = liveQuery(() => db.rate.where({ rate_unit_id: id }).toArray());
+	$: rateUnit = liveQuery(() => db.rates.get(id));
 
 	onMount(async () => {
 		console.log(await getAllUsedAnajs(id));
@@ -21,6 +22,7 @@
 {$page.params.id}
 
 <div class="flex flex-col items-center justify-center">
+	<h1 class="text-2xl font-bold">Rate: {$rateUnit?.name}</h1>
 	{#each $list || [] as detail}
 		<!-- <RateView rateDetails={detail}></RateView> -->
 		<Rateslot rateDetails={detail}></Rateslot>

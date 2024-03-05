@@ -8,14 +8,21 @@
 	import Label from './ui/label/label.svelte';
 	import { liveQuery } from 'dexie';
 	import { db } from '$lib/db';
+	import Input from './ui/input/input.svelte';
+	import { MoreVertical } from 'lucide-svelte';
 
 	export let rate: Rates;
+	let edit = false;
 
 	const regis = liveQuery(() => db.group.where({ rate_unit_id: rate.id }).toArray());
 </script>
 
 <Card>
-	<CardHeader><CardTitle>{rate.name}</CardTitle></CardHeader>
+	<CardHeader>
+		<CardTitle class="flex justify-between">
+			{rate.name}
+		</CardTitle>
+	</CardHeader>
 	<CardContent class="flex flex-col gap-2">
 		{#if $regis && $regis.length > 0}
 			<div class="mt-2 flex gap-2" id="used_ anaj_list">

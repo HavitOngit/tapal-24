@@ -9,7 +9,6 @@
 	import Badge from '../ui/badge/badge.svelte';
 	import Label from '../ui/label/label.svelte';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
-	import { onMount } from 'svelte';
 
 	export let regi: Group;
 	export let forUpdate: boolean = false;
