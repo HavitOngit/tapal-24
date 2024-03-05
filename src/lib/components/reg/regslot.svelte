@@ -9,12 +9,13 @@
 	import Badge from '../ui/badge/badge.svelte';
 	import Label from '../ui/label/label.svelte';
 	import RegiCreateForm from '$lib/components/RegiCreateForm.svelte';
+	import { onMount } from 'svelte';
 
 	export let regi: Group;
 	export let forUpdate: boolean = false;
 
-	const rate = liveQuery(() => db.rates.where({ id: regi.rate_unit_id }).toArray());
-	const stock = liveQuery(() => db.storage_unit.where({ id: regi.storage_unit_id }).toArray());
+	$: rate = liveQuery(() => db.rates.where({ id: regi.rate_unit_id }).toArray());
+	$: stock = liveQuery(() => db.storage_unit.where({ id: regi.storage_unit_id }).toArray());
 </script>
 
 <Card>
@@ -30,7 +31,7 @@
 					>{regi.currently_used ? 'Active' : 'not in Use'}</Badge
 				>
 				{#if forUpdate}
-					<RegiCreateForm useForUpdaate={true} data={regi}></RegiCreateForm>
+					<RegiCreateForm useForUpdaate={true} bind:data={regi}></RegiCreateForm>
 				{/if}
 			</div></CardTitle
 		>
