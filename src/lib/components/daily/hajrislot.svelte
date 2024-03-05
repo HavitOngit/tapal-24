@@ -18,6 +18,11 @@
 	import CardHeader from '../ui/card/card-header.svelte';
 	import CardContent from '$lib/components/ui/card/card-content.svelte';
 	import CardFooter from '$lib/components/ui/card/card-footer.svelte';
+	import { Collapsible, CollapsibleTrigger } from '../ui/collapsible';
+	import Badge from '../ui/badge/badge.svelte';
+	import CollapsibleContent from '../ui/collapsible/collapsible-content.svelte';
+	import PopoverContent from '../ui/popover/popover-content.svelte';
+	import { Popover, PopoverTrigger } from '../ui/popover';
 	dayjs.extend(isSameOrBefore);
 	dayjs.locale('en');
 	let current = dayjs();
@@ -191,21 +196,31 @@
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
 						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
-						<AlertDialog.Description
-							><Button
-								on:click={() => {
-									showRate = !showRate;
-								}}
-								variant="link">Change Rate</Button
-							></AlertDialog.Description
-						>
+						<AlertDialog.Description></AlertDialog.Description>
 					</AlertDialog.Header>
 
+					<!-- {#if showRate}
+						{/if} -->
+
+					<div class="flex justify-end">
+						<button on:click={() => (showRate = !showRate)}>
+							{#if showRate}
+								<Badge variant="destructive">X</Badge>
+							{:else}
+								<Badge
+									variant="outline"
+									class="border border-yellow-600 bg-yellow-100 text-yellow-600">Change Rate</Badge
+								>
+							{/if}
+						</button>
+					</div>
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>Apply</Button>
+						<Button on:click={cal_usage} class="m-2 w-full">Apply</Button>
 					{/if}
+
 					<UsageTable bind:usageData={usage}></UsageTable>
+
 					<AlertDialog.Footer class="flex flex-row justify-around">
 						<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 						<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>

@@ -3,7 +3,9 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import type { Rate, oneRate } from '$lib/custom_types';
 	import { db } from '$lib/db';
+	import { Settings2 } from 'lucide-svelte';
 	import Rateform from './Rateform.svelte';
+	import Badge from './ui/badge/badge.svelte';
 
 	let current_list: oneRate[];
 	export let Ratedetails: Rate;
@@ -26,15 +28,18 @@
 </script>
 
 <AlertDialog.Root>
-	<AlertDialog.Trigger>Edit</AlertDialog.Trigger>
+	<AlertDialog.Trigger>
+		<Badge variant="outline">
+			<Settings2 size={20}></Settings2>Edit
+		</Badge>
+	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header class="flex ">
 			<AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title>
-			<!-- <AlertDialog.Description></AlertDialog.Description> -->
 		</AlertDialog.Header>
 		<Rateform forInit={false} anajlist={Ratedetails.ratelist} bind:ratelist={Ratedetails.ratelist}
 		></Rateform>
-		<AlertDialog.Footer class="flex flex-row justify-around">
+		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 			<AlertDialog.Action on:click={update}>Save Changes</AlertDialog.Action>
 		</AlertDialog.Footer>

@@ -80,5 +80,7 @@
 	</Table.Body>
 </Table.Root>
 
-<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true} bind:cache
-></AnajSelection>
+<div class="flex justify-end">
+	<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true} bind:cache
+	></AnajSelection>
+</div>
