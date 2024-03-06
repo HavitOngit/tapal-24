@@ -3,11 +3,20 @@
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals { }
 		// interface PageData {}
 		// interface PageState {}
-		// interface Platform {}
+		interface Platform {
+			env: {
+				COUNTER: DurableObjectNamespace;
+			};
+			context: {
+				waitUntil: (promise: Promise<any>) => void;
+
+			};
+			cache: CacheStorage & { default: Cache }
+		}
 	}
 }
 
-export {};
+export { }
