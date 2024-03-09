@@ -27,7 +27,7 @@
 
 		const rates = dbratelist.find((obj) => rateUnit == obj.id)?.used_anaj;
 
-		diff = rates?.filter((name) => !stocks.includes(name));
+		diff = rates?.filter((name) => !stocks.includes(name)) || [];
 		console.log(diff);
 
 		competable = diff?.length == 0;
