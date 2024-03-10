@@ -6,7 +6,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 </script>
 
-<div class="flex h-12 w-full items-center justify-center bg-blue-100">
+<div class="flex h-11 w-full items-center justify-center bg-slate-600">
 	<div class="absolute left-0 justify-start">
 		<button
 			on:click={() => {
@@ -14,12 +14,12 @@
 			}}
 			class="flex"
 		>
-			<Badge variant="outline" class="">
+			<Badge variant="outline" class=" text-white">
 				<ChevronLeft></ChevronLeft>Back
 			</Badge>
 		</button>
 	</div>
-	<a href="/">Home</a>
+	<a href="/" class="text-yellow-200">Home</a>
 </div>
 {#if $navigating}
 	<div class="flex flex-col items-center gap-1">
