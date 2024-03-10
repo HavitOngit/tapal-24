@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
+	import { Columns } from 'lucide-svelte';
 
 	type usageData = {
 		name: string;

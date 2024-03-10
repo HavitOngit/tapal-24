@@ -192,11 +192,13 @@
 					<AlertDialog.Header class="flex ">
 						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
 						<AlertDialog.Description
+							class="flex w-full
+						justify-end"
 							><Button
 								on:click={() => {
 									showRate = !showRate;
 								}}
-								variant="link">Change Rate</Button
+								variant="outline">{!showRate ? 'Change Rate' : 'Cancel'}</Button
 							></AlertDialog.Description
 						>
 					</AlertDialog.Header>
@@ -204,12 +206,13 @@
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
 						<Button on:click={cal_usage}>Apply</Button>
+					{:else}
+						<UsageTable bind:usageData={usage}></UsageTable>
+						<AlertDialog.Footer class="flex flex-row justify-around">
+							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
+						</AlertDialog.Footer>
 					{/if}
-					<UsageTable bind:usageData={usage}></UsageTable>
-					<AlertDialog.Footer class="flex flex-row justify-around">
-						<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-						<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
-					</AlertDialog.Footer>
 				</AlertDialog.Content>
 			</AlertDialog.Root>
 			{#if workingDateData.length > 0}

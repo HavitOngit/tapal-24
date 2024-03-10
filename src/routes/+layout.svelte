@@ -22,9 +22,13 @@
 	<a href="/" class="text-yellow-200">Home</a>
 </div>
 {#if $navigating}
-	Loading...
+	<div class="flex flex-col items-center gap-1">
+		<img src="/impatient-kitty.gif" alt="loading" class="container" />
+		<div class="size-10 font-bold">Loading...</div>
+	</div>
+{:else}
+	<slot />
 {/if}
-<slot />
 <div class="h-40"></div>
 <div class="fixed bottom-0">
 	<NavigationBar></NavigationBar>
