@@ -8,19 +8,11 @@
 
 	export let data: PageData;
 
-	const regs = liveQuery(() => db.group.toArray());
+	// const regs = liveQuery(() => db.group.toArray());
 
-	let LastDate = liveQuery(() => db.usage.orderBy('date').last());
+	// let LastDate = liveQuery(() => db.usage.orderBy('date').last());
 
-	$: console.log($LastDate);
+	// $: console.log($LastDate);
 </script>
 
-{#if $LastDate || true}
-	<div class="m-2 flex flex-col gap-2">
-		{#each $regs || [] as reg}
-			{#if reg.currently_used}
-				<Hajrislot data={reg} LastDate={$LastDate?.date}></Hajrislot>
-			{/if}
-		{/each}
-	</div>
-{/if}
+work in progress...
