@@ -10,9 +10,9 @@
 
 	// const regs = liveQuery(() => db.group.toArray());
 
-	// let LastDate = liveQuery(() => db.usage.orderBy('date').last());
+	let LastDate = liveQuery(() => db.usage.orderBy('date').last());
 
-	// $: console.log($LastDate);
+	$: console.log($LastDate);
 </script>
 
-work in progress...
+

@@ -4,6 +4,7 @@
 	import '../app.pcss';
 	import { ChevronLeft } from 'lucide-svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
 </script>
 
 <div class="flex h-11 w-full items-center justify-center bg-white">
@@ -22,10 +23,7 @@
 	<a href="/" class="text-black">Home</a>
 </div>
 {#if $navigating}
-	<div class="flex flex-col items-center gap-1">
-		<img src="/impatient-kitty.gif" alt="loading" class="container" />
-		<div class="size-10 font-bold">Loading...</div>
-	</div>
+	<LoadingBar></LoadingBar>
 {:else}
 	<slot />
 {/if}
