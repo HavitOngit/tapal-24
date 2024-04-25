@@ -1,7 +1,19 @@
 <script lang="ts">
-	import { db } from '$lib/db';
-	import { liveQuery } from 'dexie';
+	import { type Group } from '$lib/custom_types';
+	import { Car } from 'lucide-svelte';
+	import CardHeader from '../ui/card/card-header.svelte';
+	import Card from '../ui/card/card.svelte';
+	import CardTitle from '../ui/card/card-title.svelte';
 
-	let LastDate = liveQuery(() => db.usage.orderBy('date').last());
-	$: console.log(LastDate);
+	export let RegData: Group;
 </script>
+
+{#if RegData}
+	<Card class="m-2">
+		<CardHeader>
+			<CardTitle>
+				{RegData.name}
+			</CardTitle>
+		</CardHeader>
+	</Card>
+{/if}
