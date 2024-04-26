@@ -9,7 +9,7 @@
 </script>
 
 {#if RegData}
-	<Card class="m-2">
+	<Card class="">
 		<CardHeader>
 			<CardTitle>
 				{RegData.name}
