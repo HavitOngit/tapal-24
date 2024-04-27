@@ -7,6 +7,7 @@
 
 	export let boys: number = 0;
 	export let girls: number = 0;
+	export let total: number = 0;
 
 	$: total = Number(boys) + Number(girls);
 </script>
@@ -22,10 +23,10 @@
 			<Input bind:value={girls} placeholder="Enter Attendance" type="number" />
 		</div>
 	</div>
-	<div class=" flex flex-row items-center gap-2">
+	<!-- <div class=" flex flex-row items-center gap-2">
 		<Label>Total:</Label>
 		<div>
 			{total}
 		</div>
-	</div>
+	</div> -->
 </div>

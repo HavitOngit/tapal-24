@@ -15,10 +15,6 @@
 
 	let LastDate;
 
-	function checkMonthInit() {
-		let mounth = today.getMonth();
-	}
-
 	let workingDate: Date; // global date on which all activity stored
 
 	// registers are like notebooks which identify the group of students
@@ -58,11 +54,13 @@
 	{#if $registers}
 		<div class="">
 			{#each active_Registers as reg}
-				<HajarislotG RegData={reg}></HajarislotG>
+				<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
 			{/each}
 		</div>
 	{:else}
-		<p>No registers found</p>
+		<div class="flex min-h-8 w-auto items-center justify-center">
+			<p>No registers found</p>
+		</div>
 	{/if}
 
 	<div class="bottom-0">
