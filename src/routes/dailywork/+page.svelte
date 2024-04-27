@@ -8,6 +8,7 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { Group } from '$lib/custom_types';
+	import { getDateID } from '$lib/api';
 	export let data: PageData;
 
 	// const regs = liveQuery(() => db.group.toArray());
@@ -26,12 +27,14 @@
 	}
 
 	const submited_registers = liveQuery(() =>
-		db.attendance.where('date').equals(workingDate).toArray()
+		db.attendance.where({ date_id: getDateID(today) }).toArray()
 	);
 
 	let isTodayAllWorkDone = false;
-	if ($registers && $submited_registers) {
-		isTodayAllWorkDone = $submited_registers.length === active_Registers.length;
+
+	let submited_registers_group_id: number[] = [];
+	$: if ($submited_registers) {
+		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
 	}
 
 	onMount(async () => {
@@ -54,7 +57,9 @@
 	{#if $registers}
 		<div class="">
 			{#each active_Registers as reg}
-				<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
+				{#if !submited_registers_group_id.includes(reg.id || 100)}
+					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
+				{/if}
 			{/each}
 		</div>
 	{:else}
@@ -64,6 +69,7 @@
 	{/if}
 
 	<div class="bottom-0">
-		<Button on:click={() => console.log(active_Registers)}>WorkDone: {isTodayAllWorkDone}</Button>
+		<Button on:click={() => console.log($submited_registers)}>WorkDone: {isTodayAllWorkDone}</Button
+		>
 	</div>
 </div>
