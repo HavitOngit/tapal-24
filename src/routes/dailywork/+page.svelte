@@ -45,6 +45,7 @@
 		if (!LastDate) {
 			workingDate = today;
 		} else {
+			LastDate.date.setDate(LastDate.date.getDate() + 1);
 			workingDate = LastDate.date;
 		}
 	});

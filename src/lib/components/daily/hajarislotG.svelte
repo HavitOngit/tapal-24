@@ -83,13 +83,15 @@
 
 	// Savind to Database
 	async function SavingToDB() {
+		console.log(workingDate, Date);
+
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
 			await db.attendance.add({
 				boys: Number(boys),
 				girls: Number(girls),
 				total: Number(total),
 				group_id: RegData.id || 100,
-				date: workingDate.toDate(),
+				date: Date,
 				date_id: getDateID(workingDate.toDate())
 			});
 			await db.usage.bulkAdd(usage);

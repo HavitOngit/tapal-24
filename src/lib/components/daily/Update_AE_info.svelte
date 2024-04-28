@@ -54,6 +54,8 @@
 	let rate: oneRate[];
 	let stock: Storage[];
 
+	let usage_copy: Usage[];
+
 	async function getInfo() {
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
 
@@ -63,13 +65,19 @@
 
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
 
-		rate = rates[0].ratelist;
 		stock = stocks;
 
 		// geting usage info
 		usage = await db.usage
 			.where({ group_id: RegData.id, date_id: getDateID(workingDate.toDate()) })
 			.toArray();
+
+		usage_copy = [...usage];
+
+		rate = usage.map((obj: { name: string; rate: number }) => ({
+			name: obj.name,
+			rate: obj.rate
+		}));
 	}
 
 	// usage calculation
@@ -77,10 +85,12 @@
 	let before_afterlist: any = [];
 	let usage: any = [];
 	let finalData: Usage[] = [];
+	let usage_keys: number[] = [];
 
 	async function cal_usage() {
 		usage = rate.map((obj) => ({
-			id: usage.id,
+			id:
+				usage.find((item: { name: string; id: number }) => item.name == obj.name)?.id || undefined,
 			name: obj.name,
 			amount: (obj.rate * total) / 1000,
 			rate: Number(obj.rate),
@@ -94,15 +104,18 @@
 				amount: number;
 				group_id: any;
 				date_id: any;
+				id: number;
 			}) => {
 				const unit = stock.find((item) => item.name == obj.name);
 
 				// adding
-
+				obj.id = obj.id;
 				obj.before_amount = Number(unit?.amount);
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
+
+				usage_keys.push(obj.id);
 
 				forStoarageUpdate.push({
 					key: unit?.id,
@@ -116,6 +129,20 @@
 
 	// Savind to Database
 	async function SavingToDB() {
+		console.log(usage);
+
+		// for deleteing
+		const usage_delete = usage_copy.filter((obj) => {
+			if (usage.find((item: { id: number }) => item.id == obj.id) ? false : true) {
+				return obj.id;
+			}
+		});
+
+		console.log(
+			usage_keys,
+			usage_delete.map((obj) => obj.id)
+		);
+
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
 			await db.attendance.put({
 				id: AttendanceData.id,
@@ -126,8 +153,14 @@
 				date: workingDate.toDate(),
 				date_id: getDateID(workingDate.toDate())
 			});
+
 			await db.usage.bulkPut(usage);
 			await db.storage.bulkUpdate(forStoarageUpdate);
+
+			// deleting
+			if (usage_delete.length > 0) {
+				await db.usage.bulkDelete(usage_delete.map((obj) => obj.id));
+			}
 		})
 			.then(() => {
 				toast.success('Updated Successfully!');
