@@ -9,6 +9,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import type { Group } from '$lib/custom_types';
 	import { getDateID } from '$lib/api';
+	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
 	export let data: PageData;
 
 	// const regs = liveQuery(() => db.group.toArray());
@@ -65,6 +66,16 @@
 	{:else}
 		<div class="flex min-h-8 w-auto items-center justify-center">
 			<p>No registers found</p>
+		</div>
+	{/if}
+
+	{#if $submited_registers}
+		<div>
+			<hr class="my-4" />
+			forUpdate
+			{#each $submited_registers as hajari}
+				<UpdateAeInfo AttendanceData={hajari}></UpdateAeInfo>
+			{/each}
 		</div>
 	{/if}
 

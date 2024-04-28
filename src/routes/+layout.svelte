@@ -5,6 +5,7 @@
 	import { ChevronLeft } from 'lucide-svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
+	import { Toaster } from 'svelte-french-toast';
 </script>
 
 <div class="flex h-11 w-full items-center justify-center bg-white">
@@ -22,6 +23,7 @@
 	</div>
 	<a href="/" class="text-black">Home</a>
 </div>
+<Toaster></Toaster>
 {#if $navigating}
 	<LoadingBar></LoadingBar>
 {:else}

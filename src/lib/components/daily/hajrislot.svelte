@@ -215,9 +215,6 @@
 					{/if}
 				</AlertDialog.Content>
 			</AlertDialog.Root>
-			{#if workingDateData.length > 0}
-				Already Exist
-			{/if}
 		</CardFooter>
 		<!-- <Button
 			on:click={() => {

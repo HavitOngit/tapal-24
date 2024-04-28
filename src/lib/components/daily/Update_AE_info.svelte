@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { type Group, type oneRate, type Storage, type Usage } from '$lib/custom_types';
+	import {
+		type Group,
+		type oneRate,
+		type Storage,
+		type Usage,
+		type Attendance as attendanceType
+	} from '$lib/custom_types';
 	import CardHeader from '../ui/card/card-header.svelte';
 	import Card from '../ui/card/card.svelte';
 	import CardTitle from '../ui/card/card-title.svelte';
@@ -15,30 +21,55 @@
 	import { onMount } from 'svelte';
 	import { getDateID } from '$lib/api';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { liveQuery } from 'dexie';
 
-	export let RegData: Group;
-	export let Date: Date;
+	export let AttendanceData: attendanceType;
+
+	let RegData: Group;
 
 	// only for some simplycity
 
-	let workingDate = dayjs(Date);
+	let workingDate = dayjs(AttendanceData.date);
 
 	//attendance data
-	let boys: number;
-	let girls: number;
-	let total: number;
+	let boys: number = AttendanceData.boys;
+	let girls: number = AttendanceData.girls;
+	let total: number = AttendanceData.total;
+
+	//live data
+	const live_usage_data = liveQuery(() =>
+		db.usage
+			.where({
+				group_id: Number(AttendanceData.group_id),
+				date_id: getDateID(workingDate.toDate())
+			})
+			.toArray()
+	);
+
+	$: if ($live_usage_data) {
+		console.log($live_usage_data);
+	}
 
 	// reg stock and rate info
 	let rate: oneRate[];
 	let stock: Storage[];
 
 	async function getInfo() {
+		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
+
 		const rates = await db.rate
 			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
 			.toArray();
+
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
+
 		rate = rates[0].ratelist;
 		stock = stocks;
+
+		// geting usage info
+		usage = await db.usage
+			.where({ group_id: RegData.id, date_id: getDateID(workingDate.toDate()) })
+			.toArray();
 	}
 
 	// usage calculation
@@ -49,6 +80,7 @@
 
 	async function cal_usage() {
 		usage = rate.map((obj) => ({
+			id: usage.id,
 			name: obj.name,
 			amount: (obj.rate * total) / 1000,
 			rate: Number(obj.rate),
@@ -66,6 +98,7 @@
 				const unit = stock.find((item) => item.name == obj.name);
 
 				// adding
+
 				obj.before_amount = Number(unit?.amount);
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
@@ -84,7 +117,8 @@
 	// Savind to Database
 	async function SavingToDB() {
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
-			await db.attendance.add({
+			await db.attendance.put({
+				id: AttendanceData.id,
 				boys: Number(boys),
 				girls: Number(girls),
 				total: Number(total),
@@ -92,11 +126,11 @@
 				date: workingDate.toDate(),
 				date_id: getDateID(workingDate.toDate())
 			});
-			await db.usage.bulkAdd(usage);
+			await db.usage.bulkPut(usage);
 			await db.storage.bulkUpdate(forStoarageUpdate);
 		})
 			.then(() => {
-				toast.success('Saved Successfully!');
+				toast.success('Updated Successfully!');
 			})
 			.catch((err) => {
 				console.log('Error Saving Data!' + err);
@@ -112,8 +146,6 @@
 	});
 </script>
 
-<Toaster />
-
 {#if RegData}
 	<Card class="mb-2">
 		<CardHeader>
@@ -128,7 +160,7 @@
 			<div>Total: {total}</div>
 			<!-- <Button>Submit</Button> -->
 			<AlertDialog.Root>
-				<AlertDialog.Trigger on:click={cal_usage}><Button>Submit</Button></AlertDialog.Trigger>
+				<AlertDialog.Trigger on:click={cal_usage}><Button>Update</Button></AlertDialog.Trigger>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
 						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
@@ -158,4 +190,7 @@
 			</AlertDialog.Root>
 		</CardFooter>
 	</Card>
+	<!-- {#if $live_usage_data}
+		<UsageTable bind:usageData={$live_usage_data}></UsageTable>
+	{/if} -->
 {/if}
