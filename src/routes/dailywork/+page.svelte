@@ -10,6 +10,7 @@
 	import type { Group } from '$lib/custom_types';
 	import { getDateID } from '$lib/api';
 	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
+	import dayjs from 'dayjs';
 	export let data: PageData;
 
 	// const regs = liveQuery(() => db.group.toArray());
@@ -27,8 +28,8 @@
 		active_Registers = $registers.filter((reg) => reg.currently_used);
 	}
 
-	const submited_registers = liveQuery(() =>
-		db.attendance.where({ date_id: getDateID(today) }).toArray()
+	$: submited_registers = liveQuery(() =>
+		db.attendance.where({ date_id: getDateID(workingDate) }).toArray()
 	);
 
 	let isTodayAllWorkDone = false;
@@ -49,12 +50,32 @@
 			workingDate = LastDate.date;
 		}
 	});
+
+	let date_location = 0;
 </script>
 
+<!--  -->
+
 <div class="m-2 flex flex-col gap-2">
-	<Badge color="primary" size="large" class="mb-4">
-		{today.toDateString()}</Badge
-	>
+	{#if workingDate}
+		<div>
+			<Badge color="primary" size="large" class="mb-4 flex justify-around">
+				<Button
+					on:click={() => {
+						date_location -= 1;
+						workingDate = dayjs(workingDate).subtract(1, 'day').toDate();
+					}}>-</Button
+				>
+				{workingDate.toDateString()}
+				<Button
+					on:click={() => {
+						date_location += 1;
+						workingDate = dayjs(workingDate).add(1, 'day').toDate();
+					}}>+</Button
+				>
+			</Badge>
+		</div>
+	{/if}
 
 	{#if $registers}
 		<div class="">
