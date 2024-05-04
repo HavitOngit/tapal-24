@@ -183,7 +183,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}
+				{RegData.name}--{workingDate.toString()}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>

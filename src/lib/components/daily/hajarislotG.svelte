@@ -21,7 +21,7 @@
 
 	// only for some simplycity
 
-	let workingDate = dayjs(Date);
+	$: workingDate = dayjs(Date);
 
 	//attendance data
 	let boys: number;
@@ -120,7 +120,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}
+				{RegData.name}--{workingDate.toString()}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
