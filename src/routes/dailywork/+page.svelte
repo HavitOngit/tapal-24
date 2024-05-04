@@ -11,6 +11,7 @@
 	import { getDateID } from '$lib/api';
 	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
 	import dayjs from 'dayjs';
+
 	export let data: PageData;
 
 	// const regs = liveQuery(() => db.group.toArray());
@@ -18,7 +19,7 @@
 
 	let LastDate;
 
-	let workingDate: Date; // global date on which all activity stored
+	let workingDate: Date = today; // global date on which all activity stored
 
 	// registers are like notebooks which identify the group of students
 	const registers = liveQuery(() => db.group.toArray());
@@ -38,6 +39,8 @@
 	$: if ($submited_registers) {
 		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
 	}
+
+	$: console.log(workingDate);
 
 	onMount(async () => {
 		// get last date from db if exiest
@@ -67,6 +70,7 @@
 					}}>-</Button
 				>
 				{workingDate.toDateString()}
+				<!-- temp sol -->
 				<Button
 					on:click={() => {
 						date_location += 1;

@@ -56,8 +56,18 @@
 
 	let usage_copy: Usage[];
 
+	let effectedUsage: Usage[] = [];
+
 	async function getInfo() {
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
+
+		effectedUsage = (await db.usage
+			.where('date_id')
+			.above(getDateID(workingDate.toDate()))
+			.toArray()) as Usage[];
+		console.log('---------------');
+
+		console.log(effectedUsage);
 
 		const rates = await db.rate
 			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
@@ -183,7 +193,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}--{workingDate.toString()}
+				{RegData.name}--{AttendanceData.date.toString()}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>

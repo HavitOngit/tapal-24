@@ -111,6 +111,7 @@
 
 	onMount(async () => {
 		await getInfo();
+		console.log('from component', workingDate.toString());
 	});
 </script>
 
@@ -120,7 +121,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}--{workingDate.toString()}
+				{RegData.name}--{Date.toString()}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
