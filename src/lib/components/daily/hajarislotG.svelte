@@ -62,6 +62,7 @@
 				amount: number;
 				group_id: any;
 				date_id: any;
+				storage_unit_id: number;
 			}) => {
 				const unit = stock.find((item) => item.name == obj.name);
 
@@ -70,6 +71,7 @@
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
+				obj.storage_unit_id = RegData.storage_unit_id;
 
 				forStoarageUpdate.push({
 					key: unit?.id,

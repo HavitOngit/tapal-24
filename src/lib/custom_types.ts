@@ -49,7 +49,8 @@ export interface Usage {
     before_amount: number,
     after_amount: number,
     rate: number,
-    group_id: number
+    group_id: number,
+    storage_unit_id: number
 }
 
 export interface oneRate {

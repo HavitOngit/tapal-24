@@ -69,6 +69,11 @@
 
 		console.log(effectedUsage);
 
+		// const effectedUsageU = effectedUsage.filter(
+		// 	(obj) => obj.storage_unit_id == RegData.storage_unit_id
+		// );
+		// console.log('updated effected usage', effectedUsageU);
+
 		const rates = await db.rate
 			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
 			.toArray();
@@ -115,6 +120,7 @@
 				group_id: any;
 				date_id: any;
 				id: number;
+				storage_unit_id: number;
 			}) => {
 				const unit = stock.find((item) => item.name == obj.name);
 
@@ -124,6 +130,7 @@
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
+				obj.storage_unit_id = RegData.storage_unit_id;
 
 				usage_keys.push(obj.id);
 
