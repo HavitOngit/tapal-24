@@ -29,7 +29,7 @@
 
 	// only for some simplycity
 
-	let workingDate = dayjs(AttendanceData.date);
+	$: workingDate = dayjs(AttendanceData.date);
 
 	//attendance data
 	let boys: number = AttendanceData.boys;
@@ -59,6 +59,8 @@
 	let effectedUsage: Usage[] = [];
 
 	async function getInfo() {
+		console.log('working...');
+
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
 
 		effectedUsage = (await db.usage
@@ -191,6 +193,20 @@
 
 	let showRate: boolean = true;
 
+	function status() {
+		console.log({
+			AttendanceData,
+			RegData,
+			workingDate,
+			rate,
+			stock,
+			effectedUsage,
+			boys,
+			girls,
+			total
+		});
+	}
+
 	onMount(async () => {
 		await getInfo();
 	});
@@ -238,6 +254,7 @@
 					{/if}
 				</AlertDialog.Content>
 			</AlertDialog.Root>
+			<Button on:click={status}>Status</Button>
 		</CardFooter>
 	</Card>
 	<!-- {#if $live_usage_data}

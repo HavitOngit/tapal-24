@@ -42,6 +42,10 @@
 
 	$: console.log(workingDate);
 
+	function status() {
+		console.log({ workingDate, $registers, active_Registers, $submited_registers });
+	}
+
 	onMount(async () => {
 		// get last date from db if exiest
 		LastDate = await db.usage.orderBy('date').last();
@@ -84,7 +88,7 @@
 	{#if $registers}
 		<div class="">
 			{#each active_Registers as reg}
-				{#if !submited_registers_group_id.includes(reg.id || 100)}
+				{#if !submited_registers_group_id.includes(reg.id || 1000)}
 					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
 				{/if}
 			{/each}
@@ -106,7 +110,6 @@
 	{/if}
 
 	<div class="bottom-0">
-		<Button on:click={() => console.log($submited_registers)}>WorkDone: {isTodayAllWorkDone}</Button
-		>
+		<Button on:click={status}>Status</Button>
 	</div>
 </div>
