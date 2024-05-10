@@ -31,13 +31,15 @@
 
 	$: workingDate = dayjs(AttendanceData.date);
 
+	$: getInfo(workingDate);
+
 	//attendance data
-	let boys: number = AttendanceData.boys;
-	let girls: number = AttendanceData.girls;
-	let total: number = AttendanceData.total;
+	export let boys: number;
+	export let girls: number;
+	export let total: number;
 
 	//live data
-	const live_usage_data = liveQuery(() =>
+	$: live_usage_data = liveQuery(() =>
 		db.usage
 			.where({
 				group_id: Number(AttendanceData.group_id),
@@ -58,7 +60,7 @@
 
 	let effectedUsage: Usage[] = [];
 
-	async function getInfo() {
+	async function getInfo(workingDate: dayjs.Dayjs) {
 		console.log('working...');
 
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
@@ -209,6 +211,7 @@
 
 	onMount(async () => {
 		await getInfo();
+		status();
 	});
 </script>
 

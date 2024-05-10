@@ -7,7 +7,7 @@
 	import { onMount } from 'svelte';
 	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import type { Group } from '$lib/custom_types';
+	import type { Attendance, Group } from '$lib/custom_types';
 	import { getDateID } from '$lib/api';
 	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
 	import dayjs from 'dayjs';
@@ -32,6 +32,12 @@
 	$: submited_registers = liveQuery(() =>
 		db.attendance.where({ date_id: getDateID(workingDate) }).toArray()
 	);
+
+	// let staticSubRegs: Attendance[];
+	// $: if ($submited_registers) {
+	// 	staticSubRegs = [...$submited_registers];
+	// 	console.log({ staticSubRegs });
+	// }
 
 	let isTodayAllWorkDone = false;
 
@@ -59,6 +65,7 @@
 	});
 
 	let date_location = 0;
+	let iiterCount = 0;
 </script>
 
 <!--  -->
@@ -102,9 +109,13 @@
 	{#if $submited_registers}
 		<div>
 			<hr class="my-4" />
-			forUpdate
 			{#each $submited_registers as hajari}
-				<UpdateAeInfo AttendanceData={hajari}></UpdateAeInfo>
+				<UpdateAeInfo
+					AttendanceData={hajari}
+					boys={hajari.boys}
+					girls={hajari.girls}
+					total={hajari.total}
+				></UpdateAeInfo>
 			{/each}
 		</div>
 	{/if}
