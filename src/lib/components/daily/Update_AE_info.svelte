@@ -22,6 +22,7 @@
 	import { getDateID } from '$lib/api';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { liveQuery } from 'dexie';
+	import AnajTile from '../extraFeatures/AnajTile.svelte';
 
 	export let AttendanceData: attendanceType;
 
@@ -210,7 +211,7 @@
 	}
 
 	onMount(async () => {
-		await getInfo();
+		await getInfo(workingDate);
 		status();
 	});
 </script>
@@ -259,6 +260,13 @@
 			</AlertDialog.Root>
 			<Button on:click={status}>Status</Button>
 		</CardFooter>
+		{#if $live_usage_data}
+			<div class="m-2 flex gap-2 overflow-x-auto">
+				{#each $live_usage_data as usage}
+					<AnajTile UsageData={usage}></AnajTile>
+				{/each}
+			</div>
+		{/if}
 	</Card>
 	<!-- {#if $live_usage_data}
 		<UsageTable bind:usageData={$live_usage_data}></UsageTable>
