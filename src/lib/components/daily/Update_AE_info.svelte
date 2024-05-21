@@ -92,6 +92,8 @@
 			.where({ group_id: RegData.id, date_id: getDateID(workingDate.toDate()) })
 			.toArray();
 
+		savedUsage = [...usage];
+
 		usage_copy = [...usage];
 
 		rate = usage.map((obj: { name: string; rate: number }) => ({
@@ -101,13 +103,19 @@
 	}
 
 	// usage calculation
-	let forStoarageUpdate: any = [];
+	const forStoarageUpdate = new Map();
 	let before_afterlist: any = [];
 	let usage: any = [];
 	let finalData: Usage[] = [];
 	let usage_keys: number[] = [];
+	const effectiveUsageUpdate = new Map();
+	let savedUsage: Usage[];
 
 	async function cal_usage() {
+		// claring storage
+		forStoarageUpdate.clear();
+		effectiveUsageUpdate.clear();
+
 		usage = rate.map((obj) => ({
 			id:
 				usage.find((item: { name: string; id: number }) => item.name == obj.name)?.id || undefined,
@@ -139,15 +147,46 @@
 
 				usage_keys.push(obj.id);
 
-				forStoarageUpdate.push({
+				forStoarageUpdate.set(unit?.id, {
 					key: unit?.id,
 					changes: { amount: obj.after_amount }
+				});
+
+				// for effective usage update
+
+				// adding
+
+				let effective_num = 0;
+				const saved_data = savedUsage.find((item) => item.name == obj.name);
+				effective_num = saved_data?.amount || 0 - obj.amount;
+
+				effectedUsage.forEach((eff_usage) => {
+					if (eff_usage.name == obj.name) {
+						eff_usage.before_amount += effective_num;
+						eff_usage.after_amount += effective_num;
+						effectiveUsageUpdate.set(eff_usage.id, {
+							key: eff_usage.id,
+							changes: {
+								before_amount: eff_usage.before_amount,
+								after_amount: eff_usage.after_amount
+							}
+						});
+					}
+				});
+				console.log({
+					effectedUsage,
+					effective_num,
+					saved_data,
+					effectiveUsageUpdate,
+					forStoarageUpdate
 				});
 			}
 		);
 
 		showRate = false;
 	}
+
+	// for rective usage data
 
 	// Savind to Database
 	async function SavingToDB() {
@@ -177,7 +216,8 @@
 			});
 
 			await db.usage.bulkPut(usage);
-			await db.storage.bulkUpdate(forStoarageUpdate);
+			await db.storage.bulkUpdate([...forStoarageUpdate.values()]);
+			await db.usage.bulkUpdate([...effectiveUsageUpdate.values()]);
 
 			// deleting
 			if (usage_delete.length > 0) {
@@ -198,6 +238,7 @@
 
 	function status() {
 		console.log({
+			savedUsage,
 			AttendanceData,
 			RegData,
 			workingDate,
