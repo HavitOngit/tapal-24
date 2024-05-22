@@ -136,10 +136,11 @@
 				storage_unit_id: number;
 			}) => {
 				const unit = stock.find((item) => item.name == obj.name);
+				const saved_data = savedUsage.find((item) => item.name == obj.name);
 
 				// adding
 				obj.id = obj.id;
-				obj.before_amount = Number(unit?.amount);
+				obj.before_amount = Number(saved_data?.before_amount);
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
@@ -157,18 +158,17 @@
 				// adding
 
 				let effective_num = 0;
-				const saved_data = savedUsage.find((item) => item.name == obj.name);
-				effective_num = saved_data?.amount || 0 - obj.amount;
+				effective_num = (saved_data?.amount || 0) - obj.amount;
 
 				effectedUsage.forEach((eff_usage) => {
 					if (eff_usage.name == obj.name) {
-						eff_usage.before_amount += effective_num;
-						eff_usage.after_amount += effective_num;
+						// eff_usage.before_amount = eff_usage.before_amount + effective_num;
+						// eff_usage.after_amount = eff_usage.after_amount + effective_num;
 						effectiveUsageUpdate.set(eff_usage.id, {
 							key: eff_usage.id,
 							changes: {
-								before_amount: eff_usage.before_amount,
-								after_amount: eff_usage.after_amount
+								before_amount: eff_usage.before_amount + effective_num,
+								after_amount: eff_usage.after_amount + effective_num
 							}
 						});
 					}
@@ -225,6 +225,8 @@
 			}
 		})
 			.then(() => {
+				effectiveUsageUpdate.clear();
+				forStoarageUpdate.clear();
 				toast.success('Updated Successfully!');
 			})
 			.catch((err) => {
