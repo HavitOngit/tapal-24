@@ -100,7 +100,12 @@
 			name: obj.name,
 			rate: obj.rate
 		}));
+
+		rateBackup = [...rate];
 	}
+
+	// backup data
+	let rateBackup: { name: string; rate: number }[] = [];
 
 	// usage calculation
 	const forStoarageUpdate = new Map();
@@ -283,6 +288,8 @@
 							><Button
 								on:click={() => {
 									showRate = !showRate;
+
+									rate = [...rateBackup];
 								}}
 								variant="outline">{!showRate ? 'Change Rate' : 'Cancel'}</Button
 							></AlertDialog.Description
