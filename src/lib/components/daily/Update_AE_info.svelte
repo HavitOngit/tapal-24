@@ -200,8 +200,23 @@
 		// for deleteing
 		const usage_delete = usage_copy.filter((obj) => {
 			if (usage.find((item: { id: number }) => item.id == obj.id) ? false : true) {
-				return obj.id;
+				return obj;
 			}
+		});
+
+		// handling delete eefective usage update
+		usage_delete.forEach((obj) => {
+			effectedUsage.forEach((eff_usage) => {
+				if (eff_usage.name == obj.name) {
+					effectiveUsageUpdate.set(eff_usage.id, {
+						key: eff_usage.id,
+						changes: {
+							before_amount: eff_usage.before_amount + obj.amount,
+							after_amount: eff_usage.after_amount + obj.amount
+						}
+					});
+				}
+			});
 		});
 
 		console.log(
