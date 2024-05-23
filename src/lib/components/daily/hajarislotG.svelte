@@ -32,22 +32,42 @@
 	let rate: oneRate[];
 	let stock: Storage[];
 
+	// for effective submission
+	let effectedUsage: Usage[] = [];
+
 	async function getInfo() {
 		const rates = await db.rate
 			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
 			.toArray();
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
 		rate = rates[0].ratelist;
+		rate_Backup = [...rate]; // backup for rate
 		stock = stocks;
+
+		effectedUsage = (await db.usage
+			.where('date_id')
+			.above(getDateID(workingDate.toDate()))
+			.toArray()) as Usage[];
+		console.log('---------------');
+
+		console.log(effectedUsage);
 	}
 
+	// Backup
+	let rate_Backup: oneRate[] = [];
+
 	// usage calculation
-	let forStoarageUpdate: any = [];
+	const forStoarageUpdate = new Map();
+	const effectiveUsageUpdate = new Map();
 	let before_afterlist: any = [];
 	let usage: any = [];
 	let finalData: Usage[] = [];
+	let isBeforeAmountNan: boolean = false;
 
 	async function cal_usage() {
+		forStoarageUpdate.clear();
+		effectiveUsageUpdate.clear();
+
 		usage = rate.map((obj) => ({
 			name: obj.name,
 			amount: (obj.rate * total) / 1000,
@@ -69,14 +89,36 @@
 				// adding
 				obj.before_amount = Number(unit?.amount);
 				obj.after_amount = obj.before_amount - obj.amount;
+
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
 				obj.storage_unit_id = RegData.storage_unit_id;
 
-				forStoarageUpdate.push({
+				forStoarageUpdate.set(unit?.id, {
 					key: unit?.id,
 					changes: { amount: obj.after_amount }
 				});
+
+				// effective update
+				const eff_anajlist = effectedUsage.filter((item) => item.name == obj.name);
+				if (eff_anajlist.length > 0) {
+					obj.after_amount = eff_anajlist[0].before_amount;
+					obj.before_amount = obj.after_amount + obj.amount;
+
+					let effective_num = obj.amount;
+
+					eff_anajlist.forEach((eff_usage) => {
+						// eff_usage.before_amount = eff_usage.before_amount + effective_num;
+						// eff_usage.after_amount = eff_usage.after_amount + effective_num;
+						effectiveUsageUpdate.set(eff_usage.id, {
+							key: eff_usage.id,
+							changes: {
+								before_amount: eff_usage.before_amount + effective_num,
+								after_amount: eff_usage.after_amount + effective_num
+							}
+						});
+					});
+				}
 			}
 		);
 
@@ -97,9 +139,15 @@
 				date_id: getDateID(workingDate.toDate())
 			});
 			await db.usage.bulkAdd(usage);
-			await db.storage.bulkUpdate(forStoarageUpdate);
+			await db.storage.bulkUpdate([...forStoarageUpdate.values()]);
+
+			if (effectiveUsageUpdate.size > 0) {
+				await db.usage.bulkUpdate([...effectiveUsageUpdate.values()]);
+			}
 		})
 			.then(() => {
+				effectiveUsageUpdate.clear();
+				forStoarageUpdate.clear();
 				toast.success('Saved Successfully!');
 			})
 			.catch((err) => {
@@ -143,6 +191,7 @@
 							><Button
 								on:click={() => {
 									showRate = !showRate;
+									rate = [...rate_Backup];
 								}}
 								variant="outline">{!showRate ? 'Change Rate' : 'Cancel'}</Button
 							></AlertDialog.Description

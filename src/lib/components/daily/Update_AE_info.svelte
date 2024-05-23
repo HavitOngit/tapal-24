@@ -171,9 +171,9 @@
 
 				let effective_num = 0;
 				effective_num = (saved_data?.amount || 0) - obj.amount;
-
-				effectedUsage.forEach((eff_usage) => {
-					if (eff_usage.name == obj.name) {
+				const eff_anajlist = effectedUsage.filter((item) => item.name == obj.name);
+				if (eff_anajlist.length > 0) {
+					eff_anajlist.forEach((eff_usage) => {
 						// eff_usage.before_amount = eff_usage.before_amount + effective_num;
 						// eff_usage.after_amount = eff_usage.after_amount + effective_num;
 						effectiveUsageUpdate.set(eff_usage.id, {
@@ -183,8 +183,8 @@
 								after_amount: eff_usage.after_amount + effective_num
 							}
 						});
-					}
-				});
+					});
+				}
 				console.log({
 					effectedUsage,
 					effective_num,
@@ -238,8 +238,8 @@
 					item.after_amount = item.before_amount - item.amount;
 				} else if (sortedBelow.length > 0) {
 					const lastItem = sortedBelow[0];
-					item.before_amount = lastItem.after_amount;
-					item.after_amount = item.before_amount - item.amount;
+					item.after_amount = lastItem.before_amount;
+					item.before_amount = item.after_amount + item.amount;
 				} else {
 					const unit = stock.find((obj) => obj.name == item.name);
 					item.before_amount = unit?.amount || 0;
