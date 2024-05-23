@@ -245,13 +245,17 @@
 					item.before_amount = unit?.amount || 0;
 					item.after_amount = item.before_amount - item.amount;
 				}
+
+				console.log(usage);
 			}
 		);
 	}
 
 	// Savind to Database
 	async function SavingToDB() {
-		await addingNewitem();
+		if (isBeforeAmountNan) {
+			await addingNewitem();
+		}
 		console.log(usage);
 
 		// for deleteing
