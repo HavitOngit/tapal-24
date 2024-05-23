@@ -245,6 +245,12 @@
 					item.before_amount = unit?.amount || 0;
 					item.after_amount = item.before_amount - item.amount;
 				}
+				const unit = stock.find((obj) => item.name == obj.name);
+
+				forStoarageUpdate.set(unit?.id, {
+					key: unit?.id,
+					changes: { amount: item.after_amount }
+				});
 
 				console.log(usage);
 			}
