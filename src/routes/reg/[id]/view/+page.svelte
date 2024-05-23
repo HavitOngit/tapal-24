@@ -58,7 +58,7 @@
 			</TableRow>
 		</TableHeader>
 		<TableBody>
-			{#each $usage as item}
+			{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
 				<TableRow>
 					<TableHead>{item.date.toLocaleDateString()}</TableHead>
 					<TableHead>{item.name}</TableHead>

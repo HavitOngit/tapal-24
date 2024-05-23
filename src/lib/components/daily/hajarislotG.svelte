@@ -100,12 +100,14 @@
 				});
 
 				// effective update
-				const eff_anajlist = effectedUsage.filter((item) => item.name == obj.name);
+				const eff_anajlist = effectedUsage
+					.filter((item) => item.name == obj.name)
+					.sort((a, b) => a.date_id - b.date_id);
 				if (eff_anajlist.length > 0) {
-					obj.after_amount = eff_anajlist[0].before_amount;
-					obj.before_amount = obj.after_amount + obj.amount;
+					obj.before_amount = eff_anajlist[0].before_amount;
+					obj.after_amount = obj.before_amount - obj.amount;
 
-					let effective_num = obj.amount;
+					let effective_num = 0 - obj.amount;
 
 					eff_anajlist.forEach((eff_usage) => {
 						// eff_usage.before_amount = eff_usage.before_amount + effective_num;
