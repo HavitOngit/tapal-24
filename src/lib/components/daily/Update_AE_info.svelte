@@ -116,6 +116,8 @@
 	const effectiveUsageUpdate = new Map();
 	let savedUsage: Usage[];
 
+	let isBeforeAmountNan: boolean = false;
+
 	async function cal_usage() {
 		// claring storage
 		forStoarageUpdate.clear();
@@ -150,6 +152,11 @@
 				obj.group_id = RegData.id;
 				obj.date_id = getDateID(workingDate.toDate());
 				obj.storage_unit_id = RegData.storage_unit_id;
+
+				// if before amount Nan
+				if (isNaN(obj.before_amount)) {
+					isBeforeAmountNan = true;
+				}
 
 				usage_keys.push(obj.id);
 
@@ -191,10 +198,60 @@
 		showRate = false;
 	}
 
-	// for rective usage data
+	// solving the problem of adding new item
+	// Problem: when adding new item that added item not have before_amount
+	// Solution: try to get the before_amount from the last item of the same name
+	// if last item not found try to get before_amount from effective_usage
+	// if effective_usage not found then use direct storage amount
+	async function addingNewitem() {
+		const aboveData = await db.usage
+			.where('date_id')
+			.below(getDateID(workingDate.toDate()))
+			.toArray();
+
+		const belowData = await db.usage
+			.where('date_id')
+			.above(getDateID(workingDate.toDate()))
+			.toArray();
+
+		usage.forEach(
+			(item: {
+				name: string;
+				before_amount: number;
+				after_amount: number;
+				amount: number;
+				group_id: any;
+				date_id: any;
+				id: number;
+				storage_unit_id: number;
+			}) => {
+				const sortedAbove = aboveData
+					.filter((obj) => obj.storage_unit_id == RegData.storage_unit_id && obj.name == item.name)
+					.sort((a, b) => a.date_id - b.date_id);
+				const sortedBelow = belowData
+					.filter((obj) => obj.storage_unit_id == RegData.storage_unit_id && obj.name == item.name)
+					.sort((a, b) => a.date_id - b.date_id);
+
+				if (sortedAbove.length > 0) {
+					const lastItem = sortedAbove[sortedAbove.length - 1];
+					item.before_amount = lastItem.after_amount;
+					item.after_amount = item.before_amount - item.amount;
+				} else if (sortedBelow.length > 0) {
+					const lastItem = sortedBelow[0];
+					item.before_amount = lastItem.after_amount;
+					item.after_amount = item.before_amount - item.amount;
+				} else {
+					const unit = stock.find((obj) => obj.name == item.name);
+					item.before_amount = unit?.amount || 0;
+					item.after_amount = item.before_amount - item.amount;
+				}
+			}
+		);
+	}
 
 	// Savind to Database
 	async function SavingToDB() {
+		await addingNewitem();
 		console.log(usage);
 
 		// for deleteing
@@ -247,6 +304,7 @@
 			.then(() => {
 				effectiveUsageUpdate.clear();
 				forStoarageUpdate.clear();
+				isBeforeAmountNan = false;
 				toast.success('Updated Successfully!');
 			})
 			.catch((err) => {
