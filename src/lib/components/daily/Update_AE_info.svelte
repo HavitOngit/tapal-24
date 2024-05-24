@@ -162,7 +162,7 @@
 
 				forStoarageUpdate.set(unit?.id, {
 					key: unit?.id,
-					changes: { amount: obj.after_amount }
+					changes: { amount: (unit?.amount || 0) + (saved_data?.amount || 0) - obj.amount }
 				});
 
 				// for effective usage update
@@ -246,11 +246,13 @@
 					item.after_amount = item.before_amount - item.amount;
 				}
 				const unit = stock.find((obj) => item.name == obj.name);
+				const saved_data = savedUsage.find((obj) => item.name == obj.name);
 
 				forStoarageUpdate.set(unit?.id, {
 					key: unit?.id,
-					changes: { amount: item.after_amount }
+					changes: { amount: (unit?.amount || 0) + (saved_data?.amount || 0) - item.amount }
 				});
+				// problem: storage update wrong update
 
 				console.log(usage);
 			}

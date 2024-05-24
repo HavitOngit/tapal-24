@@ -96,7 +96,7 @@
 
 				forStoarageUpdate.set(unit?.id, {
 					key: unit?.id,
-					changes: { amount: obj.after_amount }
+					changes: { amount: (unit?.amount || 0) - obj.amount }
 				});
 
 				// effective update
