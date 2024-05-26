@@ -36,7 +36,7 @@
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
-						<div>Amount : {anaj.amount} kg</div>
+						<div>Avalable : {anaj.amount} kg</div>
 						<div class="flex flex-row items-baseline justify-between gap-2">
 							<Input
 								bind:value={addAmount}

@@ -11,7 +11,7 @@
 
 	export let stock: StorageUnit;
 
-	const regis = liveQuery(() => db.group.where({ rate_unit_id: stock.id }).toArray());
+	const regis = liveQuery(() => db.group.where({ storage_unit_id: stock.id }).toArray());
 </script>
 
 <Card>

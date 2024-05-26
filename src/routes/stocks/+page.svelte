@@ -7,14 +7,26 @@
 	import StockProfile from '$lib/components/stocks/StockProfile.svelte';
 
 	const storage_units = liveQuery(() => db.storage_unit.toArray());
+	const regis = liveQuery(() => db.group.toArray());
 </script>
 
-<div class="m-2 flex flex-col gap-2">
-	{#each $storage_units || [] as unit}
-		<a href="/stocks/{unit.id}">
-			<StockProfile stock={unit}></StockProfile>
-		</a>
-	{/each}
-</div>
+{#if $storage_units && $regis}
+	<div class="m-2 flex flex-col gap-2">
+		{#each $storage_units || [] as unit}
+			{#if $regis.find((reg) => reg.storage_unit_id == unit.id)}
+				<a href="/stocks/{unit.id}">
+					<StockProfile stock={unit}></StockProfile>
+				</a>
+			{/if}
+		{/each}
+		{#each $storage_units || [] as unit}
+			{#if !$regis.find((reg) => reg.storage_unit_id == unit.id)}
+				<a href="/stocks/{unit.id}">
+					<StockProfile stock={unit}></StockProfile>
+				</a>
+			{/if}
+		{/each}
+	</div>
+{/if}
 
 <PlusButton></PlusButton>

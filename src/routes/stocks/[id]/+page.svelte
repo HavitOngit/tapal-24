@@ -12,6 +12,9 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Settings2 } from 'lucide-svelte';
+	import DropdownMenuShortcut from '$lib/components/ui/dropdown-menu/dropdown-menu-shortcut.svelte';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -73,26 +76,21 @@
 
 <div class="m-2 flex flex-col gap-2">
 	<Card.Root>
-		<Card.Content class="flex flex-row items-center justify-between">
-			{#if showEdit}
-				<Input bind:value={unit.name} placeholder="Enter Stock Name" class="m-1" />
-				<Button variant="secondary" on:click={nameUpdate}>Save</Button>
-				<Button
-					variant="outline"
-					on:click={() => {
-						showEdit = false;
-						unit.name = stockName;
-					}}>Cancel</Button
-				>
-			{:else}
-				<div>{unit?.name}</div>
-				<Button
-					variant="outline"
-					on:click={() => {
-						showEdit = !showEdit;
-					}}>Edit</Button
-				>
-			{/if}
+		<Card.Content class="m-2 flex  items-center justify-between">
+			<div>{unit?.name}</div>
+			<div>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger>
+						<Settings2 />
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content>
+						<DropdownMenu.Item>Rename</DropdownMenu.Item>
+						<DropdownMenu.Item>Add New items</DropdownMenu.Item>
+						<DropdownMenu.Item>Delete items</DropdownMenu.Item>
+						<DropdownMenu.Item>Delete</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			</div>
 		</Card.Content>
 	</Card.Root>
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
