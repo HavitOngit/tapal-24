@@ -14,7 +14,10 @@
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Settings2 } from 'lucide-svelte';
-	import DropdownMenuShortcut from '$lib/components/ui/dropdown-menu/dropdown-menu-shortcut.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
+	import { Item } from '$lib/components/ui/carousel';
+	import * as Dialog from '$lib/components/ui/dialog';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -40,7 +43,6 @@
 		}
 	}
 
-	export let data: PageData;
 	let stockName: string;
 	let showEdit: boolean = false;
 
@@ -72,26 +74,42 @@
 		const delList = deleteMap.entries();
 		console.log(delList);
 	}
+	let MenuOpen: boolean = false;
+	let TestButton: HTMLButtonElement;
+	let AddNewAnajbtn: HTMLButtonElement;
 </script>
 
 <div class="m-2 flex flex-col gap-2">
 	<Card.Root>
-		<Card.Content class="m-2 flex  items-center justify-between">
-			<div>{unit?.name}</div>
-			<div>
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
-						<Settings2 />
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content>
-						<DropdownMenu.Item>Rename</DropdownMenu.Item>
-						<DropdownMenu.Item>Add New items</DropdownMenu.Item>
-						<DropdownMenu.Item>Delete items</DropdownMenu.Item>
-						<DropdownMenu.Item>Delete</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-			</div>
-		</Card.Content>
+		<Card.Header>
+			<Card.Title class="m-2 flex  items-center justify-between">
+				<div>{unit?.name}</div>
+				<div>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							<Settings2 />
+						</DropdownMenu.Trigger>
+
+						<DropdownMenu.Content>
+							<DropdownMenu.Item
+								on:click={() => {
+									TestButton.click();
+								}}
+							>
+								Rename
+							</DropdownMenu.Item>
+							<DropdownMenu.Item
+								on:click={() => {
+									AddNewAnajbtn.click();
+								}}>Add New items</DropdownMenu.Item
+							>
+							<DropdownMenu.Item>Delete items</DropdownMenu.Item>
+							<DropdownMenu.Item>Delete</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</div>
+			</Card.Title>
+		</Card.Header>
 	</Card.Root>
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
 	<div class="flex flex-col gap-2">
@@ -110,7 +128,11 @@
 		{/each}
 	{/if}
 	<div class="m-2 flex justify-end">
-		<AnajSelection bind:selected={newlySelected} anajlist={filtered_list}></AnajSelection>
+		<AnajSelection
+			bind:TriggerButton={AddNewAnajbtn}
+			bind:selected={newlySelected}
+			anajlist={filtered_list}
+		></AnajSelection>
 	</div>
 </div>
 
@@ -123,3 +145,19 @@
 {#if showEdit}
 	<Button on:click={Delete}>Delete</Button>
 {/if}
+
+<AlertDialog.Root>
+	<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>Rename</AlertDialog.Title>
+			<AlertDialog.Description>
+				<Input bind:value={unit.name} />
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>

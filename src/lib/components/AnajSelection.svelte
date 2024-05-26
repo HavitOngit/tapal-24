@@ -10,6 +10,7 @@
 	export let selected: any = [];
 	export let anajlist: any;
 	export let useForRates: boolean = false;
+	export let TriggerButton: HTMLButtonElement;
 
 	export let cache = new Map();
 
@@ -35,12 +36,7 @@
 </script>
 
 <Drawer.Root>
-	<Drawer.Trigger>
-		<Button>
-			<Plus class="mr-2 size-4"></Plus>
-			Add
-		</Button>
-	</Drawer.Trigger>
+	<Drawer.Trigger bind:el={TriggerButton}></Drawer.Trigger>
 	<Drawer.Content>
 		<div class="mx-2">
 			{#if !useForRates}
