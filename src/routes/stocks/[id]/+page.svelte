@@ -13,7 +13,7 @@
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { Settings2 } from 'lucide-svelte';
+	import { CircleFadingPlus, Settings2 } from 'lucide-svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
@@ -98,11 +98,7 @@
 							>
 								Rename
 							</DropdownMenu.Item>
-							<DropdownMenu.Item
-								on:click={() => {
-									AddNewAnajbtn.click();
-								}}>Add New items</DropdownMenu.Item
-							>
+
 							<DropdownMenu.Item>Delete items</DropdownMenu.Item>
 							<DropdownMenu.Item>Delete</DropdownMenu.Item>
 						</DropdownMenu.Content>
@@ -116,6 +112,17 @@
 		{#each $list || [] as anaj}
 			<AnajSlot {anaj} forStorageView={true}></AnajSlot>
 		{/each}
+
+		<Button
+			variant="outline"
+			class="gap-2"
+			on:click={() => {
+				AddNewAnajbtn.click();
+			}}
+		>
+			<CircleFadingPlus />
+			<p>Click To Add</p>
+		</Button>
 	</div>
 </div>
 
@@ -132,6 +139,7 @@
 			bind:TriggerButton={AddNewAnajbtn}
 			bind:selected={newlySelected}
 			anajlist={filtered_list}
+			forStorageView={true}
 		></AnajSelection>
 	</div>
 </div>

@@ -5,12 +5,13 @@
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import Input from './ui/input/input.svelte';
-	import { Plus } from 'lucide-svelte';
+	import { CircleFadingPlus, Plus } from 'lucide-svelte';
 
 	export let selected: any = [];
 	export let anajlist: any;
 	export let useForRates: boolean = false;
 	export let TriggerButton: HTMLButtonElement;
+	export let forStorageView: boolean = false;
 
 	export let cache = new Map();
 
@@ -36,7 +37,14 @@
 </script>
 
 <Drawer.Root>
-	<Drawer.Trigger bind:el={TriggerButton}></Drawer.Trigger>
+	<Drawer.Trigger bind:el={TriggerButton} class="flex">
+		{#if !forStorageView}
+			<Button variant="outline" class=" w-[100%] gap-2">
+				<CircleFadingPlus />
+				<p>Click To Add</p>
+			</Button>
+		{/if}
+	</Drawer.Trigger>
 	<Drawer.Content>
 		<div class="mx-2">
 			{#if !useForRates}
