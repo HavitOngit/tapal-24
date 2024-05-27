@@ -13,7 +13,7 @@
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { CircleFadingPlus, Settings2 } from 'lucide-svelte';
+	import { CircleFadingPlus, PackagePlus, Settings2 } from 'lucide-svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
@@ -79,6 +79,24 @@
 	let AddNewAnajbtn: HTMLButtonElement;
 </script>
 
+<div id="alerts" hidden>
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>Rename</AlertDialog.Title>
+				<AlertDialog.Description>
+					<Input bind:value={unit.name} />
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>
+
 <div class="m-2 flex flex-col gap-2">
 	<Card.Root>
 		<Card.Header>
@@ -120,7 +138,7 @@
 				AddNewAnajbtn.click();
 			}}
 		>
-			<CircleFadingPlus />
+			<PackagePlus />
 			<p>Click To Add</p>
 		</Button>
 	</div>
@@ -131,7 +149,9 @@
 		<div class="flex">New anajs</div>
 
 		{#each newlySelected as anaj}
-			<AnajSlot {anaj}></AnajSlot>
+			<a href="/{anaj.id}">
+				<AnajSlot {anaj}></AnajSlot>
+			</a>
 		{/each}
 	{/if}
 	<div class="m-2 flex justify-end">
@@ -153,19 +173,3 @@
 {#if showEdit}
 	<Button on:click={Delete}>Delete</Button>
 {/if}
-
-<AlertDialog.Root>
-	<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
-	<AlertDialog.Content>
-		<AlertDialog.Header>
-			<AlertDialog.Title>Rename</AlertDialog.Title>
-			<AlertDialog.Description>
-				<Input bind:value={unit.name} />
-			</AlertDialog.Description>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>

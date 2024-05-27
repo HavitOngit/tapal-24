@@ -5,7 +5,7 @@
 	import Button from './ui/button/button.svelte';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import Input from './ui/input/input.svelte';
-	import { CircleFadingPlus, Plus } from 'lucide-svelte';
+	import { CircleFadingPlus, Package, PackagePlus, Plus } from 'lucide-svelte';
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -40,7 +40,7 @@
 	<Drawer.Trigger bind:el={TriggerButton} class="flex">
 		{#if !forStorageView}
 			<Button variant="outline" class=" w-[100%] gap-2">
-				<CircleFadingPlus />
+				<PackagePlus />
 				<p>Click To Add</p>
 			</Button>
 		{/if}

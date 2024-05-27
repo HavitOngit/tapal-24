@@ -6,6 +6,7 @@
 	import Input from './ui/input/input.svelte';
 	import { db } from '$lib/db';
 	import * as Card from '$lib/components/ui/card';
+	import Badge from './ui/badge/badge.svelte';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
@@ -31,20 +32,16 @@
 				/>
 			</div>
 			<div class="mt-3 flex flex-col flex-wrap">
-				<div>
+				<div class="text-lg font-medium">
 					{anaj.name}
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
-						<div>Avalable : {anaj.amount} kg</div>
-						<div class="flex flex-row items-baseline justify-between gap-2">
-							<Input
-								bind:value={addAmount}
-								placeholder="Enter Amount in kg"
-								type="number"
-								min="1"
-							/>kg
-							<Button on:click={addToStore}>Add</Button>
+						<div class="text-lg">
+							Avalable :
+							<Badge variant="outline" class="text-lg font-semibold">
+								{anaj.amount} kg
+							</Badge>
 						</div>
 					</div>
 				{:else}
