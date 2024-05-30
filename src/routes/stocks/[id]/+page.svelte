@@ -13,7 +13,7 @@
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { CircleFadingPlus, PackagePlus, Settings2 } from 'lucide-svelte';
+	import { CircleFadingPlus, HistoryIcon, PackagePlus, Settings2 } from 'lucide-svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
@@ -77,6 +77,10 @@
 	let MenuOpen: boolean = false;
 	let TestButton: HTMLButtonElement;
 	let AddNewAnajbtn: HTMLButtonElement;
+
+	onMount(() => {
+		console.log(unit);
+	});
 </script>
 
 <div id="alerts" hidden>
@@ -149,9 +153,7 @@
 		<div class="flex">New anajs</div>
 
 		{#each newlySelected as anaj}
-			<a href="/{anaj.id}">
-				<AnajSlot {anaj}></AnajSlot>
-			</a>
+			<AnajSlot {anaj}></AnajSlot>
 		{/each}
 	{/if}
 	<div class="m-2 flex justify-end">
