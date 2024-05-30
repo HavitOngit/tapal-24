@@ -34,7 +34,7 @@
 		const url = URL.createObjectURL(blob);
 		const a = document.createElement('a');
 		a.href = url;
-		a.download = '$usage.csv';
+		a.download = 'usage.csv';
 		a.click();
 		URL.revokeObjectURL(url);
 	}

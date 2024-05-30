@@ -18,6 +18,7 @@
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
 	import * as Dialog from '$lib/components/ui/dialog';
+	import toast from 'svelte-french-toast';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -38,7 +39,9 @@
 
 	async function nameUpdate() {
 		if (unit.name != '') {
-			const status = await db.storage_unit.update(id, { name: unit.name });
+			const status = await db.storage_unit
+				.update(id, { name: unit.name })
+				.then(() => toast.success(`${stockName} ➡️ ${unit.name}`));
 			showEdit = false;
 		}
 	}
