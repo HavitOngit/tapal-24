@@ -84,6 +84,9 @@
 	onMount(() => {
 		console.log(unit);
 	});
+
+	let deleteMode: boolean = false;
+	let DeleteList: number[] = [];
 </script>
 
 <div id="alerts" hidden>
@@ -124,7 +127,9 @@
 								Rename
 							</DropdownMenu.Item>
 
-							<DropdownMenu.Item>Delete items</DropdownMenu.Item>
+							<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
+								>Delete items</DropdownMenu.Item
+							>
 							<DropdownMenu.Item>Delete</DropdownMenu.Item>
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
@@ -135,7 +140,9 @@
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}
-			<AnajSlot {anaj} forStorageView={true}></AnajSlot>
+			<AnajSlot {anaj} forStorageView={true}>
+				<input type="checkbox" bind:group={DeleteList} value={anaj} />
+			</AnajSlot>
 		{/each}
 
 		<Button

@@ -15,9 +15,11 @@
 	import Label from './ui/label/label.svelte';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
+	import { writable } from 'svelte/store';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
+	export let deleteMode: boolean = false;
 
 	let addAmount: number = 0;
 
@@ -35,38 +37,44 @@
 	let date: DateValue | undefined;
 </script>
 
-<AlertDialog.Root>
-	<AlertDialog.Trigger bind:el={addbtn}></AlertDialog.Trigger>
-	<AlertDialog.Content>
-		<AlertDialog.Header>
-			<AlertDialog.Title class="flex justify-between">
-				<div class="text-xl">
-					Add to {anaj.name}
-				</div>
-				<div>
-					<Calender bind:value={date}></Calender>
-				</div>
-			</AlertDialog.Title>
-			<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
-				<div class="text-lg">
-					Available: {anaj.amount}
-				</div>
+<div id="alerts" hidden>
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={addbtn}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title class="flex justify-between">
+					<div class="text-xl">
+						Add to {anaj.name}
+					</div>
+					<div>
+						<Calender bind:value={date}></Calender>
+					</div>
+				</AlertDialog.Title>
+				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
+					<div class="text-lg">
+						Available: {anaj.amount}
+					</div>
 
-				<div class=" flex items-center gap-3">
-					<Label class="text-lg font-medium">Amount:</Label>
-					<Input bind:value={addAmount} type="number" autofocus />
-				</div>
-			</AlertDialog.Description>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={addToStore}>ADD</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
-
+					<div class=" flex items-center gap-3">
+						<Label class="text-lg font-medium">Amount:</Label>
+						<Input bind:value={addAmount} type="number" autofocus />
+					</div>
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={addToStore}>ADD</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>
 <Card.Root>
 	<Card.Content>
+		{#if deleteMode}
+			<div class=" absolute right-4 flex justify-end p-3">
+				<slot />
+			</div>
+		{/if}
 		<div class="flex space-x-3">
 			<a href="/stocks/{$page.params.id}/{anaj.id}">
 				<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
@@ -92,16 +100,18 @@
 							<div class="text-lg font-semibold">
 								{anaj.amount} kg
 							</div>
-							<button
-								on:click={() => {
-									addbtn.click();
-								}}
-							>
-								<Badge variant="outline" class="flex gap-1 text-base">
-									<CircleFadingPlusIcon></CircleFadingPlusIcon>
-									add
-								</Badge>
-							</button>
+							{#if !deleteMode}
+								<button
+									on:click={() => {
+										addbtn.click();
+									}}
+								>
+									<Badge variant="outline" class="flex gap-1 text-base">
+										<CircleFadingPlusIcon></CircleFadingPlusIcon>
+										add
+									</Badge>
+								</button>
+							{/if}
 						</div>
 					</div>
 				{:else}
