@@ -12,7 +12,7 @@
 	});
 
 	export let value: DateValue | undefined = undefined;
-	export const today = new Date();
+	export let today = new Date();
 </script>
 
 <Popover.Root>

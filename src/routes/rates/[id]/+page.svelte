@@ -3,6 +3,7 @@
 	import { getAllUsedAnajs } from '$lib/api';
 	import RateView from '$lib/components/RateView.svelte';
 	import Rateslot from '$lib/components/Rateslot.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import type { Rate } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
@@ -20,6 +21,18 @@
 </script>
 
 {$page.params.id}
+
+<!-- <Button
+	on:click={() => {
+		const some = $list.map((obj) => {
+			return {
+				day: obj.day,
+				ratelist: obj.ratelist
+			};
+		});
+		console.log(JSON.stringify(some));
+	}}
+></Button> -->
 
 <div class="flex flex-col items-center justify-center">
 	<h1 class="text-2xl font-bold">Rate: {$rateUnit?.name}</h1>

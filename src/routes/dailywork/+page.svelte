@@ -11,6 +11,9 @@
 	import { getDateID } from '$lib/api';
 	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
 	import dayjs from 'dayjs';
+	import Calendar from '$lib/components/ui/calendar/calendar.svelte';
+	import Calender from '$lib/components/extraFeatures/Calender.svelte';
+	import type { DateValue } from '@internationalized/date';
 
 	export let data: PageData;
 
@@ -66,6 +69,12 @@
 
 	let date_location = 0;
 	let iiterCount = 0;
+
+	let calendeDate: DateValue | undefined;
+
+	$: if (calendeDate) {
+		workingDate = calendeDate.toDate('Asia/Kolkata');
+	}
 </script>
 
 <!--  -->
@@ -80,7 +89,9 @@
 						workingDate = dayjs(workingDate).subtract(1, 'day').toDate();
 					}}>-</Button
 				>
-				{workingDate.toDateString()}
+
+				<!-- {workingDate.toDateString()} -->
+				<Calender bind:value={calendeDate} today={workingDate}></Calender>
 				<!-- temp sol -->
 				<Button
 					on:click={() => {
