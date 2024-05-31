@@ -85,8 +85,12 @@
 		console.log(unit);
 	});
 
+	// delete
 	let deleteMode: boolean = false;
-	let DeleteList: number[] = [];
+	let DeleteList = [];
+
+	let pressTimer: ReturnType<typeof setTimeout>;
+	const longpressDuration = 1000;
 </script>
 
 <div id="alerts" hidden>
@@ -140,9 +144,26 @@
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}
-			<AnajSlot {anaj} forStorageView={true}>
-				<input type="checkbox" bind:group={DeleteList} value={anaj} />
-			</AnajSlot>
+			<div
+				on:touchstart={(e) => {
+					if (!deleteMode) e.preventDefault();
+
+					pressTimer = setTimeout(() => {
+						DeleteList.push(anaj);
+						deleteMode = true;
+					}, longpressDuration);
+				}}
+				on:touchend={() => {
+					clearTimeout(pressTimer);
+				}}
+				on:touchcancel={() => {
+					clearTimeout(pressTimer);
+				}}
+			>
+				<AnajSlot {anaj} forStorageView={true} bind:deleteMode>
+					<input type="checkbox" bind:group={DeleteList} value={anaj} />
+				</AnajSlot>
+			</div>
 		{/each}
 
 		<Button
