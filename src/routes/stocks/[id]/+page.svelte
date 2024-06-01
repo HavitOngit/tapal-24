@@ -95,9 +95,11 @@
 	const longpressDuration = 1000;
 	let deleteBtn: HTMLButtonElement;
 	let selectall: boolean = false;
-	$: if (selectall) {
+
+	$: if (selectall == true) {
 		DeleteList = $list;
-	} else {
+	}
+	$: if (selectall == false) {
 		DeleteList = [];
 	}
 
