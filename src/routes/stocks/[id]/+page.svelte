@@ -19,6 +19,7 @@
 	import { Item } from '$lib/components/ui/carousel';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import toast from 'svelte-french-toast';
+	import SelectionNav from '$lib/components/extraFeatures/SelectionNav.svelte';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -91,11 +92,38 @@
 
 	let pressTimer: ReturnType<typeof setTimeout>;
 	const longpressDuration = 1000;
+	let deleteBtn: HTMLButtonElement;
+
+	$: if (deleteMode == false) {
+		DeleteList = [];
+	}
 </script>
+
+{#if deleteMode}
+	<SelectionNav bind:deletBtn={deleteBtn} bind:deleteMode bind:selected_length={DeleteList.length}
+	></SelectionNav>
+{/if}
 
 <div id="alerts" hidden>
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>Rename</AlertDialog.Title>
+				<AlertDialog.Description>
+					<Input bind:value={unit.name} />
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+
+	<!-- deletemode -->
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
 				<AlertDialog.Title>Rename</AlertDialog.Title>
