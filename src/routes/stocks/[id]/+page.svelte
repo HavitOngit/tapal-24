@@ -20,6 +20,7 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import toast from 'svelte-french-toast';
 	import SelectionNav from '$lib/components/extraFeatures/SelectionNav.svelte';
+	import Label from '$lib/components/ui/label/label.svelte';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
@@ -93,6 +94,12 @@
 	let pressTimer: ReturnType<typeof setTimeout>;
 	const longpressDuration = 1000;
 	let deleteBtn: HTMLButtonElement;
+	let selectall: boolean = false;
+	$: if (selectall) {
+		DeleteList = $list;
+	} else {
+		DeleteList = [];
+	}
 
 	$: if (deleteMode == false) {
 		DeleteList = [];
@@ -100,8 +107,15 @@
 </script>
 
 {#if deleteMode}
-	<SelectionNav bind:deletBtn={deleteBtn} bind:deleteMode bind:selected_length={DeleteList.length}
-	></SelectionNav>
+	<div class="">
+		<SelectionNav bind:deletBtn={deleteBtn} bind:deleteMode bind:selected_length={DeleteList.length}
+		></SelectionNav>
+
+		<div class="m-2 mr-7 flex justify-end gap-2">
+			<Label>Select All</Label>
+			<input type="checkbox" bind:checked={selectall} class="size-5" />
+		</div>
+	</div>
 {/if}
 
 <div id="alerts" hidden>
@@ -140,35 +154,37 @@
 </div>
 
 <div class="m-2 flex flex-col gap-2">
-	<Card.Root>
-		<Card.Header>
-			<Card.Title class="m-2 flex  items-center justify-between">
-				<div>{unit?.name}</div>
-				<div>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							<Settings2 />
-						</DropdownMenu.Trigger>
+	{#if !deleteMode}
+		<Card.Root>
+			<Card.Header>
+				<Card.Title class="m-2 flex  items-center justify-between">
+					<div>{unit?.name}</div>
+					<div>
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								<Settings2 />
+							</DropdownMenu.Trigger>
 
-						<DropdownMenu.Content>
-							<DropdownMenu.Item
-								on:click={() => {
-									TestButton.click();
-								}}
-							>
-								Rename
-							</DropdownMenu.Item>
+							<DropdownMenu.Content>
+								<DropdownMenu.Item
+									on:click={() => {
+										TestButton.click();
+									}}
+								>
+									Rename
+								</DropdownMenu.Item>
 
-							<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
-								>Delete items</DropdownMenu.Item
-							>
-							<DropdownMenu.Item>Delete</DropdownMenu.Item>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				</div>
-			</Card.Title>
-		</Card.Header>
-	</Card.Root>
+								<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
+									>Delete items</DropdownMenu.Item
+								>
+								<DropdownMenu.Item>Delete</DropdownMenu.Item>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					</div>
+				</Card.Title>
+			</Card.Header>
+		</Card.Root>
+	{/if}
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}
@@ -189,7 +205,7 @@
 				}}
 			>
 				<AnajSlot {anaj} forStorageView={true} bind:deleteMode>
-					<input type="checkbox" bind:group={DeleteList} value={anaj} />
+					<input type="checkbox" bind:group={DeleteList} value={anaj} class="size-5" />
 				</AnajSlot>
 			</div>
 		{/each}

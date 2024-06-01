@@ -22,7 +22,7 @@
 			<Label class="text-xl">{selected_length} selected</Label>
 		</div>
 	</div>
-	<div class="flex items-center">
+	<div class="flex items-center gap-3">
 		<button
 			on:click={() => {
 				deletBtn.click();
@@ -30,5 +30,10 @@
 		>
 			<Trash2Icon class="h-6 w-6" />
 		</button>
+		<!-- <div class="flex flex-col items-center justify-end">
+			<input type="checkbox" />
+			<Label class="text-xs">All</Label>
+		</div> -->
 	</div>
 </div>
+<hr />
