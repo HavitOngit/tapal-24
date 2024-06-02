@@ -13,7 +13,8 @@
 	import dayjs from 'dayjs';
 	import Calendar from '$lib/components/ui/calendar/calendar.svelte';
 	import Calender from '$lib/components/extraFeatures/Calender.svelte';
-	import type { DateValue } from '@internationalized/date';
+	import { CalendarDate, type DateValue } from '@internationalized/date';
+	import { Months } from '$lib/components/ui/calendar';
 
 	export let data: PageData;
 
@@ -71,6 +72,7 @@
 	let iiterCount = 0;
 
 	let calendeDate: DateValue | undefined;
+	const duration = { days: 1 };
 
 	$: if (calendeDate) {
 		workingDate = calendeDate.toDate('Asia/Kolkata');
@@ -87,6 +89,7 @@
 					on:click={() => {
 						date_location -= 1;
 						workingDate = dayjs(workingDate).subtract(1, 'day').toDate();
+						calendeDate = calendeDate?.subtract(duration);
 					}}>-</Button
 				>
 
@@ -97,6 +100,8 @@
 					on:click={() => {
 						date_location += 1;
 						workingDate = dayjs(workingDate).add(1, 'day').toDate();
+
+						calendeDate = calendeDate?.add(duration);
 					}}>+</Button
 				>
 			</Badge>
