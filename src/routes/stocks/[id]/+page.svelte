@@ -192,7 +192,7 @@
 		{#each $list || [] as anaj}
 			<div
 				on:touchstart={(e) => {
-					if (!deleteMode) e.preventDefault();
+					
 
 					pressTimer = setTimeout(() => {
 						DeleteList.push(anaj);
