@@ -369,8 +369,12 @@
 						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
 						<AlertDialog.Description
 							class="flex w-full
-						justify-end"
-							><Button
+						items-center justify-between"
+						>
+							<div>
+								Total: {total}
+							</div>
+							<Button
 								on:click={() => {
 									showRate = !showRate;
 
@@ -386,7 +390,7 @@
 						<Button on:click={cal_usage}>Apply</Button>
 					{:else}
 						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
-						<AlertDialog.Footer class="flex flex-row justify-around">
+						<AlertDialog.Footer class="flex flex-row items-center justify-between">
 							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 							<AlertDialog.Action on:click={SavingToDB}>Confirm</AlertDialog.Action>
 						</AlertDialog.Footer>

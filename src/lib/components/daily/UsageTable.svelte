@@ -24,7 +24,7 @@
 			<Table.Row>
 				<Table.Cell class="font-medium">{usage.name}</Table.Cell>
 				<Table.Cell>{usage.amount}kg</Table.Cell>
-				<Table.Cell>{Rates.find((obj) => obj.name == usage.name).rate}</Table.Cell>
+				<Table.Cell>{Number(Rates.find((obj) => obj.name == usage.name).rate)}</Table.Cell>
 			</Table.Row>
 		{/each}
 	</Table.Body>
