@@ -385,7 +385,7 @@
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
 						<Button on:click={cal_usage}>Apply</Button>
 					{:else}
-						<UsageTable bind:usageData={usage}></UsageTable>
+						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row justify-around">
 							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 							<AlertDialog.Action on:click={SavingToDB}>Confirm</AlertDialog.Action>
@@ -393,7 +393,6 @@
 					{/if}
 				</AlertDialog.Content>
 			</AlertDialog.Root>
-			<Button on:click={status}>Status</Button>
 		</CardFooter>
 		{#if $live_usage_data}
 			<div class="m-2 flex gap-2 overflow-x-auto">

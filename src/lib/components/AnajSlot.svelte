@@ -28,7 +28,7 @@
 	async function addToStore() {
 		const status = await db.storage
 			.update(anaj.id, { amount: sum })
-			.then(() => toast.success(`${addAmount} kg added to ${anaj.name}`));
+			.then(() => toast.success(`${Number(addAmount)} kg added to ${anaj.name}`));
 		addAmount = 0;
 	}
 
@@ -55,15 +55,19 @@
 						Available: {anaj.amount}
 					</div>
 
-					<div class=" flex items-center gap-3">
-						<Label class="text-lg font-medium">Amount:</Label>
-						<Input bind:value={addAmount} type="number" autofocus />
+					<div>
+						<form on:submit={addToStore} class=" flex items-center gap-3">
+							<Label class="text-lg font-medium">Amount:</Label>
+							<Input bind:value={addAmount} type="number" autofocus />
+							<!-- <Label class="text-lg font-medium">Amount:</Label>
+						<Input bind:value={addAmount} type="number" autofocus /> -->
+						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={addToStore}>ADD</AlertDialog.Action>
+				<AlertDialog.Action on:click={addToStore} type="submit">ADD</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>

@@ -192,8 +192,6 @@
 		{#each $list || [] as anaj}
 			<div
 				on:touchstart={(e) => {
-					
-
 					pressTimer = setTimeout(() => {
 						DeleteList.push(anaj);
 						deleteMode = true;

@@ -204,7 +204,7 @@
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
 						<Button on:click={cal_usage}>Apply</Button>
 					{:else}
-						<UsageTable bind:usageData={usage}></UsageTable>
+						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row justify-around">
 							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 							<AlertDialog.Action on:click={SavingToDB}>Confirm</AlertDialog.Action>
