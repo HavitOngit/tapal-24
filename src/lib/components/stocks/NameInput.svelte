@@ -1,0 +1,47 @@
+<script lang="ts">
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { onMount } from 'svelte';
+	import { Input } from '../ui/input';
+	import { Save } from 'lucide-svelte';
+
+	export let name: string;
+	export let TriggerButton: HTMLButtonElement;
+	let SaveBtn: HTMLButtonElement;
+
+	function seName() {
+		name = 'ddddd';
+	}
+
+	onMount(() => {
+		if (name.length == 0) {
+			console.log({ name, trigger: 'Triggered from here' });
+
+			TriggerButton.click();
+		}
+	});
+	let CancelBtn: HTMLButtonElement;
+</script>
+
+<div id="alerts" hidden>
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={TriggerButton}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>Name</AlertDialog.Title>
+				<AlertDialog.Description>
+					<form
+						on:submit={() => {
+							CancelBtn.click();
+						}}
+					>
+						<Input bind:value={name} placeholder="Enter Storage name" />
+					</form>
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<!-- <AlertDialog.Cancel type="submit" bind:el={cancelBtn}>Cancel</AlertDialog.Cancel> -->
+				<AlertDialog.Action type="submit" bind:el={CancelBtn}>Save</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>
