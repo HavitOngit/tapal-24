@@ -10,6 +10,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import NameInput from './stocks/NameInput.svelte';
+	import toast from 'svelte-french-toast';
 
 	let selected_anaj: Storage[] = [];
 
@@ -56,6 +57,9 @@
 		if (uniupload) {
 			newUniList = [];
 		}
+
+		toast.success(`${storage_unit.name} created`);
+		history.back();
 		// const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
 		// console.log(addtounivarasal);
 	}
@@ -63,6 +67,7 @@
 	let SaveBtn: HTMLButtonElement;
 	let subcount = 0;
 	let CancelBtn: HTMLButtonElement;
+	let anajSelectionTrigger: HTMLButtonElement;
 </script>
 
 <!-- <NameInput bind:TriggerButton={TriggerBtn} bind:name={storage_unit.name}></NameInput> -->
@@ -81,9 +86,9 @@
 								if (storage_unit.name.length > 0) {
 									e.preventDefault();
 									CancelBtn.click();
+
 									if (selected_anaj.length > 0) {
 										await save();
-										history.back();
 									}
 								}
 							}}
@@ -101,7 +106,7 @@
 				<AlertDialog.Cancel class="hidden"
 					><button bind:this={CancelBtn}>Cancel</button></AlertDialog.Cancel
 				>
-				<AlertDialog.Action type="submit" form="formID"
+				<AlertDialog.Action type="submit"
 					>{selected_anaj.length > 0 ? 'Create' : 'Set'}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
@@ -129,7 +134,11 @@
 		</div>
 	{/each}
 	<div class="flex justify-end gap-2">
-		<AnajSelection bind:selected={selected_anaj} {anajlist}></AnajSelection>
+		<AnajSelection
+			bind:TriggerButton={anajSelectionTrigger}
+			bind:selected={selected_anaj}
+			{anajlist}
+		></AnajSelection>
 		<Button on:click={save} class="  rounded-lg">Create</Button>
 	</div>
 
