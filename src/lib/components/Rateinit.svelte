@@ -8,14 +8,17 @@
 	import Rateform from './Rateform.svelte';
 	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
 	import { SaveIcon } from 'lucide-svelte';
 	import Label from './ui/label/label.svelte';
 	import { getAllUsedAnajs } from '$lib/api';
+	import toast from 'svelte-french-toast';
+	import { onMount } from 'svelte';
 
 	// for rate profile
 	let next = false;
-	let name: string;
+	let name: string = '';
 	let ratelist: oneRate[];
 	let rateProfile_id: number = 1;
 	let api: CarouselAPI;
@@ -31,6 +34,10 @@
 	// resume for days if form half copleted
 	let isSaving = false;
 	async function Save() {
+		if (name.length == 0) {
+			TriggerBtn.click();
+			return;
+		}
 		isSaving = true;
 
 		// saving profile name to db
@@ -56,6 +63,9 @@
 			isSaving = false;
 			saved = true;
 		}
+
+		toast.success(`${name} created`);
+		history.back();
 	}
 
 	function Next() {
@@ -74,7 +84,60 @@
 	}
 
 	let saved = false;
+
+	// name prompt
+	let TriggerBtn: HTMLButtonElement;
+	let CancelBtn: HTMLButtonElement;
+
+	onMount(() => {
+		TriggerBtn.click();
+	});
 </script>
+
+<div id="alerts">
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={TriggerBtn}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title class="flex justify-between"></AlertDialog.Title>
+				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
+					<div class="text-lg"></div>
+
+					<div>
+						<form
+							on:submit={async (e) => {
+								e.preventDefault();
+								CancelBtn.click();
+								if (current_day == 6) {
+									await Save();
+								}
+							}}
+							class=" flex items-center gap-3"
+						>
+							<Label class="text-lg font-medium">Name:</Label>
+							<Input bind:value={name} type="text" autofocus />
+							<!-- <Label class="text-lg font-medium">Amount:</Label>
+						<Input bind:value={addAmount} type="number" autofocus /> -->
+						</form>
+					</div>
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel class="hidden"
+					><button bind:this={CancelBtn}>Cancel</button></AlertDialog.Cancel
+				>
+				<AlertDialog.Action
+					type="submit"
+					on:click={async () => {
+						if (current_day == 6) {
+							await Save();
+						}
+					}}>{current_day == 6 ? 'Create' : 'Set'}</AlertDialog.Action
+				>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>
 
 <div class="flex w-full flex-col gap-2">
 	<div class="flex items-center gap-2">

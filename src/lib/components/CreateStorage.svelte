@@ -106,8 +106,13 @@
 				<AlertDialog.Cancel class="hidden"
 					><button bind:this={CancelBtn}>Cancel</button></AlertDialog.Cancel
 				>
-				<AlertDialog.Action type="submit"
-					>{selected_anaj.length > 0 ? 'Create' : 'Set'}</AlertDialog.Action
+				<AlertDialog.Action
+					type="submit"
+					on:click={async () => {
+						if (selected_anaj.length > 0) {
+							await save();
+						}
+					}}>{selected_anaj.length > 0 ? 'Create' : 'Set'}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
