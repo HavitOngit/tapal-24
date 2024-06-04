@@ -21,9 +21,11 @@
 	import toast from 'svelte-french-toast';
 	import SelectionNav from '$lib/components/extraFeatures/SelectionNav.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
+	const usedBy = liveQuery(() => db.group.where({ storage_unit_id: id }).toArray());
 	let unit: StorageUnit;
 	onMount(async () => {
 		unit = (await db.storage_unit.get(id)) as StorageUnit;
@@ -31,11 +33,11 @@
 	});
 
 	async function DeleteM() {
-		const status = await db.storage_unit.delete(id);
+		await db.storage_unit.delete(id);
 		const needtodel = $list.map((obj) => obj.id);
 		console.log(needtodel);
-		const cleanup = await db.storage.bulkDelete(needtodel);
-
+		await db.storage.bulkDelete(needtodel);
+		toast.success(`${stockName} Deleted`);
 		history.back();
 	}
 
@@ -89,12 +91,31 @@
 
 	// delete
 	let deleteMode: boolean = false;
-	let DeleteList = [];
+	let DeleteList: Storage[] = [];
 
 	let pressTimer: ReturnType<typeof setTimeout>;
 	const longpressDuration = 1000;
 	let deleteBtn: HTMLButtonElement;
 	let selectall: boolean = false;
+
+	async function deleteitems() {
+		if (!deleteMode) {
+			await DeleteM();
+		}
+		const deletedno = DeleteList.length;
+		if (DeleteList.length > 0) {
+			await db.storage.bulkDelete(
+				DeleteList.map((obj) => {
+					return obj.id;
+				})
+			);
+			deleteMode = false;
+			toast.success(`${deletedno} items Deleted`);
+		}
+	}
+
+	if (DeleteList.length > 0) {
+	}
 
 	$: if (selectall == true) {
 		DeleteList = $list;
@@ -142,14 +163,50 @@
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Rename</AlertDialog.Title>
+				<AlertDialog.Title>Delete</AlertDialog.Title>
 				<AlertDialog.Description>
-					<Input bind:value={unit.name} />
+					<div class="m-2 flex flex-col gap-2">
+						{#each DeleteList as item}
+							<div class="flex justify-between">
+								<div>{item.name}</div>
+								<div>{item.amount} kg</div>
+							</div>
+						{/each}
+
+						{#if !deleteMode}
+							<div class="flex flex-col gap-4">
+								<div class="flex items-start">this stock currently contain :</div>
+								<div>
+									{#each $list as item}
+										<div class="m-5 flex justify-between">
+											<div>{item.name}</div>
+											<div>{item.amount} kg</div>
+										</div>
+									{/each}
+								</div>
+								<div class=" flex gap-2">
+									{#if $usedBy}
+										<Label class="text-base">UsedBy:</Label>
+										<div class="flex gap-3">
+											{#each $usedBy as reg}
+												<Badge variant="outline">{reg.name}</Badge>
+											{/each}
+										</div>
+									{/if}
+								</div>
+								<hr />
+								<div class="flex text-wrap">
+									<Label class="text-base font-semibold">NOTE:</Label>
+									{stockName} will be deleted. cannot be restored once deleted.
+								</div>
+							</div>
+						{/if}
+					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+				<AlertDialog.Action on:click={deleteitems} class="bg-red-500">Confirm</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
@@ -175,11 +232,16 @@
 								>
 									Rename
 								</DropdownMenu.Item>
-
-								<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
-									>Delete items</DropdownMenu.Item
+								{#if $list.length > 0}
+									<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
+										>Delete items</DropdownMenu.Item
+									>
+								{/if}
+								<DropdownMenu.Item
+									on:click={() => {
+										deleteBtn.click();
+									}}>Delete</DropdownMenu.Item
 								>
-								<DropdownMenu.Item>Delete</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</div>
