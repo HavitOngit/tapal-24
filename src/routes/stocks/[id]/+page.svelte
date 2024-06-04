@@ -163,7 +163,7 @@
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Delete</AlertDialog.Title>
+				<AlertDialog.Title>Deleting {stockName}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<div class="m-2 flex flex-col gap-2">
 						{#each DeleteList as item}
@@ -175,8 +175,8 @@
 
 						{#if !deleteMode}
 							<div class="flex flex-col gap-4">
-								<div class="flex items-start">this stock currently contain :</div>
 								<div>
+									<div class="flex items-start">this stock currently contain :</div>
 									{#each $list as item}
 										<div class="m-5 flex justify-between">
 											<div>{item.name}</div>
@@ -185,7 +185,7 @@
 									{/each}
 								</div>
 								<div class=" flex gap-2">
-									{#if $usedBy}
+									{#if $usedBy.length > 0}
 										<Label class="text-base">UsedBy:</Label>
 										<div class="flex gap-3">
 											{#each $usedBy as reg}
