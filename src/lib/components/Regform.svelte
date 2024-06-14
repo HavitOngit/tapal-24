@@ -10,6 +10,7 @@
 	import Switch from './ui/switch/switch.svelte';
 	import Badge from './ui/badge/badge.svelte';
 	import Button from './ui/button/button.svelte';
+	import { z } from 'zod';
 
 	export let data: RegForm;
 	let stocklist: any;
@@ -49,6 +50,22 @@
 
 		isLoading = false;
 	});
+
+	let name: string = '';
+	let show_error = false;
+	$: name = data.name;
+	const zod_check = z.object({
+		name: z.string().min(1)
+	});
+
+	$: result = zod_check.safeParse({ name });
+
+	export let isDone: boolean;
+	$: if (result.success) {
+		isDone = true;
+	} else {
+		isDone = false;
+	}
 </script>
 
 <Card.Root class="m-2">
@@ -65,8 +82,21 @@
 		</div>
 		<div class="flex items-center gap-2">
 			<Label>Name:</Label>
-			<Input bind:value={data.name} placeholder="Enter Name" />
+			<Input
+				bind:value={data.name}
+				placeholder="Enter Name"
+				on:click={() => {
+					show_error = true;
+				}}
+			/>
 		</div>
+		{#if result.error && show_error}
+			<div>
+				<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
+					>{result.error.errors[0].message}</Badge
+				>
+			</div>
+		{/if}
 		{#if !isLoading}
 			<div>
 				<ListSelector

@@ -17,15 +17,18 @@
 
 	export let data: RegForm = {
 		name: '',
-		storage_unit_id: 0,
-		rate_unit_id: 0,
+		storage_unit_id: 1,
+		rate_unit_id: 1,
 		currently_used: true
 	};
 
 	async function Save() {
+		if (!isDone) return;
 		const status = await db.group.put(data);
 		console.log(status);
 	}
+
+	let isDone: boolean = false;
 </script>
 
 <AlertDialog.Root>
@@ -49,11 +52,11 @@
 	</AlertDialog.Description>
   </AlertDialog.Header> -->
 
-		<Regform bind:data></Regform>
+		<Regform bind:data bind:isDone></Regform>
 
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action>
+			<AlertDialog.Action disabled={!isDone}>
 				<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
