@@ -30,7 +30,7 @@
 					>{regi.currently_used ? 'Active' : 'not in Use'}</Badge
 				>
 				{#if forUpdate}
-					<RegiCreateForm useForUpdaate={true} bind:data={regi}></RegiCreateForm>
+					<RegiCreateForm useForUpdaate={true} data={regi}></RegiCreateForm>
 				{/if}
 			</div></CardTitle
 		>

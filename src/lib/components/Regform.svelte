@@ -49,6 +49,13 @@
 		console.log(stocklist, ratelist);
 
 		isLoading = false;
+
+		console.log({
+			isDone,
+			result,
+			show_error,
+			data
+		});
 	});
 
 	let name: string = '';
