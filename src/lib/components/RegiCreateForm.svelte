@@ -19,11 +19,15 @@
 		name: '',
 		storage_unit_id: 1,
 		rate_unit_id: 1,
-		currently_used: true
+		currently_used: true,
+		boys: 0,
+		girls: 0
 	};
 
 	async function Save() {
 		if (!isDone) return;
+		data.boys = Number(data.boys);
+		data.girls = Number(data.girls);
 		const status = await db.group.put(data);
 		console.log(status);
 	}

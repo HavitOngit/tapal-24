@@ -104,6 +104,17 @@
 				>
 			</div>
 		{/if}
+
+		<div class="flex gap-2">
+			<div>
+				<Label>Boys:</Label>
+				<Input bind:value={data.boys} type="number" />
+			</div>
+			<div>
+				<Label>Girls:</Label>
+				<Input bind:value={data.girls} type="number" />
+			</div>
+		</div>
 		{#if !isLoading}
 			<div>
 				<ListSelector

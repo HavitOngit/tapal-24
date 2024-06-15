@@ -38,6 +38,13 @@
 
 	{#if $rate}
 		<CardContent class="flex flex-col gap-2 ">
+			{#if regi.boys || regi.girls}
+				<div class="flex gap-2">
+					<Badge variant="outline">Boys {regi.boys}</Badge> + <Badge variant="outline"
+						>Girls {regi.girls}</Badge
+					> = <Badge variant="default">total {Number(regi.boys) + Number(regi.girls)}</Badge>
+				</div>
+			{/if}
 			<div class="mr-2 flex justify-between">
 				{#if $stock}
 					<a href="/stocks/{regi.storage_unit_id}">

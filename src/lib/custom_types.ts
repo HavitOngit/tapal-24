@@ -5,6 +5,8 @@ export interface Group {
     storage_unit_id: number,
     rate_unit_id: number,
     currently_used: true | false
+    boys?: number,
+    girls?: number
 }
 
 export interface Attendance {
@@ -95,7 +97,10 @@ export interface RegForm {
     name: string,
     storage_unit_id: number,
     rate_unit_id: number,
-    currently_used: true | false
+    currently_used: true | false,
+    boys?: number,
+    girls?: number
+
 }
 
 export interface Selector {
