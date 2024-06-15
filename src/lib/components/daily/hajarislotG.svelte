@@ -15,6 +15,8 @@
 	import { onMount } from 'svelte';
 	import { getDateID } from '$lib/api';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { z } from 'zod';
+	import Badge from '../ui/badge/badge.svelte';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -165,6 +167,19 @@
 		await getInfo();
 		console.log('from component', workingDate.toString());
 	});
+
+	let isDone: boolean = true;
+	const validate = z.object({
+		boys: z.number().max(RegData.boys || 999),
+		girls: z.number().max(RegData.girls || 999)
+	});
+
+	$: result = validate.safeParse({ boys, girls });
+	$: if (result.error) {
+		isDone = false;
+	} else {
+		isDone = true;
+	}
 </script>
 
 <Toaster />
@@ -178,12 +193,23 @@
 		</CardHeader>
 		<CardContent>
 			<Attendance bind:boys bind:girls bind:total></Attendance>
+			{#if result.error}
+				<div>
+					{#each result.error.errors as error}
+						<Badge variant="outline" class=" border-red-700 bg-red-100 text-red-500">
+							{error.message}
+						</Badge>
+					{/each}
+				</div>
+			{/if}
 		</CardContent>
 		<CardFooter class="flex justify-between">
 			<div>Total: {total}</div>
 			<!-- <Button>Submit</Button> -->
 			<AlertDialog.Root>
-				<AlertDialog.Trigger on:click={cal_usage}><Button>Submit</Button></AlertDialog.Trigger>
+				<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
+					><Button disabled={!isDone}>Submit</Button></AlertDialog.Trigger
+				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
 						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->

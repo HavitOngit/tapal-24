@@ -135,8 +135,4 @@
 			{/each}
 		</div>
 	{/if}
-
-	<div class="bottom-0">
-		<Button on:click={status}>Status</Button>
-	</div>
 </div>

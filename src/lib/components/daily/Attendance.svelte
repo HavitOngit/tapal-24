@@ -10,6 +10,8 @@
 	export let total: number = 0;
 
 	$: total = Number(boys) + Number(girls);
+	$: boys = Number(boys);
+	$: girls = Number(girls);
 </script>
 
 <div class="flex flex-col gap-2">
