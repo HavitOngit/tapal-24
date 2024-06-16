@@ -13,6 +13,8 @@
 	import { z } from 'zod';
 
 	export let data: RegForm;
+	const preData: RegForm = { ...data };
+
 	let stocklist: any;
 	let ratelist: any;
 	let isLoading = true;
@@ -32,6 +34,7 @@
 		console.log(diff);
 
 		competable = diff?.length == 0;
+		isDone = competable;
 	}
 
 	$: check_requrments(data.rate_unit_id, data.storage_unit_id);
@@ -49,13 +52,6 @@
 		console.log(stocklist, ratelist);
 
 		isLoading = false;
-
-		console.log({
-			isDone,
-			result,
-			show_error,
-			data
-		});
 	});
 
 	let name: string = '';
@@ -133,16 +129,23 @@
 
 			{#if !competable}
 				<div class="flex items-center gap-2">
-					<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
-						>Some Anaj not in selected Stock</Badge
-					>
-
-					<Button>Fix</Button>
+					<!-- <Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
+						>Some Anaj not in selected Stock
+					</Badge> -->
+					<Badge variant="outline" class="border-yellow-700 bg-yellow-200 text-yellow-600">
+						To use this Combination First add following Anajs to selected Stock
+					</Badge>
+					<a href="/stocks/{data.storage_unit_id}">
+						<Button>Fix</Button>
+					</a>
 				</div>
-
-				{#each diff as item}
-					{item}
-				{/each}
+				<div class="flex gap-2">
+					{#each diff as item}
+						<Badge variant="default">
+							{item}</Badge
+						>
+					{/each}
+				</div>
 			{/if}
 		{/if}
 	</Card.Content>
