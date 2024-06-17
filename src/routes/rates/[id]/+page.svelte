@@ -22,7 +22,7 @@
 
 	const list = liveQuery(() => db.rate.where({ rate_unit_id: id }).toArray());
 	const rateUnit = liveQuery(() => db.rates.get(id));
-	let unit: Rates;
+	let unit: any;
 	const usedBy = liveQuery(() => db.group.where({ rate_unit_id: id }).toArray());
 
 	async function nameUpdate() {

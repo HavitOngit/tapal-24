@@ -17,8 +17,8 @@
 
 	export let data: RegForm = {
 		name: '',
-		storage_unit_id: 1,
-		rate_unit_id: 1,
+		storage_unit_id: 0,
+		rate_unit_id: 0,
 		currently_used: true,
 		boys: 0,
 		girls: 0

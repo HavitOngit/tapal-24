@@ -56,12 +56,16 @@
 
 	let name: string = '';
 	let show_error = false;
-	$: name = data.name;
+	$: needCheck = {
+		name: data.name,
+		rate_unit_id: data.rate_unit_id,
+		storage_unit_id: data.storage_unit_id
+	};
 	const zod_check = z.object({
 		name: z.string().min(1)
 	});
 
-	$: result = zod_check.safeParse({ name });
+	$: result = zod_check.safeParse({ needCheck });
 
 	export let isDone: boolean;
 	$: if (result.success) {

@@ -8,8 +8,8 @@
 	import { Toaster } from 'svelte-french-toast';
 </script>
 
-<div class="flex h-11 w-full items-center justify-center bg-white">
-	<div class="absolute left-0 justify-start">
+<div class=" flex h-11 w-full items-center justify-between bg-white">
+	<div class=" justify-start">
 		<button
 			on:click={() => {
 				history.back();
@@ -22,6 +22,9 @@
 		</button>
 	</div>
 	<a href="/" class="text-black">Home</a>
+	<a href="/account" class="right-0 m-2 rounded-xl">
+		<img src="/impatient-kitty.gif" class="size-8" alt="account" />
+	</a>
 </div>
 <Toaster></Toaster>
 {#if $navigating}
