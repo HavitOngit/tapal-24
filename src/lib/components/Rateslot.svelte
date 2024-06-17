@@ -18,12 +18,13 @@
 	</Card.Content>
 </Card.Root> -->
 
-<div class="m-2 w-[80%] rounded-sm border border-gray-500 p-2">
+<div class="m-1 w-[80%] rounded-sm border border-gray-500 p-2">
 	<div class="flex justify-between">
 		<div class="text-lg">{rateDetails.day}</div>
 		<!-- <Button variant="outline">Edit</Button> -->
 		<RateEdit Ratedetails={rateDetails}></RateEdit>
 	</div>
+	<hr />
 
 	<div class="flex flex-col">
 		{#each rateDetails.ratelist as rate}
