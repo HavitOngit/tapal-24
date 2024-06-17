@@ -175,29 +175,47 @@
 
 						{#if !deleteMode}
 							<div class="flex flex-col gap-4">
-								<div>
-									<div class="flex items-start">this stock currently contain :</div>
-									{#each $list as item}
-										<div class="m-5 flex justify-between">
-											<div>{item.name}</div>
-											<div>{item.amount} kg</div>
-										</div>
-									{/each}
-								</div>
-								<div class=" flex gap-2">
+								<div
+									class=" flex flex-col gap-4
+								"
+								>
 									{#if $usedBy.length > 0}
-										<Label class="text-base">UsedBy:</Label>
-										<div class="flex gap-3">
-											{#each $usedBy as reg}
-												<Badge variant="outline">{reg.name}</Badge>
+										<div id="notice">
+											<p class="text-left">currently this stock is used by following Registers</p>
+										</div>
+										<div class="flex">
+											<Label class="text-base">UsedBy:</Label>
+											<div class="flex gap-3">
+												{#each $usedBy as reg}
+													<Badge variant="outline">{reg.name}</Badge>
+												{/each}
+											</div>
+										</div>
+										<hr />
+										<div class="flex">
+											<p class="text-left">
+												To Delete this Stock Make Sure this stock not used by anyone
+											</p>
+											<a href="/reg">
+												<Button>Fix</Button>
+											</a>
+										</div>
+									{:else}
+										<div>
+											<div class="flex items-start">this stock currently contain :</div>
+											{#each $list as item}
+												<div class="m-5 flex justify-between">
+													<div>{item.name}</div>
+													<div>{item.amount} kg</div>
+												</div>
 											{/each}
 										</div>
+										<hr />
+										<div class="flex text-wrap">
+											<Label class="text-base font-semibold">NOTE:</Label>
+											{stockName} will be deleted. cannot be restored once deleted.
+										</div>
 									{/if}
-								</div>
-								<hr />
-								<div class="flex text-wrap">
-									<Label class="text-base font-semibold">NOTE:</Label>
-									{stockName} will be deleted. cannot be restored once deleted.
 								</div>
 							</div>
 						{/if}
@@ -206,7 +224,11 @@
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={deleteitems} class="bg-red-500">Confirm</AlertDialog.Action>
+				<AlertDialog.Action
+					on:click={deleteitems}
+					class="bg-red-500"
+					disabled={!($usedBy.length == 0)}>Confirm</AlertDialog.Action
+				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
