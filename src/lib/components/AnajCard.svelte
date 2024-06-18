@@ -21,7 +21,7 @@
 				class="h-full w-full object-cover p-2"
 			/>
 		</div>
-		<div class="mt-2">
+		<div class="mt-2 text-wrap">
 			{anaj.name}
 		</div>
 		<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->

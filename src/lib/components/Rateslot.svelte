@@ -20,7 +20,7 @@
 
 <div class="m-1 w-[80%] rounded-sm border border-gray-500 p-2">
 	<div class="flex justify-between">
-		<div class="text-lg">{rateDetails.day}</div>
+		<div class="text-lg font-medium">{rateDetails.day}</div>
 		<!-- <Button variant="outline">Edit</Button> -->
 		<RateEdit Ratedetails={rateDetails}></RateEdit>
 	</div>

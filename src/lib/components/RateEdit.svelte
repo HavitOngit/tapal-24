@@ -34,7 +34,7 @@
 		</AlertDialog.Header>
 		<Rateform forInit={false} anajlist={Ratedetails.ratelist} bind:ratelist={Ratedetails.ratelist}
 		></Rateform>
-		<AlertDialog.Footer class="flex flex-row justify-around">
+		<AlertDialog.Footer class="flex flex-row items-center justify-between">
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
 			<AlertDialog.Action on:click={update}>Save Changes</AlertDialog.Action>
 		</AlertDialog.Footer>

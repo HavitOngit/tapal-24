@@ -153,33 +153,33 @@
 	}}
 ></Button> -->
 
-<div class="flex flex-col items-center justify-center">
-	<div class="flex justify-between">
-		<p>{$rateUnit?.name}</p>
-		<div>
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					<Settings2 />
-				</DropdownMenu.Trigger>
+<div class="m-10 flex justify-between">
+	<p class="text-xl font-semibold">{$rateUnit?.name}</p>
+	<div>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<Settings2 />
+			</DropdownMenu.Trigger>
 
-				<DropdownMenu.Content>
-					<DropdownMenu.Item
-						on:click={() => {
-							TestButton.click();
-						}}
-					>
-						Rename
-					</DropdownMenu.Item>
+			<DropdownMenu.Content>
+				<DropdownMenu.Item
+					on:click={() => {
+						TestButton.click();
+					}}
+				>
+					Rename
+				</DropdownMenu.Item>
 
-					<DropdownMenu.Item
-						on:click={() => {
-							deleteBtn.click();
-						}}>Delete</DropdownMenu.Item
-					>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
-		</div>
+				<DropdownMenu.Item
+					on:click={() => {
+						deleteBtn.click();
+					}}>Delete</DropdownMenu.Item
+				>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	</div>
+</div>
+<div class="flex flex-col items-center justify-center">
 	{#each $list || [] as detail}
 		<!-- <RateView rateDetails={detail}></RateView> -->
 		<Rateslot rateDetails={detail}></Rateslot>

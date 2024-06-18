@@ -90,7 +90,7 @@
 			{/if}
 		</div>
 		<Drawer.Footer>
-			<Drawer.Close>Done</Drawer.Close>
+			<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>
