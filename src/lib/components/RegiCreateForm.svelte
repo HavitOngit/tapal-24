@@ -8,6 +8,7 @@
 	import type { RegForm } from '$lib/custom_types';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Plus, Settings } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
 	let name: string;
 	let storage_unit_id: number = 1;
@@ -25,6 +26,10 @@
 	};
 
 	let preData: RegForm = { ...data };
+
+	onMount(() => {
+		data = { ...preData };
+	});
 
 	async function Save() {
 		if (!isDone) return;
