@@ -227,7 +227,7 @@
 				<AlertDialog.Action
 					on:click={deleteitems}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0)}>Confirm</AlertDialog.Action
+					disabled={!($usedBy.length == 0 || deleteMode)}>Confirm</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
