@@ -163,7 +163,7 @@
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Deleting {stockName}</AlertDialog.Title>
+				<AlertDialog.Title>Deleting {deleteMode ? 'from ' : ''}{stockName}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<div class="m-2 flex flex-col gap-2">
 						{#each DeleteList as item}

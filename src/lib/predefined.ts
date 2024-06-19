@@ -12,11 +12,11 @@ export const anajlist: Anajlist_init[] = [
     },
 
     {
-        name: "Tuvardal",
+        name: "Tuvar-dal",
         image: "/anaj_images/tuvardal.png"
     },
     {
-        name: "Chanadal",
+        name: "Chana-dal",
         image: "/anaj_images/chana-dal.png"
     },
     {

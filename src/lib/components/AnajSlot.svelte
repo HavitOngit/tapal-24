@@ -96,12 +96,12 @@
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
-						<div class="flex items-center gap-2 text-lg">
+						<div class="flex flex-wrap items-center gap-2 text-nowrap text-lg">
 							Avalable :
 							<!-- <Badge variant="outline" class="text-lg font-semibold">
 								{anaj.amount} kg
 							</Badge> -->
-							<div class="text-lg font-semibold">
+							<div class="text-nowrap text-lg font-semibold">
 								{anaj.amount} kg
 							</div>
 							{#if !deleteMode}

@@ -136,14 +136,17 @@
 					<!-- <Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
 						>Some Anaj not in selected Stock
 					</Badge> -->
-					<Badge variant="outline" class="border-yellow-700 bg-yellow-200 text-yellow-600">
+					<Badge
+						variant="outline"
+						class="text-wrap border-yellow-700 bg-yellow-200 text-yellow-600"
+					>
 						To use this Combination First add following Anajs to selected Stock
 					</Badge>
 					<a href="/stocks/{data.storage_unit_id}">
 						<Button>Fix</Button>
 					</a>
 				</div>
-				<div class="flex gap-2">
+				<div class="flex flex-wrap gap-2">
 					{#each diff as item}
 						<Badge variant="default">
 							{item}</Badge
