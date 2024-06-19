@@ -63,7 +63,7 @@
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel
 				on:click={() => {
-					data = preData;
+					data = { ...preData };
 				}}>Cancel</AlertDialog.Cancel
 			>
 			<AlertDialog.Action disabled={!isDone}>
