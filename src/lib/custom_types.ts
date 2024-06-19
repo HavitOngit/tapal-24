@@ -38,6 +38,7 @@ export interface StorageHistory {
     date: Date,
     date_id: number,
     name: string,
+    before_amount: number,
     amount: number,
     storage_unit_id: number
 }

@@ -353,7 +353,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}--{AttendanceData.date.toString()}
+				{RegData.name}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>

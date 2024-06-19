@@ -16,6 +16,7 @@
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 	import { writable } from 'svelte/store';
+	import { getDateID } from '$lib/api';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
@@ -26,10 +27,21 @@
 	$: sum = Number(addAmount) + Number(anaj.amount);
 
 	async function addToStore() {
-		const status = await db.storage
-			.update(anaj.id, { amount: sum })
-			.then(() => toast.success(`${Number(addAmount)} kg added to ${anaj.name}`));
-		addAmount = 0;
+		db.transaction('rw', db.storage, db.storage_history, async () => {
+			await db.storage_history.add({
+				name: anaj.name,
+				storage_unit_id: anaj.storage_unit_id,
+				before_amount: anaj.amount,
+				amount: addAmount,
+				date: today,
+				date_id: getDateID(today)
+			});
+			await db.storage.update(anaj.id, { amount: sum });
+		}).then(() => {
+			toast.success(`${Number(addAmount)} kg added to ${anaj.name}`);
+
+			addAmount = 0;
+		});
 	}
 
 	let addbtn: HTMLButtonElement;

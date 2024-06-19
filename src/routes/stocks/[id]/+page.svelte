@@ -13,7 +13,13 @@
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { CircleFadingPlus, HistoryIcon, PackagePlus, Settings2 } from 'lucide-svelte';
+	import {
+		CircleFadingPlus,
+		HistoryIcon,
+		PackagePlus,
+		ReceiptTextIcon,
+		Settings2
+	} from 'lucide-svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
@@ -240,7 +246,12 @@
 			<Card.Header>
 				<Card.Title class="m-2 flex  items-center justify-between">
 					<div>{unit?.name}</div>
-					<div>
+					<div class="flex gap-2">
+						<div>
+							<a href="{$page.url}/report">
+								<ReceiptTextIcon></ReceiptTextIcon>
+							</a>
+						</div>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<Settings2 />
