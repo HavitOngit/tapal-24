@@ -24,6 +24,8 @@
 		girls: 0
 	};
 
+	let preData: RegForm = { ...data };
+
 	async function Save() {
 		if (!isDone) return;
 		data.boys = Number(data.boys);
@@ -59,7 +61,11 @@
 		<Regform bind:data bind:isDone></Regform>
 
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Cancel
+				on:click={() => {
+					data = preData;
+				}}>Cancel</AlertDialog.Cancel
+			>
 			<AlertDialog.Action disabled={!isDone}>
 				<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
 			</AlertDialog.Action>

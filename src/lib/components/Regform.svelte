@@ -13,7 +13,6 @@
 	import { z } from 'zod';
 
 	export let data: RegForm;
-	const preData: RegForm = { ...data };
 
 	let stocklist: any;
 	let ratelist: any;
@@ -56,22 +55,27 @@
 
 	let name: string = '';
 	let show_error = false;
-	$: needCheck = {
+
+	const zod_check = z.object({
+		name: z.string().min(1),
+		rate_unit_id: z.number().min(1),
+		storage_unit_id: z.number().min(1)
+	});
+
+	$: result = zod_check.safeParse({
 		name: data.name,
 		rate_unit_id: data.rate_unit_id,
 		storage_unit_id: data.storage_unit_id
-	};
-	const zod_check = z.object({
-		name: z.string().min(1)
 	});
 
-	$: result = zod_check.safeParse({ needCheck });
-
 	export let isDone: boolean;
-	$: if (result.success) {
-		isDone = true;
-	} else {
+
+	$: if (result.error) {
+		console.log({ result: result.error, isDone });
+
 		isDone = false;
+	} else {
+		isDone = true;
 	}
 </script>
 
@@ -99,9 +103,11 @@
 		</div>
 		{#if result.error && show_error}
 			<div>
-				<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
-					>{result.error.errors[0].message}</Badge
-				>
+				{#each result.error.errors as err}
+					<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
+						>{err.message}</Badge
+					>
+				{/each}
 			</div>
 		{/if}
 
