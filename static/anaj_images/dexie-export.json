@@ -1,0 +1,33 @@
+{
+  "formatName": "dexie",
+  "formatVersion": 1,
+  "data": {
+    "databaseName": "exportSample",
+    "databaseVersion": 1,
+    "tables": [
+      {
+        "name": "foos",
+        "schema": "id",
+        "rowCount": 2
+      }
+    ],
+    "data": [{
+      "tableName": "foos",
+      "inbound": true,
+      "rows": [
+        {
+          "id": 1,
+          "foo": "foo",
+          "date": 1718863034867,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "id": 2,
+          "foo": "bar"
+        }
+      ]
+    }]
+  }
+}

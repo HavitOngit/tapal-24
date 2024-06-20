@@ -20,6 +20,9 @@ dependencies:
   dexie:
     specifier: 4.0.1-beta.6
     version: 4.0.1-beta.6
+  dexie-export-import:
+    specifier: ^4.1.2
+    version: 4.1.2(dexie@4.0.1-beta.6)
   embla-carousel-svelte:
     specifier: ^8.0.0
     version: 8.0.0(svelte@4.2.9)
@@ -864,6 +867,14 @@ packages:
   /devalue@4.3.2:
     resolution: {integrity: sha512-KqFl6pOgOW+Y6wJgu80rHpo2/3H07vr8ntR9rkkFIRETewbf5GaYYcakYfiKz89K+sLsuPkQIZaXDMjUObZwWg==}
     dev: true
+
+  /dexie-export-import@4.1.2(dexie@4.0.1-beta.6):
+    resolution: {integrity: sha512-dWIkkajX+CsEJ19xMnvyqUDlldIl7jW/G49hy3pXZeIgCei9fPeGSjteoh7BeTujexIM3XZ+uAGCEwgCx2HAsQ==}
+    peerDependencies:
+      dexie: ^2.0.4 || ^3.0.0 || ^4.0.1-alpha.5
+    dependencies:
+      dexie: 4.0.1-beta.6
+    dev: false
 
   /dexie@4.0.1-beta.6:
     resolution: {integrity: sha512-NOexH4Rn8mrdSg/bn3YNFdPzQ1vPNxgPYLGWGU46z26NYGW1XmC0hhjjttwx9jYwba1K9Ypo1ZbZLNKtK6INSg==}
