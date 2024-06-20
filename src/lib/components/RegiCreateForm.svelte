@@ -8,6 +8,7 @@
 	import type { RegForm } from '$lib/custom_types';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Plus, Settings } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
 	let name: string;
 	let storage_unit_id: number = 1;
@@ -23,6 +24,12 @@
 		boys: 0,
 		girls: 0
 	};
+
+	let preData: RegForm = { ...data };
+
+	onMount(() => {
+		data = { ...preData };
+	});
 
 	async function Save() {
 		if (!isDone) return;
@@ -59,7 +66,11 @@
 		<Regform bind:data bind:isDone></Regform>
 
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+			<AlertDialog.Cancel
+				on:click={() => {
+					data = { ...preData };
+				}}>Cancel</AlertDialog.Cancel
+			>
 			<AlertDialog.Action disabled={!isDone}>
 				<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
 			</AlertDialog.Action>

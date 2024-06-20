@@ -1,0 +1,1107 @@
+{
+  "formatName": "dexie",
+  "formatVersion": 1,
+  "data": {
+    "databaseName": "AnajDB",
+    "databaseVersion": 1,
+    "tables": [
+      {
+        "name": "group",
+        "schema": "++id,name,storage_unit_id,rate_unit_id,currently_used",
+        "rowCount": 4
+      },
+      {
+        "name": "attendance",
+        "schema": "++id,date,date_id,boys,girls,total,group_id",
+        "rowCount": 8
+      },
+      {
+        "name": "storage_unit",
+        "schema": "++id,name",
+        "rowCount": 2
+      },
+      {
+        "name": "storage",
+        "schema": "++id,name,amount,storage_unit_id",
+        "rowCount": 9
+      },
+      {
+        "name": "storage_history",
+        "schema": "++id,date,date_id,name,amount,storage_unit_id",
+        "rowCount": 2
+      },
+      {
+        "name": "usage",
+        "schema": "++id,date,date_id,name,amount,before_amount,after_amount,rate,group_id,storage_unit_id",
+        "rowCount": 35
+      },
+      {
+        "name": "rates",
+        "schema": "++id,name",
+        "rowCount": 1
+      },
+      {
+        "name": "rate",
+        "schema": "++id,day,ratelist,rate_unit_id",
+        "rowCount": 7
+      },
+      {
+        "name": "backup",
+        "schema": "++id,date,date_id,start,end,action",
+        "rowCount": 0
+      },
+      {
+        "name": "univarsalList",
+        "schema": "++id,name",
+        "rowCount": 6
+      }
+    ],
+    "data": [{
+      "tableName": "group",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "fffff",
+          "storage_unit_id": 1,
+          "rate_unit_id": 2,
+          "currently_used": true,
+          "id": 3,
+          "boys": 50,
+          "girls": 50
+        },
+        {
+          "name": "atte",
+          "storage_unit_id": 1,
+          "rate_unit_id": 2,
+          "currently_used": true,
+          "boys": 40,
+          "girls": 55,
+          "id": 4
+        },
+        {
+          "name": "xx",
+          "storage_unit_id": 1,
+          "rate_unit_id": 2,
+          "currently_used": false,
+          "boys": 0,
+          "girls": 0,
+          "id": 5
+        },
+        {
+          "name": "jjjjjjj",
+          "storage_unit_id": 1,
+          "rate_unit_id": 2,
+          "currently_used": false,
+          "boys": 54,
+          "girls": 44,
+          "id": 6
+        }
+      ]
+    },{
+      "tableName": "attendance",
+      "inbound": true,
+      "rows": [
+        {
+          "boys": 0,
+          "girls": 0,
+          "total": 0,
+          "group_id": 1,
+          "date": 1718359630407,
+          "date_id": 1718303400000,
+          "id": 1,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 0,
+          "girls": 0,
+          "total": 0,
+          "group_id": 1,
+          "date": 1718446030407,
+          "date_id": 1718389800000,
+          "id": 2,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 44,
+          "girls": 50,
+          "total": 94,
+          "group_id": 3,
+          "date": 1718014030407,
+          "date_id": 1717957800000,
+          "id": 3,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 4,
+          "girls": 5,
+          "total": 9,
+          "group_id": 3,
+          "date": 1717668430407,
+          "date_id": 1717612200000,
+          "id": 4,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 5,
+          "girls": 44,
+          "total": 49,
+          "group_id": 3,
+          "date": 1717236430407,
+          "date_id": 1717180200000,
+          "id": 5,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 44,
+          "girls": 0,
+          "total": 44,
+          "group_id": 3,
+          "date": 1718532430407,
+          "date_id": 1718476200000,
+          "id": 6,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 44,
+          "girls": 0,
+          "total": 44,
+          "group_id": 3,
+          "date": 1718964430407,
+          "date_id": 1718908200000,
+          "id": 7,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "boys": 44,
+          "girls": 44,
+          "total": 88,
+          "group_id": 3,
+          "date": 1719050830407,
+          "date_id": 1718994600000,
+          "id": 8,
+          "$types": {
+            "date": "date"
+          }
+        }
+      ]
+    },{
+      "tableName": "storage_unit",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "havit",
+          "id": 1
+        },
+        {
+          "name": "hh",
+          "id": 3
+        }
+      ]
+    },{
+      "tableName": "storage",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "ragi",
+          "amount": 100,
+          "storage_unit_id": 1,
+          "id": 4
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "storage_unit_id": 1,
+          "id": 5
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "storage_unit_id": 1,
+          "id": 6
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "storage_unit_id": 1,
+          "id": 7
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "storage_unit_id": 1,
+          "id": 8
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "storage_unit_id": 3,
+          "id": 12
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "storage_unit_id": 3,
+          "id": 13
+        },
+        {
+          "name": "Chana-dal",
+          "amount": 0,
+          "storage_unit_id": 3,
+          "id": 14
+        },
+        {
+          "name": "Tuvar-dal",
+          "amount": 0,
+          "storage_unit_id": 3,
+          "id": 15
+        }
+      ]
+    },{
+      "tableName": "storage_history",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "ragi",
+          "storage_unit_id": 1,
+          "before_amount": 0,
+          "amount": "055",
+          "date": 1718821486010,
+          "date_id": 1718735400000,
+          "id": 1,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "storage_unit_id": 1,
+          "before_amount": 55,
+          "amount": "045",
+          "date": 1718821486010,
+          "date_id": 1718735400000,
+          "id": 2,
+          "$types": {
+            "date": "date"
+          }
+        }
+      ]
+    },{
+      "tableName": "usage",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718359630407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718303400000,
+          "storage_unit_id": 1,
+          "id": 1,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718359630407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718303400000,
+          "storage_unit_id": 1,
+          "id": 2,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718446030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718389800000,
+          "storage_unit_id": 1,
+          "id": 3,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718446030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718389800000,
+          "storage_unit_id": 1,
+          "id": 4,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718446030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718389800000,
+          "storage_unit_id": 1,
+          "id": 5,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718446030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718389800000,
+          "storage_unit_id": 1,
+          "id": 6,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718446030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 1,
+          "date_id": 1718389800000,
+          "storage_unit_id": 1,
+          "id": 7,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718014030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717957800000,
+          "storage_unit_id": 1,
+          "id": 8,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718014030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717957800000,
+          "storage_unit_id": 1,
+          "id": 9,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718014030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717957800000,
+          "storage_unit_id": 1,
+          "id": 10,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718014030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717957800000,
+          "storage_unit_id": 1,
+          "id": 11,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718014030407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717957800000,
+          "storage_unit_id": 1,
+          "id": 12,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717668430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717612200000,
+          "storage_unit_id": 1,
+          "id": 13,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717668430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717612200000,
+          "storage_unit_id": 1,
+          "id": 14,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717668430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717612200000,
+          "storage_unit_id": 1,
+          "id": 15,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717668430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717612200000,
+          "storage_unit_id": 1,
+          "id": 16,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717668430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717612200000,
+          "storage_unit_id": 1,
+          "id": 17,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717236430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717180200000,
+          "storage_unit_id": 1,
+          "id": 18,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717236430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717180200000,
+          "storage_unit_id": 1,
+          "id": 19,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717236430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717180200000,
+          "storage_unit_id": 1,
+          "id": 20,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717236430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717180200000,
+          "storage_unit_id": 1,
+          "id": 21,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1717236430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1717180200000,
+          "storage_unit_id": 1,
+          "id": 22,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718532430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718476200000,
+          "storage_unit_id": 1,
+          "id": 23,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718532430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718476200000,
+          "storage_unit_id": 1,
+          "id": 24,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718532430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718476200000,
+          "storage_unit_id": 1,
+          "id": 25,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718532430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718476200000,
+          "storage_unit_id": 1,
+          "id": 26,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718532430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718476200000,
+          "storage_unit_id": 1,
+          "id": 27,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718964430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718908200000,
+          "storage_unit_id": 1,
+          "id": 28,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "wheat",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718964430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718908200000,
+          "storage_unit_id": 1,
+          "id": 29,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "ragi",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718964430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718908200000,
+          "storage_unit_id": 1,
+          "id": 30,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718964430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718908200000,
+          "storage_unit_id": 1,
+          "id": 31,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1718964430407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718908200000,
+          "storage_unit_id": 1,
+          "id": 32,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "rice",
+          "amount": 0,
+          "rate": 0,
+          "date": 1719050830407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718994600000,
+          "storage_unit_id": 1,
+          "id": 33,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "sorghum",
+          "amount": 0,
+          "rate": 0,
+          "date": 1719050830407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718994600000,
+          "storage_unit_id": 1,
+          "id": 34,
+          "$types": {
+            "date": "date"
+          }
+        },
+        {
+          "name": "greengram",
+          "amount": 0,
+          "rate": 0,
+          "date": 1719050830407,
+          "before_amount": 0,
+          "after_amount": 0,
+          "group_id": 3,
+          "date_id": 1718994600000,
+          "storage_unit_id": 1,
+          "id": 35,
+          "$types": {
+            "date": "date"
+          }
+        }
+      ]
+    },{
+      "tableName": "rates",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "naitik",
+          "id": 2,
+          "used_anaj": [
+            "rice",
+            "wheat",
+            "ragi",
+            "sorghum",
+            "greengram"
+          ],
+          "$types": {
+            "used_anaj": "arrayNonindexKeys"
+          }
+        }
+      ]
+    },{
+      "tableName": "rate",
+      "inbound": true,
+      "rows": [
+        {
+          "day": "Mon",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 8,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Tue",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 9,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Wed",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 10,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Thu",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 11,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Fri",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 12,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Sat",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 13,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        },
+        {
+          "day": "Sun",
+          "ratelist": [
+            {
+              "name": "rice",
+              "rate": 0
+            },
+            {
+              "name": "wheat",
+              "rate": 0
+            },
+            {
+              "name": "ragi",
+              "rate": 0
+            },
+            {
+              "name": "sorghum",
+              "rate": 0
+            },
+            {
+              "name": "greengram",
+              "rate": 0
+            }
+          ],
+          "rate_unit_id": 2,
+          "id": 14,
+          "$types": {
+            "ratelist": "arrayNonindexKeys"
+          }
+        }
+      ]
+    },{
+      "tableName": "backup",
+      "inbound": true,
+      "rows": []
+    },{
+      "tableName": "univarsalList",
+      "inbound": true,
+      "rows": [
+        {
+          "name": "rice",
+          "image": "/anaj_images/rice.png",
+          "id": 1
+        },
+        {
+          "name": "wheat",
+          "image": "/anaj_images/wheat.jpg",
+          "id": 2
+        },
+        {
+          "name": "sorghum",
+          "image": "/anaj_images/sorghum.jpg",
+          "id": 3
+        },
+        {
+          "name": "ragi",
+          "image": "/anaj_images/ragi.jpg",
+          "id": 4
+        },
+        {
+          "name": "greengram",
+          "image": "/anaj_images/greengram.png",
+          "id": 5
+        },
+        {
+          "name": "ચોખા ",
+          "image": "/anaj_images/rice.png",
+          "id": 6
+        }
+      ]
+    }]
+  }
+}

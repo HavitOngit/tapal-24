@@ -16,7 +16,7 @@
 			<Table.Head class="w-[100px]" />
 			<Table.Head>amount</Table.Head>
 
-			<Table.Head>Rate</Table.Head>
+			<Table.Head>Rate (g)</Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>

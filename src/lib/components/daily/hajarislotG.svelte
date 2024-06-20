@@ -17,6 +17,7 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { z } from 'zod';
 	import Badge from '../ui/badge/badge.svelte';
+	import Label from '../ui/label/label.svelte';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -188,7 +189,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle>
-				{RegData.name}--{Date.toString()}
+				{RegData.name}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
@@ -212,11 +213,20 @@
 				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
+						<!-- <AlertDialog.Title>{workingDate.format('ddd')}</AlertDialog.Title> -->
 						<AlertDialog.Description
 							class="flex w-full
-						justify-end"
-							><Button
+						justify-between"
+						>
+							<div class="text-left">
+								<Label>
+									{workingDate.format('ddd')}
+								</Label>
+								<p>
+									total: {total}
+								</p>
+							</div>
+							<Button
 								on:click={() => {
 									showRate = !showRate;
 									rate = [...rate_Backup];

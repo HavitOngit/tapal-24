@@ -45,11 +45,9 @@
 
 <Table.Root>
 	<Table.Header>
-		<Table.Row>
-			<Table.Head class="w-[100px]" />
-			<Table.Head></Table.Head>
-		</Table.Row>
+		<Table.Row></Table.Row>
 	</Table.Header>
+
 	<Table.Body>
 		{#each temp_anajlist as anaj, i}
 			<Table.Row>

@@ -13,7 +13,13 @@
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import { anajlist } from '$lib/predefined';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { CircleFadingPlus, HistoryIcon, PackagePlus, Settings2 } from 'lucide-svelte';
+	import {
+		CircleFadingPlus,
+		HistoryIcon,
+		PackagePlus,
+		ReceiptTextIcon,
+		Settings2
+	} from 'lucide-svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
 	import { Item } from '$lib/components/ui/carousel';
@@ -163,7 +169,7 @@
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Deleting {stockName}</AlertDialog.Title>
+				<AlertDialog.Title>Deleting {deleteMode ? 'from ' : ''}{stockName}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<div class="m-2 flex flex-col gap-2">
 						{#each DeleteList as item}
@@ -227,7 +233,7 @@
 				<AlertDialog.Action
 					on:click={deleteitems}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0)}>Confirm</AlertDialog.Action
+					disabled={!($usedBy.length == 0 || deleteMode)}>Confirm</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
@@ -240,7 +246,12 @@
 			<Card.Header>
 				<Card.Title class="m-2 flex  items-center justify-between">
 					<div>{unit?.name}</div>
-					<div>
+					<div class="flex gap-2">
+						<div>
+							<a href="{$page.url}/report">
+								<ReceiptTextIcon></ReceiptTextIcon>
+							</a>
+						</div>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<Settings2 />

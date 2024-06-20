@@ -26,7 +26,9 @@
 <div>
 	<a href="/dailywork">DailyWork</a>
 </div>
-
+<div>
+	<a href="/backup">BackUp</a>
+</div>
 <Button
 	class="mt-[95%]"
 	variant="destructive"
