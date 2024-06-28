@@ -43,8 +43,8 @@
 	$: live_usage_data = liveQuery(() =>
 		db.usage
 			.where({
-				group_id: Number(AttendanceData.group_id),
-				date_id: getDateID(workingDate.toDate())
+				date_id: getDateID(workingDate.toDate()),
+				group_id: Number(AttendanceData.group_id)
 			})
 			.toArray()
 	);
