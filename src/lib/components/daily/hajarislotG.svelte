@@ -32,30 +32,29 @@
 	let total: number;
 
 	// reg stock and rate info
-	let rate: oneRate[];
+	let rate: oneRate[] | [];
 	let stock: Storage[];
 
 	// for effective submission
 	let effectedUsage: Usage[] = [];
 
-	async function getInfo() {
-		const rates = await db.rate
-			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
-			.toArray();
+	async function getInfo(workingDate: dayjs.Dayjs) {
+		const rates = await db.rate.get({
+			rate_unit_id: RegData.rate_unit_id,
+			day: workingDate.format('ddd')
+		});
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
-		rate = rates[0].ratelist;
+		rate = rates?.ratelist || [];
 		rate_Backup = [...rate]; // backup for rate
 		stock = stocks;
 
-		effectedUsage = (await db.usage
-			.where('date_id')
-			.above(getDateID(workingDate.toDate()))
-			.toArray()) as Usage[];
+		effectedUsage = (await db.usage.where('date').above(workingDate.toDate()).toArray()) as Usage[];
 		console.log('---------------');
 
 		console.log(effectedUsage);
 	}
 
+	$: getInfo(workingDate);
 	// Backup
 	let rate_Backup: oneRate[] = [];
 
@@ -165,7 +164,7 @@
 	let showRate: boolean = true;
 
 	onMount(async () => {
-		await getInfo();
+		await getInfo(workingDate);
 		console.log('from component', workingDate.toString());
 	});
 
