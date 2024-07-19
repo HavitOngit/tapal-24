@@ -6,6 +6,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
+	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
 </script>
 
 <div class=" flex h-11 w-full items-center justify-between bg-white">
@@ -32,6 +33,7 @@
 {:else}
 	<slot />
 {/if}
+<MobileConsole></MobileConsole>
 <div class="h-40"></div>
 <div class="fixed bottom-0">
 	<NavigationBar></NavigationBar>

@@ -50,7 +50,9 @@
 		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
 	}
 
-	$: console.log(workingDate);
+	$: if(workingDate){
+		status()
+	}
 
 	function status() {
 		console.log({ workingDate, $registers, active_Registers, $submited_registers });
