@@ -44,7 +44,7 @@
 		db.usage
 			.where({
 				group_id: Number(AttendanceData.group_id),
-				date_id: getDateID(workingDate.toDate())
+				date: workingDate.toDate()
 			})
 			.toArray()
 	);
@@ -88,9 +88,7 @@
 		stock = stocks;
 
 		// geting usage info
-		usage = await db.usage
-			.where({ group_id: RegData.id, date_id: getDateID(workingDate.toDate()) })
-			.toArray();
+		usage = await db.usage.where({ group_id: RegData.id, date: workingDate.toDate() }).toArray();
 
 		savedUsage = [...usage];
 
@@ -119,6 +117,12 @@
 	let isBeforeAmountNan: boolean = false;
 
 	async function cal_usage() {
+		console.log('calculating usage');
+		console.log({
+			rate,
+			usage
+		});
+
 		// claring storage
 		forStoarageUpdate.clear();
 		effectiveUsageUpdate.clear();

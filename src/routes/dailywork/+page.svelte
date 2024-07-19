@@ -33,10 +33,14 @@
 		active_Registers = $registers.filter((reg) => reg.currently_used);
 	}
 
-	$: submited_registers = liveQuery(() =>
-		db.attendance.where({ date_id: getDateID(workingDate) }).toArray()
-	);
+	$: submited_registers = liveQuery(async () => {
+		const attendanceData = await db.attendance
+			.where({ date: workingDate })
+			.toArray()
+			.catch((e) => console.log('error foe submited data' + e));
 
+		return attendanceData;
+	});
 	// let staticSubRegs: Attendance[];
 	// $: if ($submited_registers) {
 	// 	staticSubRegs = [...$submited_registers];
@@ -48,10 +52,6 @@
 	let submited_registers_group_id: number[] = [];
 	$: if ($submited_registers) {
 		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
-	}
-
-	$: if(workingDate){
-		status()
 	}
 
 	function status() {
@@ -112,7 +112,7 @@
 
 	{#if $registers}
 		<div class="">
-			{#each active_Registers as reg}
+			{#each active_Registers as reg (reg.id)}
 				{#if !submited_registers_group_id.includes(reg.id || 1000)}
 					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
 				{/if}
@@ -127,7 +127,7 @@
 	{#if $submited_registers}
 		<div>
 			<hr class="my-4" />
-			{#each $submited_registers as hajari}
+			{#each $submited_registers as hajari (hajari.id)}
 				<UpdateAeInfo
 					AttendanceData={hajari}
 					boys={hajari.boys}

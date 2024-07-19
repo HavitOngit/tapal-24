@@ -15,7 +15,7 @@
 
 	async function getData() {
 		const w_date = new Date(String(workingDate));
-		usageData = await db.usage.where({ group_id: group_id, date_id: getDateID(w_date) }).toArray();
+		usageData = await db.usage.where({ group_id: group_id, date: w_date }).toArray();
 	}
 
 	$: {

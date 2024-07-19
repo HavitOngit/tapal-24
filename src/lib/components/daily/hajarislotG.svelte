@@ -190,6 +190,7 @@
 		<CardHeader>
 			<CardTitle>
 				{RegData.name}
+				{workingDate.format('ddd-DD-MM')}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>

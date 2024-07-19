@@ -14,7 +14,7 @@ export async function getImage(name: string) {
     return image
 }
 
-export function getDateID(date: Date) {
+export function getDateID(date: Date): number {
     const clean_date = new Date(date.toLocaleDateString())
 
     return clean_date.getTime()
