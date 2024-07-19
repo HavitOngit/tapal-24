@@ -66,7 +66,7 @@
 
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
 
-		console.log(RegData);
+		// console.log(RegData);
 
 		// effectedUsage = (await db.usage
 		// 	.where('date_id')
@@ -81,13 +81,26 @@
 		// );
 		// console.log('updated effected usage', effectedUsageU);
 
+		db.transaction('r', db.usage, async () => {
+			effectedUsage = (await db.usage
+				.where('date')
+				.above(workingDate.toDate())
+				.toArray()) as Usage[];
+
+			const effectedUsageU = effectedUsage.filter(
+				(obj) => obj.storage_unit_id == RegData.storage_unit_id
+			);
+			console.log('updated effected usage', effectedUsageU);
+			effectedUsage = effectedUsageU;
+		});
+
 		const rates = await db.rate
 			.where({ rate_unit_id: RegData.rate_unit_id, day: workingDate.format('ddd') })
 			.toArray();
 
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
 
-		console.log('rates and stocks' + { rates, stocks });
+		// console.log('rates and stocks' + { rates, stocks });
 
 		stock = stocks;
 
