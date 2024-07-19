@@ -66,13 +66,15 @@
 
 		RegData = (await db.group.get(AttendanceData.group_id)) as Group; // geting reg info
 
-		effectedUsage = (await db.usage
-			.where('date_id')
-			.above(getDateID(workingDate.toDate()))
-			.toArray()) as Usage[];
-		console.log('---------------');
+		console.log(RegData);
 
-		console.log(effectedUsage);
+		// effectedUsage = (await db.usage
+		// 	.where('date_id')
+		// 	.above(getDateID(workingDate.toDate()))
+		// 	.toArray()) as Usage[];
+		// console.log('---------------');
+
+		// console.log(effectedUsage);
 
 		// const effectedUsageU = effectedUsage.filter(
 		// 	(obj) => obj.storage_unit_id == RegData.storage_unit_id
@@ -84,6 +86,8 @@
 			.toArray();
 
 		const stocks = await db.storage.where({ storage_unit_id: RegData.storage_unit_id }).toArray();
+
+		console.log('rates and stocks' + { rates, stocks });
 
 		stock = stocks;
 
