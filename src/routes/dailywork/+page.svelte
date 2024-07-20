@@ -25,6 +25,8 @@
 
 	let workingDate: Date = today; // global date on which all activity stored
 
+	$: workingDate = dayjs(workingDate.toDateString()).toDate();
+
 	// registers are like notebooks which identify the group of students
 	const registers = liveQuery(() => db.group.toArray());
 
@@ -51,6 +53,8 @@
 
 	let submited_registers_group_id: number[] = [];
 	$: if ($submited_registers) {
+		console.log({ $submited_registers, workingDate }, 'color:blue');
+
 		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
 	}
 
@@ -77,7 +81,11 @@
 	const duration = { days: 1 };
 
 	$: if (calendeDate) {
-		workingDate = calendeDate.toDate('Asia/Kolkata');
+		const before = workingDate;
+		const newDate = calendeDate.toDate('Asia/Kolkata');
+
+		workingDate = dayjs(newDate).toDate();
+		console.log({ before, workingDate });
 	}
 </script>
 
@@ -91,6 +99,8 @@
 					on:click={() => {
 						date_location -= 1;
 						workingDate = dayjs(workingDate).subtract(1, 'day').toDate();
+						console.log('from button' + { workingDate });
+
 						calendeDate = calendeDate?.subtract(duration);
 					}}>-</Button
 				>
@@ -112,7 +122,7 @@
 
 	{#if $registers}
 		<div class="">
-			{#each active_Registers as reg (reg.id)}
+			{#each active_Registers as reg}
 				{#if !submited_registers_group_id.includes(reg.id || 1000)}
 					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
 				{/if}
@@ -127,7 +137,7 @@
 	{#if $submited_registers}
 		<div>
 			<hr class="my-4" />
-			{#each $submited_registers as hajari (hajari.id)}
+			{#each $submited_registers as hajari}
 				<UpdateAeInfo
 					AttendanceData={hajari}
 					boys={hajari.boys}

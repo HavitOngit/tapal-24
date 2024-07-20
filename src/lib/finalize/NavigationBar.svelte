@@ -43,7 +43,7 @@
 		<a href="/dailywork">DailyWork</a>
 	</div>
 </div> -->
-<div class="grid grid-cols-4 gap-8 rounded-t-xl bg-blue-100">
+<div class=" flex w-screen justify-evenly gap-6 rounded-t-xl bg-blue-100">
 	{#each paths as elem}
 		<div class="m-2">
 			<a href={elem.href} class="flex flex-col items-center">
@@ -61,5 +61,6 @@
 		</div>
 	{/each}
 </div>
+<div class="h-3 bg-blue-100"></div>
 
 <!-- fill={String($page.url.pathname).includes(elem.href) ? 'black' : ' white'} -->
