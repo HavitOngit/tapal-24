@@ -140,7 +140,7 @@
 				total: Number(total),
 				group_id: RegData.id || 100,
 				date: Date,
-				date_id: getDateID(workingDate.toDate())
+				date_id: workingDate.toDate().getTime()
 			});
 			await db.usage.bulkAdd(usage);
 			await db.storage.bulkUpdate([...forStoarageUpdate.values()]);
