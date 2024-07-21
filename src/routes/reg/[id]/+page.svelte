@@ -18,6 +18,7 @@
 	{#if $reg_data}
 		<Regslot forUpdate={true} regi={$reg_data[0]}></Regslot>
 	{/if}
-	<a href="/reg/{$page.params.id}/view"> View Details </a>
+	<a href="/reg/{$page.params.id}/view"> Usage </a>
+	<a href="/reg/{$page.params.id}/atndce"> Attendance </a>
 </div>
 <!-- <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
