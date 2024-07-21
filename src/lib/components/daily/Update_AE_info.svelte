@@ -171,7 +171,7 @@
 				obj.before_amount = Number(saved_data?.before_amount);
 				obj.after_amount = obj.before_amount - obj.amount;
 				obj.group_id = RegData.id;
-				obj.date_id = getDateID(workingDate.toDate());
+				obj.date_id = workingDate.toDate().getTime();
 				obj.storage_unit_id = RegData.storage_unit_id;
 
 				// if before amount Nan
@@ -225,15 +225,9 @@
 	// if last item not found try to get before_amount from effective_usage
 	// if effective_usage not found then use direct storage amount
 	async function addingNewitem() {
-		const aboveData = await db.usage
-			.where('date_id')
-			.below(getDateID(workingDate.toDate()))
-			.toArray();
+		const aboveData = await db.usage.where('date').below(workingDate.toDate()).toArray();
 
-		const belowData = await db.usage
-			.where('date_id')
-			.above(getDateID(workingDate.toDate()))
-			.toArray();
+		const belowData = await db.usage.where('date').above(workingDate.toDate()).toArray();
 
 		usage.forEach(
 			(item: {
