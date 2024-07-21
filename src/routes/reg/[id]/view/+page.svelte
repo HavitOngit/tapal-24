@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import UpdateEntry from '$lib/components/extraFeatures/UpdateEntry.svelte';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { Select, SelectValue } from '$lib/components/ui/select';
-	import SelectItem from '$lib/components/ui/select/select-item.svelte';
-	import SelectTrigger from '$lib/components/ui/select/select-trigger.svelte';
 	import { TableBody } from '$lib/components/ui/table';
 	import TableHead from '$lib/components/ui/table/table-head.svelte';
 	import TableHeader from '$lib/components/ui/table/table-header.svelte';
@@ -13,16 +8,41 @@
 	import Table from '$lib/components/ui/table/table.svelte';
 	import type { Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import { liveQuery } from 'dexie';
-	import { onMount } from 'svelte';
 
-	const usage = liveQuery(() => db.usage.where({ group_id: Number($page.params.id) }).toArray());
-	$: console.log($usage);
-	onMount(async () => {
-		const smallest = await db.usage.orderBy('date_id').first();
-		const largest = await db.usage.orderBy('date_id').last();
-		console.log({ smallest, largest });
-	});
+	import { onMount } from 'svelte';
+	import { derived, writable } from 'svelte/store';
+
+	async function getUsage(month: number, year: number) {
+		if (!insilized) return;
+		try {
+			$usage = await db.usage
+				.where({ group_id: Number($page.params.id) })
+				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
+				.toArray();
+			$usage.forEach((u) => {
+				if (!$anajs.find((x) => x.label === u.name)) {
+					$anajs.push({ value: $anajs.length, label: u.name });
+				}
+			});
+			console.log(Array.from($anajs));
+
+			selected_anaj = Number($anajs[0].value);
+
+			anaj_details = [];
+			$anajs.forEach((it) => {
+				const obj = { ...it, total: 0 };
+
+				anaj_details.push(total(obj));
+			});
+			console.log(anaj_details);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	let usage = writable<Usage[]>([]);
+	let anajs = writable<selector[]>([]);
+
 	function createCSVString(data: Usage[]) {
 		let csvString = '';
 
@@ -47,13 +67,105 @@
 		a.click();
 		URL.revokeObjectURL(url);
 	}
+
+	interface selector {
+		value: number;
+		label: string;
+	}
+
+	interface anajDetails {
+		value: number;
+		label: string;
+		total: number;
+	}
+	// data
+	const months: Map<number, selector> = new Map();
+
+	const years: Map<number, selector> = new Map();
+
+	let monthlist = writable<selector[]>([
+		{ value: 0, label: 'January' },
+		{ value: 1, label: 'February' },
+		{ value: 2, label: 'March' },
+		{ value: 3, label: 'April' },
+		{ value: 4, label: 'May' },
+		{ value: 5, label: 'June' },
+		{ value: 6, label: 'July' },
+		{ value: 7, label: 'August' },
+		{ value: 8, label: 'September' },
+		{ value: 9, label: 'October' },
+		{ value: 10, label: 'November' },
+		{ value: 11, label: 'December' }
+	]);
+	let yearlist = writable<selector[]>([
+		{ value: 2021, label: '2021' },
+		{ value: 2022, label: '2022' },
+		{ value: 2023, label: '2023' },
+		{ value: 2024, label: '2024' }
+	]);
+
+	// selectors
+	let month: number = new Date().getMonth();
+	let year: number = new Date().getFullYear();
+	let selected_anaj: number;
+	let anaj_details: anajDetails[];
+
+	function total(obj: anajDetails) {
+		obj.total = 0;
+		$usage.forEach((t) => {
+			if (obj.label === t.name) {
+				obj.total += t.amount;
+			}
+		});
+		return obj;
+	}
+
+	$: getUsage(month, year);
+
+	let insilized = false;
+	onMount(async () => {
+		insilized = true;
+		await getUsage(month, year);
+		const allUsage = await db.usage.where({ group_id: Number($page.params.id) }).toArray();
+		allUsage.forEach((u) => {
+			if (!months.has(u.date.getMonth())) {
+				months.set(u.date.getMonth(), {
+					value: u.date.getMonth(),
+					label: u.date.toLocaleString('default', { month: 'long' })
+				});
+			}
+			if (!years.has(u.date.getFullYear())) {
+				years.set(u.date.getFullYear(), {
+					value: u.date.getFullYear(),
+					label: u.date.getFullYear().toString()
+				});
+			}
+		});
+
+		$monthlist = Array.from(months.values());
+		$yearlist = Array.from(years.values());
+	});
 </script>
 
 <!-- {$page.params.id}
 <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
 
-<div id="selector">
-	<!-- <MonthSelector></MonthSelector> -->
+<div id="selector" class=" m-3 flex gap-3">
+	<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
+
+	<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
+	{#if $anajs.length > 0}
+		<MonthSelector groupName="Anaj" bind:list={$anajs} bind:selected={selected_anaj}
+		></MonthSelector>
+	{/if}
+</div>
+<div class="m-3">
+	<p class="text-lg font-semibold">
+		Total:
+		{#if anaj_details}
+			{anaj_details[selected_anaj].total} Kg
+		{/if}
+	</p>
 </div>
 {#if $usage}
 	<!-- <div>
@@ -64,7 +176,8 @@
 			<TableHeader>
 				<TableRow>
 					<TableHead>Date</TableHead>
-					<TableHead>Name</TableHead>
+
+					<TableHead>Rate</TableHead>
 					<TableHead>Before</TableHead>
 					<TableHead>Usage</TableHead>
 					<TableHead>After</TableHead>
@@ -72,13 +185,15 @@
 			</TableHeader>
 			<TableBody>
 				{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
-					<TableRow>
-						<TableHead>{item.date.toLocaleDateString()}</TableHead>
-						<TableHead>{item.name}</TableHead>
-						<TableHead>{item.before_amount}</TableHead>
-						<TableHead>{item.amount}</TableHead>
-						<TableHead>{item.after_amount}</TableHead>
-					</TableRow>
+					{#if $anajs[selected_anaj].label === item.name}
+						<TableRow>
+							<TableHead>{item.date.getDate()}</TableHead>
+							<TableHead>{item.rate}</TableHead>
+							<TableHead>{item.before_amount}</TableHead>
+							<TableHead>{item.amount}</TableHead>
+							<TableHead>{item.after_amount}</TableHead>
+						</TableRow>
+					{/if}
 				{/each}
 			</TableBody>
 		</Table>

@@ -1,23 +1,23 @@
 <script lang="ts">
-	import { type Group, type oneRate, type Storage, type Usage } from '$lib/custom_types';
-	import CardHeader from '../ui/card/card-header.svelte';
-	import Card from '../ui/card/card.svelte';
-	import CardTitle from '../ui/card/card-title.svelte';
-	import CardContent from '../ui/card/card-content.svelte';
-	import Attendance from './Attendance.svelte';
-	import Rateform from '../Rateform.svelte';
-	import UsageTable from './UsageTable.svelte';
-	import Button from '../ui/button/button.svelte';
-	import CardFooter from '../ui/card/card-footer.svelte';
+	import { getDateID } from '$lib/api';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { type Group, type oneRate, type Storage, type Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
-	import { getDateID } from '$lib/api';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { z } from 'zod';
+	import Rateform from '../Rateform.svelte';
 	import Badge from '../ui/badge/badge.svelte';
+	import Button from '../ui/button/button.svelte';
+	import CardContent from '../ui/card/card-content.svelte';
+	import CardFooter from '../ui/card/card-footer.svelte';
+	import CardHeader from '../ui/card/card-header.svelte';
+	import CardTitle from '../ui/card/card-title.svelte';
+	import Card from '../ui/card/card.svelte';
 	import Label from '../ui/label/label.svelte';
+	import Attendance from './Attendance.svelte';
+	import UsageTable from './UsageTable.svelte';
 
 	export let RegData: Group;
 	export let Date: Date;

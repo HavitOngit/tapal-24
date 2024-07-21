@@ -1,20 +1,17 @@
 <script lang="ts">
+	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
 	import type { PageData } from './$types';
-	import { db } from '$lib/db';
 
 	import HajarislotG from '$lib/components/daily/hajarislotG.svelte';
-	import { onMount } from 'svelte';
+	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
+	import Calender from '$lib/components/extraFeatures/Calender.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import type { Attendance, Group } from '$lib/custom_types';
-	import { getDateID } from '$lib/api';
-	import UpdateAeInfo from '$lib/components/daily/Update_AE_info.svelte';
+	import type { Group } from '$lib/custom_types';
+	import { type DateValue } from '@internationalized/date';
 	import dayjs from 'dayjs';
-	import Calendar from '$lib/components/ui/calendar/calendar.svelte';
-	import Calender from '$lib/components/extraFeatures/Calender.svelte';
-	import { CalendarDate, type DateValue } from '@internationalized/date';
-	import { Months } from '$lib/components/ui/calendar';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 

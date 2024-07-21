@@ -50,7 +50,9 @@
 					<a href="/stocks/{regi.storage_unit_id}">
 						<div>
 							<Label>Stock:</Label>
-							{$stock[0].name}
+							<span class="">
+								{$stock[0].name}
+							</span>
 						</div>
 					</a>
 				{/if}

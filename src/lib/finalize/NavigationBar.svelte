@@ -54,8 +54,10 @@
 				>
 					<svelte:component this={elem.icon}></svelte:component>
 				</div>
-				<span class={String($page.url.pathname).includes(elem.href) ? 'opacity-100' : 'opacity-70'}
-					>{elem.name}</span
+				<span
+					class={String($page.url.pathname).includes(elem.href)
+						? 'font-semibold opacity-100'
+						: 'opacity-70'}>{elem.name}</span
 				>
 			</a>
 		</div>
