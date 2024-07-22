@@ -1,22 +1,18 @@
 <script lang="ts">
-	import type { Storage } from '$lib/custom_types';
-	import { AppleIcon, CircleFadingPlusIcon, HistoryIcon, Trash2 } from 'lucide-svelte';
-	import Button from './ui/button/button.svelte';
-	import { anajlist } from '$lib/predefined';
-	import Input from './ui/input/input.svelte';
-	import { db } from '$lib/db';
-	import * as Card from '$lib/components/ui/card';
-	import Badge from './ui/badge/badge.svelte';
 	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import Calendar from './ui/calendar/calendar.svelte';
-	import { type DateValue, CalendarDate, toCalendarDateTime } from '@internationalized/date';
-	import Calender from './extraFeatures/Calender.svelte';
-	import Label from './ui/label/label.svelte';
-	import { onMount } from 'svelte';
+	import * as Card from '$lib/components/ui/card';
+	import type { Storage } from '$lib/custom_types';
+	import { db } from '$lib/db';
+	import { anajlist } from '$lib/predefined';
+	import { type DateValue } from '@internationalized/date';
+	import { liveQuery } from 'dexie';
+	import { CircleFadingPlusIcon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
-	import { writable } from 'svelte/store';
-	import { getDateID } from '$lib/api';
+	import Calender from './extraFeatures/Calender.svelte';
+	import Badge from './ui/badge/badge.svelte';
+	import Input from './ui/input/input.svelte';
+	import Label from './ui/label/label.svelte';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
@@ -34,7 +30,7 @@
 				before_amount: anaj.amount,
 				amount: addAmount,
 				date: today,
-				date_id: getDateID(today)
+				date_id: today.getTime()
 			});
 			await db.storage.update(anaj.id, { amount: sum });
 		}).then(() => {
@@ -47,6 +43,24 @@
 	let addbtn: HTMLButtonElement;
 	const today = new Date();
 	let date: DateValue | undefined;
+
+	$: effectedUsage = liveQuery(() =>
+		db.usage
+			.where('date')
+			.above(date?.toDate('Asia/Kolkata'))
+			.filter((x) => x.storage_unit_id === anaj.storage_unit_id)
+			.toArray()
+	);
+
+	$: thatday = liveQuery(() =>
+		db.usage
+			.where({ date: date?.toDate('Asia/Kolkata'), storage_unit_id: anaj.storage_unit_id })
+			.toArray()
+	);
+
+	$: if ($thatday) {
+		console.log($thatday);
+	}
 </script>
 
 <div id="alerts" hidden>
@@ -64,7 +78,7 @@
 				</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
 					<div class="text-lg">
-						Available: {anaj.amount}
+						Available: {Number(anaj.amount.toFixed(3))}
 					</div>
 
 					<div>
@@ -114,7 +128,7 @@
 								{anaj.amount} kg
 							</Badge> -->
 							<div class="text-nowrap text-lg font-semibold">
-								{anaj.amount} kg
+								{Number(anaj.amount.toFixed(3))}
 							</div>
 							{#if !deleteMode}
 								<button

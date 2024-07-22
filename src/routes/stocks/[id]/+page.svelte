@@ -1,33 +1,22 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { page } from '$app/stores';
-	import * as Card from '$lib/components/ui/card';
-	import { db } from '$lib/db';
-	import type { Storage, StorageUnit } from '$lib/custom_types';
-	import { onMount } from 'svelte';
-	import { liveQuery, type Observable } from 'dexie';
-	import AnajSlot from '$lib/components/AnajSlot.svelte';
-	import { Content } from '$lib/components/ui/alert-dialog';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
-	import { anajlist } from '$lib/predefined';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import {
-		CircleFadingPlus,
-		HistoryIcon,
-		PackagePlus,
-		ReceiptTextIcon,
-		Settings2
-	} from 'lucide-svelte';
-	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
-	import { Item } from '$lib/components/ui/carousel';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import toast from 'svelte-french-toast';
+	import AnajSlot from '$lib/components/AnajSlot.svelte';
 	import SelectionNav from '$lib/components/extraFeatures/SelectionNav.svelte';
-	import Label from '$lib/components/ui/label/label.svelte';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import * as Card from '$lib/components/ui/card';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import type { Storage, StorageUnit } from '$lib/custom_types';
+	import { db } from '$lib/db';
+	import { anajlist } from '$lib/predefined';
+	import { liveQuery } from 'dexie';
+	import { PackagePlus, ReceiptTextIcon, Settings2 } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());

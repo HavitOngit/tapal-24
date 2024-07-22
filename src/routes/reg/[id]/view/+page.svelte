@@ -163,7 +163,7 @@
 	<p class="text-lg font-semibold">
 		Total:
 		{#if anaj_details}
-			{anaj_details[selected_anaj].total} Kg
+			{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
 		{/if}
 	</p>
 </div>
@@ -176,7 +176,6 @@
 			<TableHeader>
 				<TableRow>
 					<TableHead>Date</TableHead>
-
 					<TableHead>Rate</TableHead>
 					<TableHead>Before</TableHead>
 					<TableHead>Usage</TableHead>
@@ -189,9 +188,9 @@
 						<TableRow>
 							<TableHead>{item.date.getDate()}</TableHead>
 							<TableHead>{item.rate}</TableHead>
-							<TableHead>{item.before_amount}</TableHead>
-							<TableHead>{item.amount}</TableHead>
-							<TableHead>{item.after_amount}</TableHead>
+							<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
+							<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
+							<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
 						</TableRow>
 					{/if}
 				{/each}
