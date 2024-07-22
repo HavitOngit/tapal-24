@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+
 	import * as Card from '$lib/components/ui/card';
 	import type { Storage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { anajlist } from '$lib/predefined';
-	import { type DateValue } from '@internationalized/date';
+	import { type DateValue, today as ctime } from '@internationalized/date';
 	import { liveQuery } from 'dexie';
 	import { CircleFadingPlusIcon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
@@ -23,7 +24,24 @@
 	$: sum = Number(addAmount) + Number(anaj.amount);
 
 	async function addToStore() {
-		db.transaction('rw', db.storage, db.storage_history, async () => {
+		const cal_effect = new Map();
+		if ($effectedUsage.length > 0) {
+			$effectedUsage.forEach((x) => {
+				if (x.name === anaj.name) {
+					cal_effect.set(x.id, {
+						key: x.id,
+						changes: {
+							before_amount: x.before_amount + Number(addAmount),
+							after_amount: x.after_amount + Number(addAmount)
+						}
+					});
+				}
+			});
+
+			console.log(cal_effect);
+		}
+
+		db.transaction('rw', db.storage, db.storage_history, db.usage, async () => {
 			await db.storage_history.add({
 				name: anaj.name,
 				storage_unit_id: anaj.storage_unit_id,
@@ -32,34 +50,40 @@
 				date: today,
 				date_id: today.getTime()
 			});
+			await db.usage.bulkUpdate([...cal_effect.values()]);
 			await db.storage.update(anaj.id, { amount: sum });
 		}).then(() => {
 			toast.success(`${Number(addAmount)} kg added to ${anaj.name}`);
-
 			addAmount = 0;
 		});
 	}
 
 	let addbtn: HTMLButtonElement;
-	const today = new Date();
-	let date: DateValue | undefined;
+	const today = new Date(new Date().toDateString());
+	let date: DateValue | undefined = ctime('Asia/Kolkata');
 
 	$: effectedUsage = liveQuery(() =>
 		db.usage
 			.where('date')
-			.above(date?.toDate('Asia/Kolkata'))
+			.aboveOrEqual(date?.toDate('Asia/Kolkata'))
 			.filter((x) => x.storage_unit_id === anaj.storage_unit_id)
-			.toArray()
+			.sortBy('date')
 	);
 
-	$: thatday = liveQuery(() =>
-		db.usage
-			.where({ date: date?.toDate('Asia/Kolkata'), storage_unit_id: anaj.storage_unit_id })
-			.toArray()
-	);
+	$: console.log($effectedUsage);
 
-	$: if ($thatday) {
-		console.log($thatday);
+	function formatAmount(amount: any) {
+		// Check if amount is already a number
+		if (typeof amount === 'number') {
+			return Number(amount.toFixed(3));
+		}
+		// Attempt to convert to a number if it's a string
+		const parsed = parseFloat(amount);
+		if (!isNaN(parsed)) {
+			return Number(parsed.toFixed(3));
+		}
+		// Handle non-numeric values
+		return '0'; // Or any other fallback logic
 	}
 </script>
 
@@ -78,8 +102,13 @@
 				</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
 					<div class="text-lg">
-						Available: {Number(anaj.amount.toFixed(3))}
+						Available: {formatAmount(anaj.amount)}
 					</div>
+					{#if $effectedUsage && $effectedUsage.length > 0}
+						<div class="text-lg">
+							that Time: {formatAmount($effectedUsage[0].before_amount)}
+						</div>
+					{/if}
 
 					<div>
 						<form on:submit={addToStore} class=" flex items-center gap-3">
@@ -127,9 +156,11 @@
 							<!-- <Badge variant="outline" class="text-lg font-semibold">
 								{anaj.amount} kg
 							</Badge> -->
-							<div class="text-nowrap text-lg font-semibold">
-								{Number(anaj.amount.toFixed(3))}
-							</div>
+							{#if anaj.amount}
+								<div class="text-nowrap text-lg font-semibold">
+									{formatAmount(anaj.amount)}
+								</div>
+							{/if}
 							{#if !deleteMode}
 								<button
 									on:click={() => {
