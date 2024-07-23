@@ -150,6 +150,11 @@
 				{#each preDATA as obj}
 					<Carousel.Item>
 						<Card.Root>
+							<Card.Header>
+								<Card.Title>
+									{obj.day}
+								</Card.Title>
+							</Card.Header>
 							<Card.Content>
 								{#if isSaving}
 									<div class="flex min-h-96 items-center justify-center">
@@ -160,7 +165,6 @@
 										{/if}
 									</div>
 								{:else}
-									{obj.day}
 									<Rateform bind:ratelist={obj.ratelist} {anajlist}></Rateform>
 								{/if}
 							</Card.Content>
@@ -173,15 +177,17 @@
 </div>
 
 <div class="fixed bottom-24 w-full">
-	<div class="mx-4 flex justify-between">
-		<Button variant="outline" on:click={Back}>Back</Button>
+	<div class="mx-4 flex w-auto justify-between gap-10 bg-white">
+		{#if current_day != 0}
+			<Button class="w-full" variant="outline" on:click={Back}>Back</Button>
+		{/if}
 
 		{#if current_day == 6}
 			<Button on:click={Save} class=" w-[50%] rounded-xl"
 				><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
 			>
 		{:else}
-			<Button on:click={Next}>Next</Button>
+			<Button class="w-full" on:click={Next}>Next</Button>
 		{/if}
 	</div>
 </div>
