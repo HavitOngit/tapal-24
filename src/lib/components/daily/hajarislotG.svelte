@@ -18,6 +18,7 @@
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
+	import { goto } from '$app/navigation';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -65,8 +66,17 @@
 	let usage: any = [];
 	let finalData: Usage[] = [];
 	let isBeforeAmountNan: boolean = false;
+	let not_in_storage: { name: string }[] = [];
 
 	async function cal_usage() {
+		// checking storage
+		not_in_storage = [];
+		rate.forEach((r) => {
+			if (!stock.find((s) => r.name === s.name)) {
+				not_in_storage.push({ name: r.name });
+			}
+		});
+
 		forStoarageUpdate.clear();
 		effectiveUsageUpdate.clear();
 
@@ -131,6 +141,10 @@
 
 	// Savind to Database
 	async function SavingToDB() {
+		if (not_in_storage.length > 0) {
+			stock_nf_btn.click();
+			return;
+		}
 		console.log(workingDate, Date);
 
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
@@ -180,9 +194,40 @@
 	} else {
 		isDone = true;
 	}
+
+	let stock_nf_btn: HTMLButtonElement;
 </script>
 
 <Toaster />
+
+<div hidden>
+	<AlertDialog.Root>
+		<AlertDialog.Trigger bind:el={stock_nf_btn}></AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>Following Anajs Not in Stocks</AlertDialog.Title>
+				<AlertDialog.Description class="flex flex-col gap-2">
+					<div class="m-3 rounded-md bg-yellow-200">
+						<p class="text-wrap p-2 text-left">
+							In Order to use below Anajs they Must in stock of "{RegData.name}" Register
+						</p>
+					</div>
+					<div class="m-1 ml-3 flex gap-2">
+						{#each not_in_storage as nts}
+							<Badge variant="default">{nts.name}</Badge>
+						{/each}
+					</div>
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
+					>Go to Stocks
+				</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>
 
 {#if RegData}
 	<Card class="mb-2">
