@@ -303,6 +303,12 @@
 
 		// handling delete eefective usage update
 		usage_delete.forEach((obj) => {
+			const unit = stock.find((item) => item.name === obj.name);
+			forStoarageUpdate.set(unit?.id, {
+				key: unit?.id,
+				changes: { amount: Number((unit?.amount || 0) + obj.amount) }
+			});
+
 			effectedUsage.forEach((eff_usage) => {
 				if (eff_usage.name == obj.name) {
 					effectiveUsageUpdate.set(eff_usage.id, {
