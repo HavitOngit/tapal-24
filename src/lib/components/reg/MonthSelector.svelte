@@ -12,7 +12,9 @@
 	}}
 >
 	<Select.Trigger class="">
-		<Select.Value placeholder={list.filter((m) => m.value === selected)[0].label} />
+		{#if list.length > 0}
+			<Select.Value placeholder={list.filter((m) => m.value === selected)[0].label} />
+		{/if}
 	</Select.Trigger>
 	<Select.Content>
 		<Select.Group>

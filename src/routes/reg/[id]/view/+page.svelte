@@ -26,11 +26,13 @@
 			});
 			console.log(Array.from($anajs));
 
-			selected_anaj = Number($anajs[0].value);
+			if ($anajs.length > 0) {
+				selected_anaj = Number($anajs[0].value);
+			}
 
 			anaj_details = [];
 			$anajs.forEach((it) => {
-				const obj = { ...it, total: 0 };
+				const obj = { ...it, total: 0, days: 0 };
 
 				anaj_details.push(total(obj));
 			});
@@ -77,6 +79,7 @@
 		value: number;
 		label: string;
 		total: number;
+		days: number;
 	}
 	// data
 	const months: Map<number, selector> = new Map();
@@ -108,13 +111,14 @@
 	let month: number = new Date().getMonth();
 	let year: number = new Date().getFullYear();
 	let selected_anaj: number;
-	let anaj_details: anajDetails[];
+	let anaj_details: anajDetails[] = [];
 
 	function total(obj: anajDetails) {
 		obj.total = 0;
 		$usage.forEach((t) => {
 			if (obj.label === t.name) {
 				obj.total += t.amount;
+				obj.days += 1;
 			}
 		});
 		return obj;
@@ -123,10 +127,14 @@
 	$: getUsage(month, year);
 
 	let insilized = false;
+	let noData = false;
 	onMount(async () => {
 		insilized = true;
 		await getUsage(month, year);
 		const allUsage = await db.usage.where({ group_id: Number($page.params.id) }).toArray();
+		if (allUsage.length === 0) {
+			noData = true;
+		}
 		allUsage.forEach((u) => {
 			if (!months.has(u.date.getMonth())) {
 				months.set(u.date.getMonth(), {
@@ -149,52 +157,58 @@
 
 <!-- {$page.params.id}
 <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
+{#if !noData}
+	<div id="selector" class=" m-3 flex gap-3">
+		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
 
-<div id="selector" class=" m-3 flex gap-3">
-	<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
-
-	<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
-	{#if $anajs.length > 0}
-		<MonthSelector groupName="Anaj" bind:list={$anajs} bind:selected={selected_anaj}
-		></MonthSelector>
-	{/if}
-</div>
-<div class="m-3">
-	<p class="text-lg font-semibold">
-		Total:
-		{#if anaj_details}
-			{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
+		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
+		{#if $anajs.length > 0}
+			<MonthSelector groupName="Anaj" bind:list={$anajs} bind:selected={selected_anaj}
+			></MonthSelector>
 		{/if}
-	</p>
-</div>
-{#if $usage}
-	<!-- <div>
-		<Button on:click={downloadCSV}>Export CVS</Button>
+	</div>
+	<div class="m-3">
+		<p class="text-lg font-semibold">
+			Total:
+			{#if anaj_details.length > 0}
+				{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg ({anaj_details[selected_anaj]
+					.days})
+			{/if}
+		</p>
+	</div>
+	{#if $usage}
+		<!-- <div>
+	<Button on:click={downloadCSV}>Export CVS</Button>
 	</div> -->
-	<div id="table">
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>Date</TableHead>
-					<TableHead>Rate</TableHead>
-					<TableHead>Before</TableHead>
-					<TableHead>Usage</TableHead>
-					<TableHead>After</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
-					{#if $anajs[selected_anaj].label === item.name}
-						<TableRow>
-							<TableHead>{item.date.getDate()}</TableHead>
-							<TableHead>{item.rate}</TableHead>
-							<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
-							<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
-							<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
-						</TableRow>
-					{/if}
-				{/each}
-			</TableBody>
-		</Table>
+		<div id="table">
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Date</TableHead>
+						<TableHead>Rate</TableHead>
+						<TableHead>Before</TableHead>
+						<TableHead>Usage</TableHead>
+						<TableHead>After</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
+						{#if $anajs[selected_anaj].label === item.name}
+							<TableRow>
+								<TableHead>{item.date.getDate()}</TableHead>
+								<TableHead>{item.rate}</TableHead>
+								<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
+								<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
+								<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
+							</TableRow>
+						{/if}
+					{/each}
+				</TableBody>
+			</Table>
+		</div>
+	{/if}
+{:else}
+	<div class="m-10 flex justify-center">
+		<p>no Data Found</p>
 	</div>
 {/if}

@@ -8,7 +8,6 @@
 	import Table from '$lib/components/ui/table/table.svelte';
 	import type { Group, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import { liveQuery } from 'dexie';
 
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
@@ -22,6 +21,7 @@
 				.where({ storage_unit_id: id })
 				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
 				.toArray();
+
 			$usage.forEach((u) => {
 				if (!$anajs.find((x) => x.label === u.name)) {
 					$anajs.push({ value: $anajs.length, label: u.name });
@@ -34,7 +34,7 @@
 			anaj_details = [];
 			reg_details = [];
 			$anajs.forEach((it) => {
-				const obj = { ...it, total: 0 };
+				const obj = { ...it, total: 0, days: 0 };
 
 				anaj_details.push(total(obj));
 				regs.forEach((r) => {
@@ -61,6 +61,7 @@
 		value: number;
 		label: string;
 		total: number;
+		days: number;
 	}
 
 	interface regDetails {
@@ -105,11 +106,15 @@
 
 	function total(obj: anajDetails) {
 		obj.total = 0;
+		const days = new Set<number>([]);
 		$usage.forEach((t) => {
 			if (obj.label === t.name) {
 				obj.total += t.amount;
+
+				days.add(t.date.getDay());
 			}
 		});
+		obj.days = days.size;
 		return obj;
 	}
 	function reg_d_total(obj: anajDetails, reg: regDetails) {
@@ -171,12 +176,13 @@
 	{/if}
 </div>
 <div class="m-3">
-	<p class="text-lg font-semibold">
-		Total:
-		{#if anaj_details}
+	{#if anaj_details}
+		<p class="text-lg font-semibold">
+			Total:
 			{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
-		{/if}
-	</p>
+		</p>
+		<p>Days:{anaj_details[selected_anaj].days}</p>
+	{/if}
 </div>
 
 <div class="m-3 gap-2">
@@ -205,16 +211,17 @@
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
-					{#if $anajs[selected_anaj].label === item.name}
-						<TableRow>
-							<TableHead>{item.date.getDate()}</TableHead>
-							<TableHead>{item.rate}</TableHead>
-							<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
-							<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
-							<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
-						</TableRow>
-					{/if}
+				{#each $usage
+					.sort((a, b) => a.date_id - b.date_id)
+					.sort()
+					.filter((o) => o.name === $anajs[selected_anaj].label) as item}
+					<TableRow>
+						<TableHead>{item.date.getDate()}</TableHead>
+						<TableHead>{item.rate}</TableHead>
+						<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
+						<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
+						<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
+					</TableRow>
 				{/each}
 			</TableBody>
 		</Table>
