@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
+	import ReportCard from '$lib/components/stocks/reportCard.svelte';
 	import { TableBody } from '$lib/components/ui/table';
 	import TableHead from '$lib/components/ui/table/table-head.svelte';
 	import TableHeader from '$lib/components/ui/table/table-header.svelte';
@@ -27,6 +28,7 @@
 				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
 				.toArray();
 
+			$anajs.push({ value: $anajs.length, label: 'ALL' });
 			$usage.forEach((u) => {
 				if (!$anajs.find((x) => x.label === u.name)) {
 					$anajs.push({ value: $anajs.length, label: u.name });
@@ -119,9 +121,9 @@
 	let month: number = new Date().getMonth();
 	let year: number = new Date().getFullYear();
 	let selected_anaj: number;
-	let anaj_details: anajDetails[];
+	let anaj_details: anajDetails[] = [];
 	let reg_details: regDetails[] = [];
-	let income_details: incomeDetails[];
+	let income_details: incomeDetails[] = [];
 
 	function total(obj: anajDetails) {
 		obj.total = 0;
@@ -208,6 +210,11 @@
 		// Handle non-numeric values
 		return '0'; // Or any other fallback logic
 	}
+
+	let currentAnaj: anajDetails = anaj_details.find((x) => x.value === selected_anaj);
+	$: if (selected_anaj) {
+		currentAnaj = anaj_details.find((x) => x.value === selected_anaj);
+	}
 </script>
 
 <!-- {$page.params.id}
@@ -222,58 +229,32 @@
 		></MonthSelector>
 	{/if}
 </div>
-<div class="m-3">
-	{#if anaj_details}
-		<p class="text-lg font-semibold">
-			Total:
-			{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
-		</p>
-		<p>Days:{anaj_details[selected_anaj].days}</p>
-	{/if}
-</div>
-
-<div class="m-3 gap-2">
-	{#each reg_details as reg}
-		<div class="flex gap-2">
-			{#if reg.anajName === anaj_details[selected_anaj].label}
-				<p>{reg.name}: {reg.usage} kg</p>
-				<p>avg: {Number((reg.usage / reg.days).toFixed(3))} kg</p>
-			{/if}
-		</div>
-	{/each}
-</div>
-{#if $stoargeHistory}
-	<!-- <div>
-		<Button on:click={downloadCSV}>Export CVS</Button>
-	</div> -->
-	<div id="table">
-		{#if income_details}
-			Total Income : {Number(income_details[selected_anaj].total)}
-		{/if}
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>Date</TableHead>
-
-					<TableHead>Before</TableHead>
-					<TableHead>Income</TableHead>
-					<TableHead>After</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{#each $stoargeHistory
-					.sort((a, b) => a.date_id - b.date_id)
-					.sort()
-					.filter((o) => o.name === $anajs[selected_anaj].label) as item}
-					<TableRow>
-						<TableHead>{item.date.getDate()}</TableHead>
-
-						<TableHead>{formatAmount(item.before_amount)}</TableHead>
-						<TableHead>{formatAmount(item.amount)}</TableHead>
-						<TableHead>{formatAmount(item.before_amount + item.amount)}</TableHead>
-					</TableRow>
-				{/each}
-			</TableBody>
-		</Table>
+{#if selected_anaj > 0}
+	<div
+		class="m-3 flex flex-col gap-2 rounded-sm
+border"
+	>
+		<ReportCard
+			anaj_details={currentAnaj}
+			historyData={$stoargeHistory.filter((x) => x.name === currentAnaj.label)}
+			incomettl={income_details.find((i) => i.label === currentAnaj.label)?.total}
+			usageregs={reg_details.filter((x) => x.anajName === currentAnaj.label && x.usage > 0)}
+		></ReportCard>
 	</div>
+{:else}
+	{#each anaj_details as anajD}
+		{#if anajD.value > 0 && anajD.total > 0}
+			<div
+				class="m-3 flex flex-col gap-2 rounded-sm
+			 border"
+			>
+				<ReportCard
+					anaj_details={anajD}
+					historyData={$stoargeHistory.filter((x) => x.name === anajD.label)}
+					incomettl={income_details.find((i) => i.label === anajD.label)?.total}
+					usageregs={reg_details.filter((x) => x.anajName === anajD.label && x.usage > 0)}
+				></ReportCard>
+			</div>
+		{/if}
+	{/each}
 {/if}
