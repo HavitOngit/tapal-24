@@ -6,7 +6,7 @@
 	import TableHeader from '$lib/components/ui/table/table-header.svelte';
 	import TableRow from '$lib/components/ui/table/table-row.svelte';
 	import Table from '$lib/components/ui/table/table.svelte';
-	import type { Group, Usage } from '$lib/custom_types';
+	import type { Group, Storage, StorageHistory, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 
 	import { onMount } from 'svelte';
@@ -22,6 +22,11 @@
 				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
 				.toArray();
 
+			$stoargeHistory = await db.storage_history
+				.where({ storage_unit_id: id })
+				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
+				.toArray();
+
 			$usage.forEach((u) => {
 				if (!$anajs.find((x) => x.label === u.name)) {
 					$anajs.push({ value: $anajs.length, label: u.name });
@@ -33,16 +38,20 @@
 
 			anaj_details = [];
 			reg_details = [];
+			income_details = [];
 			$anajs.forEach((it) => {
 				const obj = { ...it, total: 0, days: 0 };
+				const obj2 = { ...it, total: 0, days: 0 };
 
 				anaj_details.push(total(obj));
+				income_details.push(income_total(obj2));
 				regs.forEach((r) => {
 					const reg: regDetails = { name: r.name, id: r.id, days: 0, usage: 0 };
 					reg_details.push(reg_d_total(obj, reg));
 				});
 			});
-			console.log(anaj_details);
+
+			console.log(income_details);
 		} catch (error) {
 			console.error(error);
 		}
@@ -50,7 +59,9 @@
 
 	let usage = writable<Usage[]>([]);
 	let anajs = writable<selector[]>([]);
+	let stocks = writable<Storage[]>([]);
 	let regs: Group[];
+	let stoargeHistory = writable<StorageHistory[]>([]);
 
 	interface selector {
 		value: number;
@@ -58,6 +69,13 @@
 	}
 
 	interface anajDetails {
+		value: number;
+		label: string;
+		total: number;
+		days: number;
+	}
+
+	interface incomeDetails {
 		value: number;
 		label: string;
 		total: number;
@@ -103,11 +121,25 @@
 	let selected_anaj: number;
 	let anaj_details: anajDetails[];
 	let reg_details: regDetails[] = [];
+	let income_details: incomeDetails[];
 
 	function total(obj: anajDetails) {
 		obj.total = 0;
 		const days = new Set<number>([]);
 		$usage.forEach((t) => {
+			if (obj.label === t.name) {
+				obj.total += t.amount;
+
+				days.add(t.date.getDay());
+			}
+		});
+		obj.days = days.size;
+		return obj;
+	}
+	function income_total(obj: incomeDetails) {
+		obj.total = 0;
+		const days = new Set<number>([]);
+		$stoargeHistory.forEach((t) => {
 			if (obj.label === t.name) {
 				obj.total += t.amount;
 
@@ -141,6 +173,7 @@
 	onMount(async () => {
 		insilized = true;
 		regs = await db.group.where({ storage_unit_id: id }).toArray();
+		$stocks = await db.storage.where({ storage_unit_id: id }).toArray();
 		await getUsage(month, year);
 		const allUsage = await db.usage.where({ group_id: Number($page.params.id) }).toArray();
 		allUsage.forEach((u) => {
@@ -161,6 +194,20 @@
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
 	});
+
+	function formatAmount(amount: any) {
+		// Check if amount is already a number
+		if (typeof amount === 'number') {
+			return Number(amount.toFixed(3));
+		}
+		// Attempt to convert to a number if it's a string
+		const parsed = parseFloat(amount);
+		if (!isNaN(parsed)) {
+			return Number(parsed.toFixed(3));
+		}
+		// Handle non-numeric values
+		return '0'; // Or any other fallback logic
+	}
 </script>
 
 <!-- {$page.params.id}
@@ -195,32 +242,35 @@
 		</div>
 	{/each}
 </div>
-{#if $usage}
+{#if $stoargeHistory}
 	<!-- <div>
 		<Button on:click={downloadCSV}>Export CVS</Button>
 	</div> -->
 	<div id="table">
+		{#if income_details}
+			Total Income : {Number(income_details[selected_anaj].total)}
+		{/if}
 		<Table>
 			<TableHeader>
 				<TableRow>
 					<TableHead>Date</TableHead>
-					<TableHead>Rate</TableHead>
+
 					<TableHead>Before</TableHead>
-					<TableHead>Usage</TableHead>
+					<TableHead>Income</TableHead>
 					<TableHead>After</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{#each $usage
+				{#each $stoargeHistory
 					.sort((a, b) => a.date_id - b.date_id)
 					.sort()
 					.filter((o) => o.name === $anajs[selected_anaj].label) as item}
 					<TableRow>
 						<TableHead>{item.date.getDate()}</TableHead>
-						<TableHead>{item.rate}</TableHead>
-						<TableHead>{Number(item.before_amount.toFixed(3))}</TableHead>
-						<TableHead>{Number(item.amount.toFixed(3))}</TableHead>
-						<TableHead>{Number(item.after_amount.toFixed(3))}</TableHead>
+
+						<TableHead>{formatAmount(item.before_amount)}</TableHead>
+						<TableHead>{formatAmount(item.amount)}</TableHead>
+						<TableHead>{formatAmount(item.before_amount + item.amount)}</TableHead>
 					</TableRow>
 				{/each}
 			</TableBody>

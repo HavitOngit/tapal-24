@@ -46,7 +46,7 @@
 				name: anaj.name,
 				storage_unit_id: anaj.storage_unit_id,
 				before_amount: anaj.amount,
-				amount: addAmount,
+				amount: Number(addAmount),
 				date: today,
 				date_id: today.getTime()
 			});
