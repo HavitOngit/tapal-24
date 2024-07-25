@@ -2,11 +2,6 @@
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import ReportCard from '$lib/components/stocks/reportCard.svelte';
-	import { TableBody } from '$lib/components/ui/table';
-	import TableHead from '$lib/components/ui/table/table-head.svelte';
-	import TableHeader from '$lib/components/ui/table/table-header.svelte';
-	import TableRow from '$lib/components/ui/table/table-row.svelte';
-	import Table from '$lib/components/ui/table/table.svelte';
 	import type { Group, Storage, StorageHistory, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 
@@ -28,8 +23,10 @@
 				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
 				.toArray();
 
-			$anajs.push({ value: $anajs.length, label: 'ALL' });
-			$usage.forEach((u) => {
+			if (!$anajs.find((x) => x.label === 'ALL')) {
+				$anajs.push({ value: $anajs.length, label: 'ALL' });
+			}
+			$stocks.forEach((u) => {
 				if (!$anajs.find((x) => x.label === u.name)) {
 					$anajs.push({ value: $anajs.length, label: u.name });
 				}
@@ -178,6 +175,21 @@
 		$stocks = await db.storage.where({ storage_unit_id: id }).toArray();
 		await getUsage(month, year);
 		const allUsage = await db.usage.where({ group_id: Number($page.params.id) }).toArray();
+		$stoargeHistory = await db.storage_history.where({ storage_unit_id: id }).toArray();
+		$stoargeHistory.forEach((u) => {
+			if (!months.has(u.date.getMonth())) {
+				months.set(u.date.getMonth(), {
+					value: u.date.getMonth(),
+					label: u.date.toLocaleString('default', { month: 'long' })
+				});
+			}
+			if (!years.has(u.date.getFullYear())) {
+				years.set(u.date.getFullYear(), {
+					value: u.date.getFullYear(),
+					label: u.date.getFullYear().toString()
+				});
+			}
+		});
 		allUsage.forEach((u) => {
 			if (!months.has(u.date.getMonth())) {
 				months.set(u.date.getMonth(), {
@@ -243,7 +255,7 @@ border"
 	</div>
 {:else}
 	{#each anaj_details as anajD}
-		{#if anajD.value > 0 && anajD.total > 0}
+		{#if (anajD.value > 0 && anajD.total > 0) || income_details.find((i) => i.label === anajD.label)?.total || 0 > 0}
 			<div
 				class="m-3 flex flex-col gap-2 rounded-sm
 			 border"

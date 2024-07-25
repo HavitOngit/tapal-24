@@ -47,8 +47,8 @@
 				storage_unit_id: anaj.storage_unit_id,
 				before_amount: anaj.amount,
 				amount: Number(addAmount),
-				date: today,
-				date_id: today.getTime()
+				date: workingDate,
+				date_id: workingDate.getTime()
 			});
 			await db.usage.bulkUpdate([...cal_effect.values()]);
 			await db.storage.update(anaj.id, { amount: sum });
@@ -61,6 +61,7 @@
 	let addbtn: HTMLButtonElement;
 	const today = new Date(new Date().toDateString());
 	let date: DateValue | undefined = ctime('Asia/Kolkata');
+	$: workingDate = date?.toDate('Asia/Kolkata') || today;
 
 	$: effectedUsage = liveQuery(() =>
 		db.usage
