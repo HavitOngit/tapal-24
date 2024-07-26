@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { TableBody } from '$lib/components/ui/table';
 	import TableHead from '$lib/components/ui/table/table-head.svelte';
 	import TableHeader from '$lib/components/ui/table/table-header.svelte';
 	import TableRow from '$lib/components/ui/table/table-row.svelte';
 	import Table from '$lib/components/ui/table/table.svelte';
-	import type { Attendance, Usage } from '$lib/custom_types';
+	import type { Attendance, Group } from '$lib/custom_types';
 	import { db } from '$lib/db';
 
 	import { onMount } from 'svelte';
-	import { derived, writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
+
+	const id = Number($page.params.id);
 
 	async function getUsage(month: number, year: number) {
 		if (!insilized) return;
@@ -56,11 +59,6 @@
 		label: string;
 	}
 
-	interface anajDetails {
-		value: number;
-		label: string;
-		total: number;
-	}
 	// data
 	const months: Map<number, selector> = new Map();
 
@@ -90,8 +88,7 @@
 	// selectors
 	let month: number = new Date().getMonth();
 	let year: number = new Date().getFullYear();
-	let selected_anaj: number;
-	let anaj_details: anajDetails[];
+	let regs: Group | undefined;
 
 	// function total(obj: anajDetails) {
 	// 	obj.total = 0;
@@ -108,6 +105,7 @@
 	let insilized = false;
 	onMount(async () => {
 		insilized = true;
+		regs = await db.group.get(id);
 		await getUsage(month, year);
 		const allUsage = await db.attendance.where({ group_id: Number($page.params.id) }).toArray();
 		allUsage.forEach((u) => {
@@ -144,6 +142,29 @@
 	</p>
 </div> -->
 {#if $atndce}
+	{#if regs}
+		<div class="m-3 flex gap-1">
+			<p class="font-semibold">Registred:</p>
+			<Badge class="flex gap-2" variant="outline">
+				Boys
+				<span class="font-semibold">{regs.boys}</span>
+			</Badge> +
+			<Badge class="flex gap-2" variant="outline">
+				Girls
+				<span class="font-semibold">{regs.girls}</span>
+			</Badge>
+			=
+			<Badge class="flex gap-2">
+				total
+				<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
+			</Badge>
+		</div>
+	{/if}
+	<div class="m-3">
+		<p class="text-lg font-semibold">
+			Total Days: {$atndce.length}
+		</p>
+	</div>
 	<!-- <div>
 		<Button on:click={downloadCSV}>Export CVS</Button>
 	</div> -->

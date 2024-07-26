@@ -167,15 +167,15 @@
 			></MonthSelector>
 		{/if}
 	</div>
-	<div class="m-3">
-		<p class="text-lg font-semibold">
-			Total:
-			{#if anaj_details.length > 0}
-				{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg ({anaj_details[selected_anaj]
-					.days})
-			{/if}
-		</p>
-	</div>
+	{#if anaj_details.length > 0}
+		<div class="m-3">
+			<p class="text-lg font-semibold">
+				Total Usage:
+				{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
+			</p>
+			<p>Total Days: {anaj_details[selected_anaj].days}</p>
+		</div>
+	{/if}
 	{#if $usage}
 		<!-- <div>
 	<Button on:click={downloadCSV}>Export CVS</Button>
