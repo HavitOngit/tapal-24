@@ -1,16 +1,16 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
-	import type { Rate, Rates, RegForm } from '$lib/custom_types';
+	import type { Rates, RegForm } from '$lib/custom_types';
 
 	import { db } from '$lib/db';
 	import { onMount } from 'svelte';
+	import { z } from 'zod';
 	import ListSelector from './ListSelector.svelte';
+	import Badge from './ui/badge/badge.svelte';
+	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
 	import Switch from './ui/switch/switch.svelte';
-	import Badge from './ui/badge/badge.svelte';
-	import Button from './ui/button/button.svelte';
-	import { z } from 'zod';
 
 	export let data: RegForm;
 
@@ -20,12 +20,15 @@
 	let dbratelist: Rates[];
 	let diff: Rates[] = [];
 
-	let competable: boolean = true;
+	export let competable: boolean = true;
 
 	async function check_requrments(rateUnit: number, stockUnit: number) {
 		const stocks = (await db.storage.where({ storage_unit_id: stockUnit }).toArray()).map((obj) => {
 			return obj.name;
 		});
+		if (!dbratelist) {
+			return;
+		}
 
 		const rates = dbratelist.find((obj) => rateUnit == obj.id)?.used_anaj;
 
@@ -33,6 +36,8 @@
 		console.log(diff);
 
 		competable = diff?.length == 0;
+		console.log(competable);
+
 		isDone = competable;
 	}
 
@@ -57,9 +62,9 @@
 	let show_error = false;
 
 	const zod_check = z.object({
-		name: z.string().min(1),
-		rate_unit_id: z.number().min(1),
-		storage_unit_id: z.number().min(1)
+		name: z.string().min(1, { message: 'Name is Required' }),
+		rate_unit_id: z.number().min(1, { message: 'select any one Rate' }),
+		storage_unit_id: z.number().min(1, { message: 'select any one Stock' })
 	});
 
 	$: result = zod_check.safeParse({
@@ -102,13 +107,13 @@
 			/>
 		</div>
 		{#if result.error && show_error}
-			<div>
-				{#each result.error.errors as err}
+			{#if result.error.errors.find((x) => x.message.includes('Name'))}
+				<div class="flex justify-end">
 					<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
-						>{err.message}</Badge
+						>{result.error.errors.find((x) => x.message.includes('Name'))?.message}</Badge
 					>
-				{/each}
-			</div>
+				</div>
+			{/if}
 		{/if}
 
 		<div class="flex gap-2">
@@ -136,6 +141,17 @@
 					saved={data.rate_unit_id}
 				></ListSelector>
 			</div>
+			{#if result.error && show_error}
+				<div class="flex gap-2">
+					{#each result.error.errors as err}
+						{#if err.message.includes('one')}
+							<Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
+								>{err.message}</Badge
+							>
+						{/if}
+					{/each}
+				</div>
+			{/if}
 
 			{#if !competable}
 				<div class="flex items-center gap-2">

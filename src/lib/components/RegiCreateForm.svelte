@@ -1,20 +1,18 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
-	import type { Group } from '$lib/custom_types';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import type { RegForm } from '$lib/custom_types';
 	import { db } from '$lib/db';
+	import { PenLineIcon, Plus } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 	import Regform from './Regform.svelte';
 	import Button from './ui/button/button.svelte';
-	import Input from './ui/input/input.svelte';
-	import type { RegForm } from '$lib/custom_types';
-	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { Plus, Settings } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 
 	let name: string;
 	let storage_unit_id: number = 1;
 	let rate_unit_id: number = 1;
 
 	export let useForUpdaate: boolean = false;
+	export let updateBtn: HTMLButtonElement;
 
 	export let data: RegForm = {
 		name: '',
@@ -40,16 +38,21 @@
 	}
 
 	let isDone: boolean = false;
+	let competable: boolean;
 </script>
 
 <AlertDialog.Root>
 	<AlertDialog.Trigger
+		bind:el={updateBtn}
 		class=" {!useForUpdaate
 			? 'flex size-14 items-center justify-center rounded-lg bg-blue-200'
 			: ''}"
 	>
 		{#if useForUpdaate}
-			<Settings strokeWidth={1}></Settings>
+			<div class="flex gap-3">
+				<PenLineIcon></PenLineIcon>
+				<span>Edit</span>
+			</div>
 		{:else}
 			<Plus></Plus>
 		{/if}
@@ -63,7 +66,7 @@
 	</AlertDialog.Description>
   </AlertDialog.Header> -->
 
-		<Regform bind:data bind:isDone></Regform>
+		<Regform bind:data bind:isDone bind:competable></Regform>
 
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel
@@ -71,7 +74,7 @@
 					data = { ...preData };
 				}}>Cancel</AlertDialog.Cancel
 			>
-			<AlertDialog.Action disabled={!isDone}>
+			<AlertDialog.Action disabled={!isDone || !competable}>
 				<Button on:click={Save} class="w-full">{useForUpdaate ? 'Update' : 'Create'}</Button>
 			</AlertDialog.Action>
 		</AlertDialog.Footer>

@@ -6,6 +6,7 @@
 	import Regslot from '$lib/components/reg/regslot.svelte';
 
 	const regilist = liveQuery(() => db.group.toArray());
+	let fakebtn: HTMLButtonElement;
 </script>
 
 <div class="m-2 flex flex-col gap-2">
@@ -26,5 +27,5 @@
 </div>
 
 <div class="fixed bottom-24 right-3">
-	<RegiCreateForm></RegiCreateForm>
+	<RegiCreateForm updateBtn={fakebtn}></RegiCreateForm>
 </div>

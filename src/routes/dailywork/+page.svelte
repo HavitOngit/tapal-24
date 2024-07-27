@@ -115,6 +115,9 @@
 				>
 			</Badge>
 		</div>
+		<div class="m-3">
+			<p class="text-xl font-bold">{dayjs(workingDate).format('dddd')}</p>
+		</div>
 	{/if}
 
 	{#if $registers}
@@ -133,7 +136,6 @@
 
 	{#if $submited_registers}
 		<div>
-			<hr class="my-4" />
 			{#each $submited_registers as hajari}
 				<UpdateAeInfo
 					AttendanceData={hajari}
