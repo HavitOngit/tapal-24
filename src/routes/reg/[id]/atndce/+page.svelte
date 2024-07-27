@@ -22,6 +22,13 @@
 				.where({ group_id: Number($page.params.id) })
 				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
 				.toArray();
+
+			totalData = { boys: 0, girls: 0, total: 0 };
+			$atndce.forEach((x) => {
+				totalData.boys += x.boys;
+				totalData.girls += x.girls;
+				totalData.total += x.total;
+			});
 		} catch (error) {
 			console.error(error);
 		}
@@ -58,6 +65,11 @@
 		value: number;
 		label: string;
 	}
+	interface totals {
+		boys: number;
+		girls: number;
+		total: number;
+	}
 
 	// data
 	const months: Map<number, selector> = new Map();
@@ -89,6 +101,7 @@
 	let month: number = new Date().getMonth();
 	let year: number = new Date().getFullYear();
 	let regs: Group | undefined;
+	let totalData: totals = { boys: 0, girls: 0, total: 0 };
 
 	// function total(obj: anajDetails) {
 	// 	obj.total = 0;
@@ -188,6 +201,16 @@
 							<TableHead>{item.total}</TableHead>
 						</TableRow>
 					{/each}
+
+					<TableRow class="mt-3 rounded border bg-gray-200 p-1">
+						<TableHead>Total</TableHead>
+						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
+						<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
+						<TableHead
+							>{totalData.total}/{$atndce.length * (regs?.boys || 0.5) +
+								(regs?.girls || 0.5)}</TableHead
+						>
+					</TableRow>
 				</TableBody>
 			</Table>
 		</div>

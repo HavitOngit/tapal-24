@@ -6,6 +6,7 @@
 	import * as Drawer from '$lib/components/ui/drawer';
 	import Input from './ui/input/input.svelte';
 	import { CircleFadingPlus, Package, PackagePlus, Plus } from 'lucide-svelte';
+	import toast from 'svelte-french-toast';
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -34,6 +35,7 @@
 	let addingNewField = false;
 	let name: string = '';
 	let amount: number = 0;
+	let nameError = false;
 </script>
 
 <Drawer.Root>
@@ -56,29 +58,33 @@
 								addingNewField = !addingNewField;
 							}}>cancel</Button
 						>
-					{:else}
-						<Button
-							on:click={() => {
-								addingNewField = !addingNewField;
-							}}>Add</Button
-						>
 					{/if}
 				</div>
 			{/if}
 			{#if addingNewField}
 				<div class="mx-4 flex h-24">
 					<Input bind:value={name} placeholder="Enter Name" />
+					{#if nameError}
+						<p>type something</p>
+					{/if}
 				</div>
 				<Button
 					class="w-full"
 					on:click={() => {
+						if (name.length <= 0) {
+							toast.error('Enter Something');
+							return;
+						}
+						if (cache.has(name)) {
+							return;
+						}
 						addToList(name, amount);
 						addingNewField = false;
 						anajlist = [...anajlist, { name: name, amount: amount }];
 					}}>Create</Button
 				>
 			{:else}
-				<div class="grid grid-cols-2 gap-1">
+				<div class="grid max-h-[60%] grid-cols-2 gap-1 overflow-y-auto">
 					{#each anajlist as anaj}
 						{#if anaj}
 							<div on:click={() => addToList(anaj.name)}>
@@ -86,11 +92,22 @@
 							</div>
 						{/if}
 					{/each}
+					<Button
+						variant="outline"
+						class="h-auto min-h-32 bg-blue-50"
+						on:click={() => {
+							addingNewField = !addingNewField;
+						}}
+					>
+						Create New
+					</Button>
 				</div>
 			{/if}
 		</div>
 		<Drawer.Footer>
-			<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
+			{#if !addingNewField}
+				<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
+			{/if}
 		</Drawer.Footer>
 	</Drawer.Content>
 </Drawer.Root>
