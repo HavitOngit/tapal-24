@@ -7,6 +7,7 @@
 	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
+	import { onMount } from 'svelte';
 </script>
 
 <div class=" flex h-11 w-full items-center justify-between bg-white">

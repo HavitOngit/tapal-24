@@ -183,8 +183,7 @@
 		{/if}
 
 		{#if current_day == 6}
-			<Button on:click={Save} class=" w-[50%] rounded-xl"
-				><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
+			<Button on:click={Save} class=" w-full"><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
 			>
 		{:else}
 			<Button class="w-full" on:click={Next}>Next</Button>
