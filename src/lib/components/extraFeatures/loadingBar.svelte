@@ -1,1 +1,6 @@
-<div class="flex items-center justify-center text-3xl font-semibold">Loading...</div>
+<div class="fixed flex h-full w-full items-center justify-center">
+	<div class="flex flex-col items-center justify-center gap-3">
+		<div class="size-7 animate-spin rounded-full border-b-2 border-t-2 border-gray-900"></div>
+		<p class="font-semibold">Loading...</p>
+	</div>
+</div>

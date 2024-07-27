@@ -130,65 +130,70 @@
 
 <!-- {$page.params.id}
 <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
+{#if $yearlist.length > 0}
+	<div id="selector" class=" m-3 flex gap-3">
+		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
 
-<div id="selector" class=" m-3 flex gap-3">
-	<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
-
-	<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
-</div>
-<!-- <div class="m-3">
+		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
+	</div>
+	<!-- <div class="m-3">
 	<p class="text-lg font-semibold">
 		Total:
 	</p>
 </div> -->
-{#if $atndce}
-	{#if regs}
-		<div class="m-3 flex gap-1">
-			<p class="font-semibold">Registred:</p>
-			<Badge class="flex gap-2" variant="outline">
-				Boys
-				<span class="font-semibold">{regs.boys}</span>
-			</Badge> +
-			<Badge class="flex gap-2" variant="outline">
-				Girls
-				<span class="font-semibold">{regs.girls}</span>
-			</Badge>
-			=
-			<Badge class="flex gap-2">
-				total
-				<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
-			</Badge>
+	{#if $atndce}
+		{#if regs}
+			<div class="m-3 flex gap-1">
+				<p class="font-semibold">Registred:</p>
+				<Badge class="flex gap-2" variant="outline">
+					Boys
+					<span class="font-semibold">{regs.boys}</span>
+				</Badge> +
+				<Badge class="flex gap-2" variant="outline">
+					Girls
+					<span class="font-semibold">{regs.girls}</span>
+				</Badge>
+				=
+				<Badge class="flex gap-2">
+					total
+					<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
+				</Badge>
+			</div>
+		{/if}
+		<div class="m-3">
+			<p class="text-lg font-semibold">
+				Total Days: {$atndce.length}
+			</p>
+		</div>
+		<!-- <div>
+		<Button on:click={downloadCSV}>Export CVS</Button>
+		</div> -->
+		<div id="table">
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Date</TableHead>
+
+						<TableHead>Boys</TableHead>
+						<TableHead>Girls</TableHead>
+						<TableHead>Total</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{#each $atndce.sort((a, b) => a.date_id - b.date_id).sort() as item}
+						<TableRow>
+							<TableHead>{item.date.getDate()}</TableHead>
+							<TableHead>{item.boys}</TableHead>
+							<TableHead>{item.girls}</TableHead>
+							<TableHead>{item.total}</TableHead>
+						</TableRow>
+					{/each}
+				</TableBody>
+			</Table>
 		</div>
 	{/if}
-	<div class="m-3">
-		<p class="text-lg font-semibold">
-			Total Days: {$atndce.length}
-		</p>
-	</div>
-	<!-- <div>
-		<Button on:click={downloadCSV}>Export CVS</Button>
-	</div> -->
-	<div id="table">
-		<Table>
-			<TableHeader>
-				<TableRow>
-					<TableHead>Date</TableHead>
-
-					<TableHead>Boys</TableHead>
-					<TableHead>Girls</TableHead>
-					<TableHead>Total</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{#each $atndce.sort((a, b) => a.date_id - b.date_id).sort() as item}
-					<TableRow>
-						<TableHead>{item.date.getDate()}</TableHead>
-						<TableHead>{item.boys}</TableHead>
-						<TableHead>{item.girls}</TableHead>
-						<TableHead>{item.total}</TableHead>
-					</TableRow>
-				{/each}
-			</TableBody>
-		</Table>
+{:else}
+	<div class="m-10 flex justify-center">
+		<p>no Data Found</p>
 	</div>
 {/if}

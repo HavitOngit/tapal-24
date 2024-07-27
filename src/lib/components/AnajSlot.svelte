@@ -177,9 +177,9 @@
 						</div>
 					</div>
 				{:else}
-					<div class="flex flex-row">
+					<div class="flex items-center">
 						<div>Amount:</div>
-						<div><input bind:value={anaj.amount} class="w-full" /></div>
+						<div><Input bind:value={anaj.amount} class="w-full" /></div>
 					</div>
 				{/if}
 			</div>

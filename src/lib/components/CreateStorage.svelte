@@ -1,16 +1,15 @@
 <script lang="ts">
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { Label } from '$lib/components/ui/label';
 	import type { Storage, StorageUnit } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { anajlist } from '$lib/predefined';
 	import { onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 	import AnajSelection from './AnajSelection.svelte';
 	import AnajSlot from './AnajSlot.svelte';
 	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
-	import { Label } from '$lib/components/ui/label';
-	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import NameInput from './stocks/NameInput.svelte';
-	import toast from 'svelte-french-toast';
 
 	let selected_anaj: Storage[] = [];
 
