@@ -1,12 +1,10 @@
 <script lang="ts">
-	import type { Anajlist_init, Storage } from '$lib/custom_types';
-
+	import * as Drawer from '$lib/components/ui/drawer';
+	import { PackagePlus } from 'lucide-svelte';
+	import toast from 'svelte-french-toast';
 	import AnajCard from './AnajCard.svelte';
 	import Button from './ui/button/button.svelte';
-	import * as Drawer from '$lib/components/ui/drawer';
 	import Input from './ui/input/input.svelte';
-	import { CircleFadingPlus, Package, PackagePlus, Plus } from 'lucide-svelte';
-	import toast from 'svelte-french-toast';
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -16,7 +14,7 @@
 
 	export let cache = new Map();
 
-	selected.forEach((obj) => cache.set(obj.name, true));
+	selected.forEach((obj: { name: any }) => cache.set(obj.name, true));
 
 	function addToList(name: string, rate: number = 0) {
 		if (!cache.has(name)) {
@@ -28,7 +26,7 @@
 			}
 		} else {
 			cache.delete(name);
-			selected = selected.filter((obj) => obj.name !== name);
+			selected = selected.filter((obj: { name: string }) => obj.name !== name);
 		}
 	}
 

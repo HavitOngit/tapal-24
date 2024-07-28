@@ -29,9 +29,14 @@
 	<AlertDialog.Trigger>Edit</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header class="flex ">
-			<AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title>
+			<AlertDialog.Title>
+				<p class="text-left">
+					{Ratedetails.day}
+				</p>
+			</AlertDialog.Title>
 			<!-- <AlertDialog.Description></AlertDialog.Description> -->
 		</AlertDialog.Header>
+
 		<Rateform forInit={false} anajlist={Ratedetails.ratelist} bind:ratelist={Ratedetails.ratelist}
 		></Rateform>
 		<AlertDialog.Footer class="flex flex-row items-center justify-between">

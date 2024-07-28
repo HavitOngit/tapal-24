@@ -271,6 +271,8 @@
 			</Card.Header>
 		</Card.Root>
 	{/if}
+
+	<p class="text-end text-sm font-semibold">(All in Kg)</p>
 	<!-- <Button on:click={DeleteM}>Delete</Button> -->
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}

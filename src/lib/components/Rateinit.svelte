@@ -144,6 +144,7 @@
 		<Label>Name:</Label>
 		<Input bind:value={name} placeholder="Enter Profile Name" />
 	</div>
+
 	<div>
 		<Carousel.Root bind:api>
 			<Carousel.Content>

@@ -11,6 +11,7 @@
 	let cache = new Map();
 
 	let show = deleteMode ? '' : `disebled`;
+	let fakeBtn: HTMLButtonElement;
 
 	$: ratelist = temp_anajlist;
 
@@ -43,6 +44,7 @@
 	});
 </script>
 
+<p class="text-end text-sm font-semibold">All in grams</p>
 <Table.Root>
 	<Table.Header>
 		<Table.Row></Table.Row>
@@ -78,5 +80,10 @@
 	</Table.Body>
 </Table.Root>
 
-<AnajSelection anajlist={unilist} bind:selected={temp_anajlist} useForRates={true} bind:cache
+<AnajSelection
+	TriggerButton={fakeBtn}
+	anajlist={unilist}
+	bind:selected={temp_anajlist}
+	useForRates={true}
+	bind:cache
 ></AnajSelection>

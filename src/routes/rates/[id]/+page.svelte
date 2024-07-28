@@ -179,6 +179,7 @@
 		</DropdownMenu.Root>
 	</div>
 </div>
+<p class="mr-10 text-end text-sm font-semibold">(All in grams)</p>
 <div class="flex flex-col items-center justify-center">
 	{#each $list || [] as detail}
 		<!-- <RateView rateDetails={detail}></RateView> -->

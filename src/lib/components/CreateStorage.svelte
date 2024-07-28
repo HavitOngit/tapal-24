@@ -127,6 +127,7 @@
 			bind:value={storage_unit.name}
 		/>
 	</div>
+	<p class="text-end text-sm font-semibold">(All in Kg)</p>
 	Selected Anaj:
 	{#if selected_anaj.length == 0}
 		<img src="/in_app/clickonAdd.png" alt="click on Add Button" />

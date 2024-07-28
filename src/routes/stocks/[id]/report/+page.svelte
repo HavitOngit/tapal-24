@@ -223,7 +223,7 @@
 		return '0'; // Or any other fallback logic
 	}
 
-	let currentAnaj: anajDetails = anaj_details.find((x) => x.value === selected_anaj);
+	let currentAnaj: anajDetails | undefined = anaj_details.find((x) => x.value === selected_anaj);
 	$: if (selected_anaj) {
 		currentAnaj = anaj_details.find((x) => x.value === selected_anaj);
 	}
@@ -246,12 +246,14 @@
 		class="m-3 flex flex-col gap-2 rounded-sm
 border"
 	>
-		<ReportCard
-			anaj_details={currentAnaj}
-			historyData={$stoargeHistory.filter((x) => x.name === currentAnaj.label)}
-			incomettl={income_details.find((i) => i.label === currentAnaj.label)?.total}
-			usageregs={reg_details.filter((x) => x.anajName === currentAnaj.label && x.usage > 0)}
-		></ReportCard>
+		{#if currentAnaj}
+			<ReportCard
+				anaj_details={currentAnaj}
+				historyData={$stoargeHistory.filter((x) => x.name === currentAnaj.label)}
+				incomettl={income_details.find((i) => i.label === currentAnaj.label)?.total}
+				usageregs={reg_details.filter((x) => x.anajName === currentAnaj.label && x.usage > 0)}
+			></ReportCard>
+		{/if}
 	</div>
 {:else}
 	{#each anaj_details as anajD}
