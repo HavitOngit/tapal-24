@@ -159,7 +159,7 @@
 							</Badge> -->
 							{#if anaj.amount}
 								<div class="text-nowrap text-lg font-semibold">
-									{formatAmount(anaj.amount)}
+									{formatAmount(anaj.amount)} kg
 								</div>
 							{/if}
 							{#if !deleteMode}

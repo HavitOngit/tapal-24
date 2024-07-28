@@ -14,7 +14,7 @@
 
 	export let cache = new Map();
 
-	selected.forEach((obj: { name: any }) => cache.set(obj.name, true));
+	selected.forEach((obj: { name: string }) => cache.set(obj.name, true));
 
 	function addToList(name: string, rate: number = 0) {
 		if (!cache.has(name)) {

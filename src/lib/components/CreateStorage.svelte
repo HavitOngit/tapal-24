@@ -10,6 +10,7 @@
 	import AnajSlot from './AnajSlot.svelte';
 	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
+	import { liveQuery } from 'dexie';
 
 	let selected_anaj: Storage[] = [];
 
@@ -22,6 +23,7 @@
 	// 	}
 	// }
 	const unimap = new Map();
+	const unilist = liveQuery(() => db.univarsalList.toArray() || anajlist);
 
 	onMount(async () => {
 		TriggerBtn.click();
@@ -37,28 +39,29 @@
 
 			return;
 		}
-		const unit = await db.storage_unit.put(storage_unit);
 
-		// set ref of storage unit
-		await selected_anaj.forEach((obj) => {
-			obj.storage_unit_id = unit;
-			if (!unimap.has(obj.name)) {
-				const reqobj = anajlist.find((item) => obj.name == item.name);
-				newUniList.push(reqobj);
-				unimap.set(obj.name, true);
-			}
-		});
+		db.transaction('rw', db.univarsalList, db.storage_unit, db.storage, async () => {
+			const unit = await db.storage_unit.put(storage_unit);
 
-		console.log(newUniList);
+			// set ref of storage unit
+			await selected_anaj.forEach((obj) => {
+				obj.storage_unit_id = unit;
+				if (!$unilist.find((x) => x.name === obj.name)) {
+					newUniList.push({ name: obj.name, image: '/anaj_images/avg.png' });
+					unimap.set(obj.name, true);
+				}
+			});
 
-		const anajs = await db.storage.bulkAdd(selected_anaj);
-		const uniupload = await db.univarsalList.bulkAdd(newUniList);
-		if (uniupload) {
+			console.log(newUniList);
+
+			await db.storage.bulkAdd(selected_anaj);
+			await db.univarsalList.bulkAdd(newUniList);
+		}).then(() => {
 			newUniList = [];
-		}
 
-		toast.success(`${storage_unit.name} created`);
-		history.back();
+			toast.success(`${storage_unit.name} created`);
+			history.back();
+		});
 		// const addtounivarasal = selected_anaj.map((obj) => handle_univarsal_list(obj.name));
 		// console.log(addtounivarasal);
 	}
@@ -142,7 +145,7 @@
 		<AnajSelection
 			bind:TriggerButton={anajSelectionTrigger}
 			bind:selected={selected_anaj}
-			{anajlist}
+			anajlist={$unilist}
 		></AnajSelection>
 		<Button on:click={save} class="  rounded-lg">Create</Button>
 	</div>

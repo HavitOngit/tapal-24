@@ -21,6 +21,7 @@
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());
 	const usedBy = liveQuery(() => db.group.where({ storage_unit_id: id }).toArray());
+	const unilist = liveQuery(() => db.univarsalList.toArray());
 	let unit: StorageUnit;
 	onMount(async () => {
 		unit = (await db.storage_unit.get(id)) as StorageUnit;
@@ -53,22 +54,30 @@
 
 	let filtered_list: any = [];
 	$: if ($list) {
-		filtered_list = anajlist.map((obj) => {
-			if (!$list.find((item) => item.name == obj.name)) {
-				return { ...obj };
-			}
-		});
+		if ($unilist) {
+			filtered_list = $unilist.map((obj) => {
+				if (!$list.find((item) => item.name == obj.name)) {
+					return { ...obj };
+				}
+			});
+		}
 	}
 
 	async function SaveNewAnajs() {
+		const addinunilist: any[] = [];
+
 		newlySelected.forEach((obj) => {
 			obj.storage_unit_id = id;
+			if ($unilist.find((x) => x.name === obj.name)) {
+				addinunilist.push({ name: obj.name, image: '/anaj_images/avg.png' });
+			}
 		});
-		const status = await db.storage.bulkAdd(newlySelected);
 
-		if (status) {
-			newlySelected.length = 0;
-		}
+		db.transaction('rw', db.storage, async () => {
+			await db.storage.bulkAdd(newlySelected);
+		}).then(() => {
+			newlySelected = [];
+		});
 	}
 
 	const deleteMap = new Map();

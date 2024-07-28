@@ -207,8 +207,8 @@
 						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
 						<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
 						<TableHead
-							>{totalData.total}/{$atndce.length * (regs?.boys || 0.5) +
-								(regs?.girls || 0.5)}</TableHead
+							>{totalData.total}/{$atndce.length *
+								((regs?.boys || 0.5) + (regs?.girls || 0.5))}</TableHead
 						>
 					</TableRow>
 				</TableBody>
