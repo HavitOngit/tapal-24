@@ -8,6 +8,7 @@
 	import { Toaster } from 'svelte-french-toast';
 	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
 	import { onMount } from 'svelte';
+	import Accpop from '$lib/components/extraFeatures/accpop.svelte';
 </script>
 
 <div class=" flex h-11 w-full items-center justify-between bg-white">
@@ -24,9 +25,7 @@
 		</button>
 	</div>
 	<a href="/" class="text-black">Home</a>
-	<a href="/account" class="right-0 m-2 rounded-xl">
-		<img src="/impatient-kitty.gif" class="size-8" alt="account" />
-	</a>
+	<Accpop></Accpop>
 </div>
 <Toaster></Toaster>
 {#if $navigating}
