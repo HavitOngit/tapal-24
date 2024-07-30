@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import precompileIntl from "svelte-intl-precompile/sveltekit-plugin";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -14,7 +15,14 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			"@/*": "./path/to/lib/*"
+		},
+		target: '#svelte',
+		vite: {
+			plugins: [
+				precompileIntl('locales') // if your translations are defined in /locales/[lang].json
+			]
 		}
+
 	}
 };
 

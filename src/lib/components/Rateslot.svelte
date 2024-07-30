@@ -4,6 +4,7 @@
 	import Rateform from './Rateform.svelte';
 	import Button from './ui/button/button.svelte';
 	import RateEdit from './RateEdit.svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	export let rateDetails: Rate;
 	let currentRates: oneRate[];
@@ -20,7 +21,7 @@
 
 <div class="m-1 w-[80%] rounded-sm border border-gray-500 p-2">
 	<div class="flex justify-between">
-		<div class="text-lg font-medium">{rateDetails.day}</div>
+		<div class="text-lg font-medium">{$t(rateDetails.day)}</div>
 		<!-- <Button variant="outline">Edit</Button> -->
 		<RateEdit Ratedetails={rateDetails}></RateEdit>
 	</div>
@@ -29,7 +30,7 @@
 	<div class="flex flex-col">
 		{#each rateDetails.ratelist as rate}
 			<div class="flex justify-between">
-				<div>{rate.name}</div>
+				<div>{$t(rate.name)}</div>
 				<div>{rate.rate}</div>
 			</div>
 		{/each}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
 	import { Columns, Sticker } from 'lucide-svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	type usageData = {
 		name: string;
@@ -22,7 +23,7 @@
 	<Table.Body>
 		{#each usageData as usage}
 			<Table.Row>
-				<Table.Cell class="font-medium">{usage.name}</Table.Cell>
+				<Table.Cell class="font-medium">{$t(usage.name)}</Table.Cell>
 				<Table.Cell>{usage.amount}kg</Table.Cell>
 				<Table.Cell>{Number(Rates.find((obj) => obj.name == usage.name).rate)}</Table.Cell>
 			</Table.Row>

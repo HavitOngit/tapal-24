@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-
+	import { t } from 'svelte-intl-precompile';
 	export let ratelist: any;
 	export let anajlist;
 	export let forInit: boolean = true;
@@ -53,7 +53,7 @@
 	<Table.Body>
 		{#each temp_anajlist as anaj, i}
 			<Table.Row>
-				<Table.Cell class="font-medium">{anaj.name}</Table.Cell>
+				<Table.Cell class="font-medium">{$t(anaj.name)}</Table.Cell>
 				<Table.Cell class="flex gap-2">
 					{#if deleteMode}
 						<Input bind:value={anaj.rate} type="number" placeholder="enter rate" />

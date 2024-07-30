@@ -19,6 +19,7 @@
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
 	import { goto } from '$app/navigation';
+	import { t } from 'svelte-intl-precompile';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -264,7 +265,7 @@
 						>
 							<div class="text-left">
 								<Label>
-									{workingDate.format('ddd')}
+									{$t(workingDate.format('ddd'))}
 								</Label>
 								<p>
 									total: {total}

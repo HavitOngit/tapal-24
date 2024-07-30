@@ -9,6 +9,21 @@
 	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
 	import { onMount } from 'svelte';
 	import Accpop from '$lib/components/extraFeatures/accpop.svelte';
+
+	// translations
+	import { addMessages, init } from 'svelte-intl-precompile';
+	import gj from '$lib/locales/gj.json';
+	import en from '$lib/locales/en.json';
+	addMessages('gj', gj);
+	addMessages('en', en);
+
+	onMount(() => {
+		console.log(gj);
+		init({
+			initialLocale: 'gj',
+			fallbackLocale: 'en'
+		});
+	});
 </script>
 
 <div class=" flex h-11 w-full items-center justify-between bg-white">
