@@ -5,8 +5,6 @@
 	import AnajCard from './AnajCard.svelte';
 	import Button from './ui/button/button.svelte';
 	import Input from './ui/input/input.svelte';
-	
-	
 
 	export let selected: any = [];
 	export let anajlist: any;
@@ -47,9 +45,8 @@
 			</Button>
 		{/if}
 	</Drawer.Trigger>
-	<Drawer.Content >
-		
-	<div class="flex flex-col max-h-96 overflow-y-auto">
+	<Drawer.Content>
+		<div class="flex max-h-96 flex-col overflow-y-auto">
 			<div class="mx-2">
 				{#if !useForRates}
 					<div class="mx-2 my-4 flex justify-end">
@@ -106,11 +103,13 @@
 					</div>
 				{/if}
 			</div>
-	<div>
-		<Drawer.Footer>
-			{#if !addingNewField}
-				<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
-			{/if}
-		</Drawer.Footer>
-	</Drawer.Content>
+			<div>
+				<Drawer.Footer>
+					{#if !addingNewField}
+						<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
+					{/if}
+				</Drawer.Footer>
+			</div>
+		</div></Drawer.Content
+	>
 </Drawer.Root>

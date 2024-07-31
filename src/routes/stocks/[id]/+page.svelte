@@ -68,13 +68,13 @@
 
 		newlySelected.forEach((obj) => {
 			obj.storage_unit_id = id;
-			if ($unilist.find((x) => x.name === obj.name)) {
+			if (!$unilist.find((x) => x.name === obj.name)) {
 				addinunilist.push({ name: obj.name, image: '/anaj_images/avg.png' });
 			}
 		});
-
-		db.transaction('rw', db.storage, async () => {
+		db.transaction('rw', db.storage, db.univarsalList, async () => {
 			await db.storage.bulkAdd(newlySelected);
+			await db.univarsalList.bulkAdd(addinunilist);
 		}).then(() => {
 			newlySelected = [];
 		});

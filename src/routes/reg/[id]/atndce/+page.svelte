@@ -201,7 +201,10 @@
 							<TableHead>{item.total}</TableHead>
 						</TableRow>
 					{/each}
-
+				</TableBody>
+			</Table>
+			<Table>
+				<TableHeader>
 					<TableRow class="mt-3 rounded border bg-gray-200 p-1">
 						<TableHead>Total</TableHead>
 						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
@@ -211,7 +214,7 @@
 								((regs?.boys || 0.5) + (regs?.girls || 0.5))}</TableHead
 						>
 					</TableRow>
-				</TableBody>
+				</TableHeader>
 			</Table>
 		</div>
 	{/if}
