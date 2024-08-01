@@ -14,11 +14,13 @@
 	import { addMessages, init } from 'svelte-intl-precompile';
 	import gj from '$lib/locales/gj.json';
 	import en from '$lib/locales/en.json';
+	import dayjs from 'dayjs';
 	addMessages('gj', gj);
 	addMessages('en', en);
 
 	onMount(() => {
 		console.log(gj);
+
 		init({
 			initialLocale: 'gj',
 			fallbackLocale: 'en'

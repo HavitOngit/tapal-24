@@ -1,9 +1,7 @@
 <script lang="ts">
-	import type { Attendance } from '$lib/custom_types';
-	import Layout from '../../../routes/+layout.svelte';
-	import Button from '../ui/button/button.svelte';
 	import Input from '../ui/input/input.svelte';
 	import Label from '../ui/label/label.svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	export let boys: number = 0;
 	export let girls: number = 0;
@@ -17,11 +15,11 @@
 <div class="flex flex-col gap-2">
 	<div class="flex gap-2">
 		<div class="flex items-center gap-2">
-			<Label>Boys:</Label>
+			<Label>{$t('Boys')}:</Label>
 			<Input bind:value={boys} placeholder="Enter Attendance" type="number" />
 		</div>
 		<div class="flex items-center gap-2">
-			<Label>Girls:</Label>
+			<Label>{$t('Girls')}:</Label>
 			<Input bind:value={girls} placeholder="Enter Attendance" type="number" />
 		</div>
 	</div>

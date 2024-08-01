@@ -250,11 +250,11 @@
 			{/if}
 		</CardContent>
 		<CardFooter class="flex justify-between">
-			<div>Total: {total}</div>
+			<div>{$t('Total')}: {total}</div>
 			<!-- <Button>Submit</Button> -->
 			<AlertDialog.Root>
 				<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
-					><Button disabled={!isDone}>Submit</Button></AlertDialog.Trigger
+					><Button disabled={!isDone}>{$t('Submit')}</Button></AlertDialog.Trigger
 				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
@@ -268,7 +268,7 @@
 									{$t(workingDate.format('ddd'))}
 								</Label>
 								<p>
-									total: {total}
+									{$t('Total')}: {total}
 								</p>
 							</div>
 							<Button

@@ -7,7 +7,12 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import Badge from '../ui/badge/badge.svelte';
 
-	const df = new DateFormatter('en-US', {
+	const lang = {
+		gu: 'gu-IN',
+		en: 'en-US'
+	};
+
+	const df = new DateFormatter(lang.gu, {
 		dateStyle: 'long'
 	});
 
