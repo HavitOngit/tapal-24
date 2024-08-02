@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import { getAllUsedAnajs } from '$lib/api';
 	import RateView from '$lib/components/RateView.svelte';
@@ -62,7 +63,7 @@
 		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Rename</AlertDialog.Title>
+				<AlertDialog.Title>{$t("Rename")}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<Input bind:value={unit.name} />
 				</AlertDialog.Description>
@@ -73,12 +74,12 @@
 						unit = { ...$rateUnit };
 					}}>Cancel</AlertDialog.Cancel
 				>
-				<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+				<AlertDialog.Action on:click={nameUpdate}>{$t("Save Changes")}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 
-	<!-- deletemode -->
+	                   
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
@@ -93,10 +94,10 @@
 							>
 								{#if $usedBy.length > 0}
 									<div id="notice">
-										<p class="text-left">currently this Rate is used by following Registers</p>
+										<p class="text-left">{$t("currently this Rate is used by following Registers")}</p>
 									</div>
 									<div class="flex">
-										<Label class="text-base">UsedBy:</Label>
+										<Label class="text-base">{$t("UsedBy:")}</Label>
 										<div class="flex gap-3">
 											{#each $usedBy as reg}
 												<Badge variant="outline">{reg.name}</Badge>
@@ -106,19 +107,19 @@
 									<hr />
 									<div class="flex justify-between">
 										<div class="flex flex-col gap-2">
-											<p class="text-left">To Delete this Rate</p>
+											<p class="text-left">{$t("To Delete this Rate")}</p>
 											<Badge class="border-yellow-700 bg-yellow-200 text-yellow-600"
-												>Make Sure this Rate not used by anyone</Badge
+												>{$t("Make Sure this Rate not used by anyone")}</Badge
 											>
 										</div>
 										<a href="/reg">
-											<Button>Fix</Button>
+											<Button>{$t("Fix")}</Button>
 										</a>
 									</div>
 								{:else}
 									<hr />
 									<div class="flex gap-2 text-wrap">
-										<Label class="text-base font-semibold">NOTE:</Label>
+										<Label class="text-base font-semibold">{$t("NOTE:")}</Label>
 										<p class=" text-left">
 											{$rateUnit?.name} will be deleted. cannot be restored once deleted.
 										</p>
@@ -130,28 +131,18 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					on:click={deletethis}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0)}>Confirm</AlertDialog.Action
+					disabled={!($usedBy.length == 0)}>{$t("Confirm")}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 </div>
 
-<!-- <Button
-	on:click={() => {
-		const some = $list.map((obj) => {
-			return {
-				day: obj.day,
-				ratelist: obj.ratelist
-			};
-		});
-		console.log(JSON.stringify(some));
-	}}
-></Button> -->
+                                                                                                                                                                                                
 
 <div class="m-10 flex justify-between">
 	<p class="text-xl font-semibold">{$rateUnit?.name}</p>
@@ -179,10 +170,10 @@
 		</DropdownMenu.Root>
 	</div>
 </div>
-<p class="mr-10 text-end text-sm font-semibold">(All in grams)</p>
+<p class="mr-10 text-end text-sm font-semibold">{$t("(All in grams)")}</p>
 <div class="flex flex-col items-center justify-center">
 	{#each $list || [] as detail}
-		<!-- <RateView rateDetails={detail}></RateView> -->
+		                                                   
 		<Rateslot rateDetails={detail}></Rateslot>
 	{/each}
 </div>

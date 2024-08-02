@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import { TableBody } from '$lib/components/ui/table';
@@ -155,8 +156,7 @@
 	});
 </script>
 
-<!-- {$page.params.id}
-<UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
+                                                                                         
 {#if !noData}
 	<div id="selector" class=" m-3 flex gap-3">
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
@@ -177,18 +177,16 @@
 		</div>
 	{/if}
 	{#if $usage}
-		<!-- <div>
-	<Button on:click={downloadCSV}>Export CVS</Button>
-	</div> -->
+		                                                                          
 		<div id="table">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Date</TableHead>
-						<TableHead>Rate</TableHead>
-						<TableHead>Before</TableHead>
-						<TableHead>Usage</TableHead>
-						<TableHead>After</TableHead>
+						<TableHead>{$t("Date")}</TableHead>
+						<TableHead>{$t("Rate")}</TableHead>
+						<TableHead>{$t("Before")}</TableHead>
+						<TableHead>{$t("Usage")}</TableHead>
+						<TableHead>{$t("After")}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -209,6 +207,6 @@
 	{/if}
 {:else}
 	<div class="m-10 flex justify-center">
-		<p>no Data Found</p>
+		<p>{$t("no Data Found")}</p>
 	</div>
 {/if}

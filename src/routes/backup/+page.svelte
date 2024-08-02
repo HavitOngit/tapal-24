@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import type { PageData } from './$types';
 
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -20,13 +21,13 @@
 <div class=" flex h-screen flex-col items-center justify-center gap-10">
 	<div class="flex flex-col">
 		<DatabaseBackupIcon size={150}></DatabaseBackupIcon>
-		<p class="text-center text-3xl font-bold">BackUp</p>
+		<p class="text-center text-3xl font-bold">{$t("BackUp")}</p>
 	</div>
 
 	<div>
 		<Button on:click={download} class="flex gap-2">
 			<DownloadIcon></DownloadIcon>
-			<p>Download</p>
+			<p>{$t("Download")}</p>
 		</Button>
 	</div>
 </div>

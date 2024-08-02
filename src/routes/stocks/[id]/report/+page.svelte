@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import ReportCard from '$lib/components/stocks/reportCard.svelte';
@@ -229,11 +230,10 @@
 	}
 </script>
 
-<!-- {$page.params.id}
-<UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
+                                                                                         
 {#if $yearlist.length === 0}
 	<div class="m-10 flex justify-center">
-		<p>no Data Found</p>
+		<p>{$t("no Data Found")}</p>
 	</div>
 {:else}
 	<div id="selector" class=" m-3 flex gap-3">

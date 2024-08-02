@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import {
 		type Group,
 		type oneRate,
@@ -390,7 +391,7 @@
 		<AlertDialog.Trigger bind:el={stock_nf_btn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Following Anajs Not in Stocks</AlertDialog.Title>
+				<AlertDialog.Title>{$t("Following Anajs Not in Stocks")}</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col gap-2">
 					<div class="m-3 rounded-md bg-yellow-200">
 						<p class="text-wrap p-2 text-left">
@@ -405,7 +406,7 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
 					>Go to Stocks
 				</AlertDialog.Action>
@@ -426,12 +427,12 @@
 		</CardContent>
 		<CardFooter class="flex justify-between">
 			<div>Total: {total}</div>
-			<!-- <Button>Submit</Button> -->
+			                                
 			<AlertDialog.Root>
-				<AlertDialog.Trigger on:click={cal_usage}><Button>Update</Button></AlertDialog.Trigger>
+				<AlertDialog.Trigger on:click={cal_usage}><Button>{$t("Update")}</Button></AlertDialog.Trigger>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
+						                                                                 
 						<AlertDialog.Description
 							class="flex w-full
 						items-center justify-between"
@@ -452,12 +453,12 @@
 
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>Apply</Button>
+						<Button on:click={cal_usage}>{$t("Apply")}</Button>
 					{:else}
 						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row items-center justify-between">
-							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SavingToDB}>Confirm</AlertDialog.Action>
+							<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SavingToDB}>{$t("Confirm")}</AlertDialog.Action>
 						</AlertDialog.Footer>
 					{/if}
 				</AlertDialog.Content>
@@ -471,7 +472,5 @@
 			</div>
 		{/if}
 	</Card>
-	<!-- {#if $live_usage_data}
-		<UsageTable bind:usageData={$live_usage_data}></UsageTable>
-	{/if} -->
+	                                                                                                    
 {/if}

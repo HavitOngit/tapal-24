@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import type { Group, Rate, oneRate, Storage, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import dayjs from 'dayjs';
@@ -146,7 +147,7 @@
 <Card>
 	<div class="flex flex-col gap-2">
 		{#if upToDate}
-			<p class="text-yellow-400">UpToDate</p>
+			<p class="text-yellow-400">{$t("UpToDate")}</p>
 		{/if}
 
 		<CardHeader class="flex flex-col">
@@ -157,26 +158,7 @@
 				</div>
 			</CardTitle>
 
-			<!-- <div class="flex flex-col">
-				<div class="flex justify-end gap-2">
-					<Button
-						variant="outline"
-						on:click={() => {
-							workingDate = workingDate.subtract(1, 'day');
-							ifdbhasData();
-							getInfo();
-						}}>-</Button
-					>
-					<Button
-						variant="outline"
-						on:click={() => {
-							workingDate = workingDate.add(1, 'day');
-							ifdbhasData();
-							getInfo();
-						}}>+</Button
-					>
-				</div>
-			</div> -->
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 		</CardHeader>
 
 		<CardContent>
@@ -186,11 +168,11 @@
 		<CardFooter class="flex justify-end">
 			<AlertDialog.Root>
 				<AlertDialog.Trigger on:click={cal_usage}
-					><Button class="w-full">Submit</Button></AlertDialog.Trigger
+					><Button class="w-full">{$t("Submit")}</Button></AlertDialog.Trigger
 				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						<!-- <AlertDialog.Title>{Ratedetails.day}</AlertDialog.Title> -->
+						                                                                 
 						<AlertDialog.Description
 							class="flex w-full
 						justify-end"
@@ -205,25 +187,19 @@
 
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>Apply</Button>
+						<Button on:click={cal_usage}>{$t("Apply")}</Button>
 					{:else}
 						<UsageTable bind:usageData={usage}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row justify-around">
-							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SaveToDB}>Confirm</AlertDialog.Action>
+							<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SaveToDB}>{$t("Confirm")}</AlertDialog.Action>
 						</AlertDialog.Footer>
 					{/if}
 				</AlertDialog.Content>
 			</AlertDialog.Root>
 		</CardFooter>
-		<!-- <Button
-			on:click={() => {
-				console.log(forStoarageUpdate);
-			}}>Status</Button
-			> -->
+		                                                                                                   
 
-		<!-- {#if $dataOnDB && $dataOnDB.length > 0}
-				Already Exist
-				{/if} -->
+		                                                                            
 	</div>
 </Card>

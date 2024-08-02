@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import type { RegForm } from '$lib/custom_types';
 	import { db } from '$lib/db';
@@ -51,20 +52,14 @@
 		{#if useForUpdaate}
 			<div class="flex gap-3">
 				<PenLineIcon></PenLineIcon>
-				<span>Edit</span>
+				<span>{$t("Edit")}</span>
 			</div>
 		{:else}
 			<Plus></Plus>
 		{/if}
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
-		<!-- <AlertDialog.Header>
-	<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-	<AlertDialog.Description>
-	  This action cannot be undone. This will permanently delete your account
-	  and remove your data from our servers.
-	</AlertDialog.Description>
-  </AlertDialog.Header> -->
+		                                                                                                                                                                                                                                                                                                  
 
 		<Regform bind:data bind:isDone bind:competable></Regform>
 

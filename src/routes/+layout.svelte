@@ -1,4 +1,5 @@
 <script>
+import { t } from 'svelte-intl-precompile';
 	import NavigationBar from '$lib/finalize/NavigationBar.svelte';
 	import { navigating } from '$app/stores';
 	import '../app.pcss';
@@ -37,11 +38,10 @@
 			class="flex"
 		>
 			<Badge variant="outline" class=" text-black">
-				<ChevronLeft></ChevronLeft>Back
-			</Badge>
+				<ChevronLeft></ChevronLeft>{$t("Back")}</Badge>
 		</button>
 	</div>
-	<a href="/" class="text-black">Home</a>
+	<a href="/" class="text-black">{$t("Home")}</a>
 	<Accpop></Accpop>
 </div>
 <Toaster></Toaster>

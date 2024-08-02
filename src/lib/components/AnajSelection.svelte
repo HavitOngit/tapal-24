@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { PackagePlus } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
@@ -41,7 +42,7 @@
 		{#if !forStorageView}
 			<Button variant="outline" class=" w-[100%] gap-2">
 				<PackagePlus />
-				<p>Click To Add</p>
+				<p>{$t("Click To Add")}</p>
 			</Button>
 		{/if}
 	</Drawer.Trigger>
@@ -64,7 +65,7 @@
 					<div class="mx-4 flex h-24">
 						<Input bind:value={name} placeholder="Enter Name" />
 						{#if nameError}
-							<p>type something</p>
+							<p>{$t("type something")}</p>
 						{/if}
 					</div>
 					<Button
@@ -80,7 +81,7 @@
 							addToList(name, amount);
 							addingNewField = false;
 							anajlist = [...anajlist, { name: name, amount: amount }];
-						}}>Create</Button
+						}}>{$t("Create")}</Button
 					>
 				{:else}
 					<div class="grid max-h-[60%] grid-cols-2 gap-1 overflow-y-auto">
@@ -106,7 +107,7 @@
 			<div>
 				<Drawer.Footer>
 					{#if !addingNewField}
-						<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
+						<Drawer.Close><Button class="w-full">{$t("Done")}</Button></Drawer.Close>
 					{/if}
 				</Drawer.Footer>
 			</div>

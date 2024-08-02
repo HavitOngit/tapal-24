@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Plus } from 'lucide-svelte';
 </script>
@@ -9,18 +10,12 @@
 			><Plus></Plus></AlertDialog.Trigger
 		>
 		<AlertDialog.Content>
-			<!-- <AlertDialog.Header>
-        <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-        <AlertDialog.Description>
-          This action cannot be undone. This will permanently delete your account
-          and remove your data from our servers.
-        </AlertDialog.Description>
-      </AlertDialog.Header> -->
+			                                                                                                                                                                                                                                                                                                                                         
 
 			<slot />
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<!-- <AlertDialog.Action>Continue</AlertDialog.Action> -->
+				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				                                                          
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>

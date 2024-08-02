@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
@@ -113,17 +114,16 @@
 
 					<div>
 						<form on:submit={addToStore} class=" flex items-center gap-3">
-							<Label class="text-lg font-medium">Amount:</Label>
+							<Label class="text-lg font-medium">{$t("Amount:")}</Label>
 							<Input bind:value={addAmount} type="number" autofocus />
-							<!-- <Label class="text-lg font-medium">Amount:</Label>
-						<Input bind:value={addAmount} type="number" autofocus /> -->
+							                                                                                                                          
 						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={addToStore} type="submit">ADD</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={addToStore} type="submit">{$t("ADD")}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
@@ -154,9 +154,7 @@
 					<div class="flex flex-col">
 						<div class="flex flex-wrap items-center gap-2 text-nowrap text-lg">
 							Avalable :
-							<!-- <Badge variant="outline" class="text-lg font-semibold">
-								{anaj.amount} kg
-							</Badge> -->
+							                                                                                                         
 							{#if anaj.amount}
 								<div class="text-nowrap text-lg font-semibold">
 									{formatAmount(anaj.amount)} kg
@@ -169,21 +167,19 @@
 									}}
 								>
 									<Badge variant="outline" class="flex gap-1 text-base">
-										<CircleFadingPlusIcon></CircleFadingPlusIcon>
-										add
-									</Badge>
+										<CircleFadingPlusIcon></CircleFadingPlusIcon>{$t("add")}</Badge>
 								</button>
 							{/if}
 						</div>
 					</div>
 				{:else}
 					<div class="flex items-center">
-						<div>Amount:</div>
+						<div>{$t("Amount:")}</div>
 						<div><Input bind:value={anaj.amount} type="number" class="w-full" /></div>
 					</div>
 				{/if}
 			</div>
-			<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
+			                                                                                               
 		</div>
 	</Card.Content>
 </Card.Root>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import CreateStorage from '$lib/components/CreateStorage.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { db } from '$lib/db';
@@ -6,28 +7,23 @@
 	let name: string;
 </script>
 
-<!-- <input type="text" bind:value={name} class="border-cyan-950" />
-<button
-	on:click={async () => {
-		await db.group.add({ name: name, storage_unit_id: 1, currently_used: true });
-	}}>ADD</button
-> -->
+                                                                                                                                                                                                           
 
-<!-- <CreateStorage></CreateStorage> -->
+                                        
 <div>
-	<a href="/stocks">stocks</a>
+	<a href="/stocks">{$t("stocks")}</a>
 </div>
 <div>
-	<a href="/rates">rates </a>
+	<a href="/rates">{$t("rates")}</a>
 </div>
 <div>
-	<a href="/reg">Registers</a>
+	<a href="/reg">{$t("Registers")}</a>
 </div>
 <div>
-	<a href="/dailywork">DailyWork</a>
+	<a href="/dailywork">{$t("DailyWork")}</a>
 </div>
 <div>
-	<a href="/backup">BackUp</a>
+	<a href="/backup">{$t("BackUp")}</a>
 </div>
 <Button
 	class="mt-[95%]"

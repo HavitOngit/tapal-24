@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { Button, type Props, buttonVariants } from "$lib/components/ui/button/index.js";
 	import { cn } from "$lib/utils";
 	import ArrowRight from "lucide-svelte/icons/arrow-right";
@@ -31,5 +32,5 @@
 	{...$$restProps}
 >
 	<ArrowRight class="h-4 w-4" />
-	<span class="sr-only">Next slide</span>
+	<span class="sr-only">{$t("Next slide")}</span>
 </Button>

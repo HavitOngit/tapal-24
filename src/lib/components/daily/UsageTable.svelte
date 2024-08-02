@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as Table from '$lib/components/ui/table';
 	import { Columns, Sticker } from 'lucide-svelte';
 	import { t } from 'svelte-intl-precompile';
@@ -15,9 +16,9 @@
 	<Table.Header>
 		<Table.Row>
 			<Table.Head class="w-[100px]" />
-			<Table.Head>amount</Table.Head>
+			<Table.Head>{$t("amount")}</Table.Head>
 
-			<Table.Head>Rate (g)</Table.Head>
+			<Table.Head>{$t("Rate (g)")}</Table.Head>
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>

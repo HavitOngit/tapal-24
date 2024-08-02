@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import type { Rates, StorageUnit } from '$lib/custom_types';
 	import CardContent from '../ui/card/card-content.svelte';
 	import CardHeader from '../ui/card/card-header.svelte';
@@ -19,7 +20,7 @@
 	<CardContent class="flex flex-col gap-2">
 		{#if $regis && $regis.length > 0}
 			<div class="mt-2 flex gap-2" id="used_ anaj_list">
-				<Label>usedBy:</Label>
+				<Label>{$t("usedBy:")}</Label>
 				<div class="flex flex-wrap gap-2">
 					{#each $regis || [] as reg}
 						<Badge variant="outline">{reg.name}</Badge>
