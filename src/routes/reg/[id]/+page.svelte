@@ -1,13 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Regslot from '$lib/components/reg/regslot.svelte';
 	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
 	import { CalendarCheck2Icon, SheetIcon } from 'lucide-svelte';
-	import type { PageData } from './$types';
 	import toast from 'svelte-french-toast';
-	import { goto } from '$app/navigation';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import type { PageData } from './$types';
+	import { t } from 'svelte-intl-precompile';
 
 	export let data: PageData;
 
@@ -15,12 +15,12 @@
 
 	const paths = [
 		{
-			name: 'Attendance',
+			name: $t('Attendance'),
 			url: 'atndce',
 			icon: CalendarCheck2Icon
 		},
 		{
-			name: 'Usage',
+			name: $t('Usage'),
 			url: 'view',
 			icon: SheetIcon
 		}
@@ -39,13 +39,13 @@
 			await db.group.delete($reg_data[0].id);
 		})
 			.then(() => {
-				toast.success('🗑️ Deleted Successfully');
+				toast.success($t('Deleted Successfully'));
 				goto('/reg');
 			})
 			.catch((e) => {
 				console.log(e);
 
-				toast.error(`Somthing went Wrong`);
+				toast.error($t('Failed to delete'));
 			});
 	}
 

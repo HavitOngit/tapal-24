@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import type { StorageHistory } from '$lib/custom_types';
 	import Badge from '../ui/badge/badge.svelte';
 	import { TableBody } from '$lib/components/ui/table';
@@ -43,16 +44,18 @@
 </script>
 
 <div class="flex bg-gray-200">
-	<p class="ml-2 text-left text-xl font-bold">{anaj_details.label}</p>
+	<p class="ml-2 text-left text-xl font-bold">{$t(anaj_details.label)}</p>
 </div>
 
 <div class="m-2">
 	<div>
 		<div class="flex flex-col gap-3">
-			<p class="text-lg font-semibold">Total Usage: {formatAmount(anaj_details.total)} kg</p>
+			<p class="text-lg font-semibold">
+				{$t('Total Usage')}: {formatAmount(anaj_details.total)} kg
+			</p>
 			{#if usageregs.length > 0}
 				<div class="flex flex-wrap gap-2">
-					<p>used By:</p>
+					<p>{$t('used By:')}</p>
 					{#each usageregs as regs}
 						{#if regs.usage > 0}
 							<Badge variant="outline">{regs.name}({formatAmount(regs.usage)} kg)</Badge>
@@ -60,10 +63,10 @@
 					{/each}
 				</div>
 			{/if}
-			<p>Total Days: {anaj_details.days}</p>
+			<p>{$t('Total Days')}: {anaj_details.days}</p>
 			{#if incomettl > 0}
 				<p class="font-semibold">
-					Total Income: {formatAmount(incomettl)} kg
+					{$t('Total Income')}: {formatAmount(incomettl)} kg
 				</p>
 			{/if}
 		</div>
@@ -71,21 +74,18 @@
 </div>
 <div>
 	{#if historyData.length > 0}
-		<!-- <div>
-		<Button on:click={downloadCSV}>Export CVS</Button>
-        </div> -->
 		<div class="m-2 flex justify-center bg-gray-100">
-			<p class="text-center">Income</p>
+			<p class="text-center">{$t('Income')}</p>
 		</div>
 		<div id="table">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Date</TableHead>
+						<TableHead>{$t('Date')}</TableHead>
 
-						<TableHead>Before</TableHead>
-						<TableHead>Income</TableHead>
-						<TableHead>After</TableHead>
+						<TableHead>{$t('Before')}</TableHead>
+						<TableHead>{$t('Income')}</TableHead>
+						<TableHead>{$t('After')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>

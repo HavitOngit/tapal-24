@@ -12,7 +12,8 @@
 		ReceiptIndianRupee,
 		Cloud,
 		HelpCircle,
-		MessageCircleHeart
+		MessageCircleHeart,
+		Settings
 	} from 'lucide-svelte';
 	import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/dialog';
 	import { Button } from '../ui/button';
@@ -28,7 +29,8 @@
 		{ name: 'BackUp', href: '/backup', icon: Cloud },
 		{ name: 'Payments', href: '/payments', icon: ReceiptIndianRupee },
 		{ name: 'Feedback', href: '/feedback', icon: MessageCircleHeart },
-		{ name: 'Help', href: '/help', icon: HelpCircle }
+		{ name: 'Help', href: '/help', icon: HelpCircle },
+		{ name: 'Settings', href: '/settings', icon: Settings }
 	];
 
 	let closeBtn: HTMLButtonElement;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
@@ -95,7 +96,8 @@
 			<AlertDialog.Header>
 				<AlertDialog.Title class="flex justify-between">
 					<div class="text-xl">
-						Add to {anaj.name}
+						{$t('Add in')}
+						{$t(anaj.name)}
 					</div>
 					<div>
 						<Calender bind:value={date}></Calender>
@@ -103,27 +105,27 @@
 				</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
 					<div class="text-lg">
-						Available: {formatAmount(anaj.amount)}
+						{$t('Currently')}
+						{$t('Avalable')}:
+						{formatAmount(anaj.amount)} kg
 					</div>
 					{#if $effectedUsage && $effectedUsage.length > 0}
 						<div class="text-lg">
-							that Time: {formatAmount($effectedUsage[0].before_amount)}
+							{$t('that Time')}: {formatAmount($effectedUsage[0].before_amount)} kg
 						</div>
 					{/if}
 
 					<div>
 						<form on:submit={addToStore} class=" flex items-center gap-3">
-							<Label class="text-lg font-medium">Amount:</Label>
+							<Label class="text-lg font-medium">{$t('quantity')}:</Label>
 							<Input bind:value={addAmount} type="number" autofocus />
-							<!-- <Label class="text-lg font-medium">Amount:</Label>
-						<Input bind:value={addAmount} type="number" autofocus /> -->
 						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={addToStore} type="submit">ADD</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={addToStore} type="submit">{$t('ADD')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
@@ -136,27 +138,23 @@
 			</div>
 		{/if}
 		<div class="flex space-x-3">
-			<a href="/stocks/{$page.params.id}/{anaj.id}">
-				<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
-					<img
-						src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
-						alt={anaj.name}
-						class=" h-24 w-24 object-fill"
-					/>
-				</div>
-			</a>
+			<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
+				<img
+					src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
+					alt={anaj.name}
+					class=" h-24 w-24 object-fill"
+				/>
+			</div>
 
 			<div class="mt-3 flex flex-col flex-wrap">
 				<div class="text-lg font-medium">
-					{anaj.name}
+					{$t(anaj.name)}
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
 						<div class="flex flex-wrap items-center gap-2 text-nowrap text-lg">
-							Avalable :
-							<!-- <Badge variant="outline" class="text-lg font-semibold">
-								{anaj.amount} kg
-							</Badge> -->
+							{$t('Avalable')} :
+
 							{#if anaj.amount}
 								<div class="text-nowrap text-lg font-semibold">
 									{formatAmount(anaj.amount)} kg
@@ -169,21 +167,19 @@
 									}}
 								>
 									<Badge variant="outline" class="flex gap-1 text-base">
-										<CircleFadingPlusIcon></CircleFadingPlusIcon>
-										add
-									</Badge>
+										<CircleFadingPlusIcon></CircleFadingPlusIcon>{$t('add')}</Badge
+									>
 								</button>
 							{/if}
 						</div>
 					</div>
 				{:else}
 					<div class="flex items-center">
-						<div>Amount:</div>
+						<div>{$t('quantity')}</div>
 						<div><Input bind:value={anaj.amount} type="number" class="w-full" /></div>
 					</div>
 				{/if}
 			</div>
-			<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
 		</div>
 	</Card.Content>
 </Card.Root>

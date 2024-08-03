@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { getDateID } from '$lib/api';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { type Group, type oneRate, type Storage, type Usage } from '$lib/custom_types';
@@ -6,6 +7,7 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { t } from 'svelte-intl-precompile';
 	import { z } from 'zod';
 	import Rateform from '../Rateform.svelte';
 	import Badge from '../ui/badge/badge.svelte';
@@ -18,7 +20,6 @@
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
-	import { goto } from '$app/navigation';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -205,11 +206,11 @@
 		<AlertDialog.Trigger bind:el={stock_nf_btn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Following Anajs Not in Stocks</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Following Anajs Not in Stocks')}</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col gap-2">
 					<div class="m-3 rounded-md bg-yellow-200">
 						<p class="text-wrap p-2 text-left">
-							In Order to use below Anajs they Must in stock of "{RegData.name}" Register
+							{$t('In Order to use below Anajs they Must in stock of')} "{RegData.name}"
 						</p>
 					</div>
 					<div class="m-1 ml-3 flex gap-2">
@@ -220,9 +221,9 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
-					>Go to Stocks
+					>{$t('Go to Stocks')}
 				</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
@@ -249,25 +250,24 @@
 			{/if}
 		</CardContent>
 		<CardFooter class="flex justify-between">
-			<div>Total: {total}</div>
-			<!-- <Button>Submit</Button> -->
+			<div>{$t('Total')}: {total}</div>
+
 			<AlertDialog.Root>
 				<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
-					><Button disabled={!isDone}>Submit</Button></AlertDialog.Trigger
+					><Button disabled={!isDone}>{$t('Submit')}</Button></AlertDialog.Trigger
 				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						<!-- <AlertDialog.Title>{workingDate.format('ddd')}</AlertDialog.Title> -->
 						<AlertDialog.Description
 							class="flex w-full
 						justify-between"
 						>
 							<div class="text-left">
 								<Label>
-									{workingDate.format('ddd')}
+									{$t(workingDate.format('ddd'))}
 								</Label>
 								<p>
-									total: {total}
+									{$t('Total')}: {total}
 								</p>
 							</div>
 							<Button
@@ -275,19 +275,19 @@
 									showRate = !showRate;
 									rate = [...rate_Backup];
 								}}
-								variant="outline">{!showRate ? 'Change Rate' : 'Cancel'}</Button
+								variant="outline">{!showRate ? $t('Change Rate') : $t('Go Back')}</Button
 							></AlertDialog.Description
 						>
 					</AlertDialog.Header>
 
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>Apply</Button>
+						<Button on:click={cal_usage}>{$t('Apply')}</Button>
 					{:else}
 						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row justify-around">
-							<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SavingToDB}>Confirm</AlertDialog.Action>
+							<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SavingToDB}>{$t('Confirm')}</AlertDialog.Action>
 						</AlertDialog.Footer>
 					{/if}
 				</AlertDialog.Content>

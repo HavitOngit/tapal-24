@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import { Button, type Props, buttonVariants } from "$lib/components/ui/button/index.js";
 	import { cn } from "$lib/utils.js";
 	import ArrowLeft from "lucide-svelte/icons/arrow-left";
@@ -32,5 +33,5 @@
 	{...$$restProps}
 >
 	<ArrowLeft class="h-4 w-4" />
-	<span class="sr-only">Previous slide</span>
+	<span class="sr-only">{$t("Previous slide")}</span>
 </Button>

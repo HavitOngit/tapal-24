@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import ReportCard from '$lib/components/stocks/reportCard.svelte';
@@ -207,6 +208,14 @@
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
 	});
 
 	function formatAmount(amount: any) {
@@ -229,46 +238,49 @@
 	}
 </script>
 
-<!-- {$page.params.id}
-<UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
-
-<div id="selector" class=" m-3 flex gap-3">
-	<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
-
-	<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
-	{#if $anajs.length > 0}
-		<MonthSelector groupName="Anaj" bind:list={$anajs} bind:selected={selected_anaj}
-		></MonthSelector>
-	{/if}
-</div>
-{#if selected_anaj > 0}
-	<div
-		class="m-3 flex flex-col gap-2 rounded-sm
-border"
-	>
-		{#if currentAnaj}
-			<ReportCard
-				anaj_details={currentAnaj}
-				historyData={$stoargeHistory.filter((x) => x.name === currentAnaj.label)}
-				incomettl={income_details.find((i) => i.label === currentAnaj.label)?.total}
-				usageregs={reg_details.filter((x) => x.anajName === currentAnaj.label && x.usage > 0)}
-			></ReportCard>
-		{/if}
+{#if $yearlist.length === 0}
+	<div class="m-10 flex justify-center">
+		<p>{$t('no Data Found')}</p>
 	</div>
 {:else}
-	{#each anaj_details as anajD}
-		{#if (anajD.value > 0 && anajD.total > 0) || income_details.find((i) => i.label === anajD.label)?.total || 0 > 0}
-			<div
-				class="m-3 flex flex-col gap-2 rounded-sm
-			 border"
-			>
-				<ReportCard
-					anaj_details={anajD}
-					historyData={$stoargeHistory.filter((x) => x.name === anajD.label)}
-					incomettl={income_details.find((i) => i.label === anajD.label)?.total}
-					usageregs={reg_details.filter((x) => x.anajName === anajD.label && x.usage > 0)}
-				></ReportCard>
-			</div>
+	<div id="selector" class=" m-3 flex gap-3">
+		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
+
+		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
+		{#if $anajs.length > 0}
+			<MonthSelector groupName="Anaj" bind:list={$anajs} bind:selected={selected_anaj}
+			></MonthSelector>
 		{/if}
-	{/each}
+	</div>
+	{#if selected_anaj > 0}
+		<div
+			class="m-3 flex flex-col gap-2 rounded-sm
+border"
+		>
+			{#if currentAnaj}
+				<ReportCard
+					anaj_details={currentAnaj}
+					historyData={$stoargeHistory.filter((x) => x.name === currentAnaj?.label)}
+					incomettl={income_details.find((i) => i.label === currentAnaj?.label)?.total}
+					usageregs={reg_details.filter((x) => x.anajName === currentAnaj?.label && x.usage > 0)}
+				></ReportCard>
+			{/if}
+		</div>
+	{:else}
+		{#each anaj_details as anajD}
+			{#if (anajD.value > 0 && anajD.total > 0) || income_details.find((i) => i.label === anajD.label)?.total || 0 > 0}
+				<div
+					class="m-3 flex flex-col gap-2 rounded-sm
+			 border"
+				>
+					<ReportCard
+						anaj_details={anajD}
+						historyData={$stoargeHistory.filter((x) => x.name === anajD.label)}
+						incomettl={income_details.find((i) => i.label === anajD.label)?.total}
+						usageregs={reg_details.filter((x) => x.anajName === anajD.label && x.usage > 0)}
+					></ReportCard>
+				</div>
+			{/if}
+		{/each}
+	{/if}
 {/if}

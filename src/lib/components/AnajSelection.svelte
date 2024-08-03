@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import { PackagePlus } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
@@ -41,71 +42,75 @@
 		{#if !forStorageView}
 			<Button variant="outline" class=" w-[100%] gap-2">
 				<PackagePlus />
-				<p>Click To Add</p>
+				<p>{$t("Click To Add")}</p>
 			</Button>
 		{/if}
 	</Drawer.Trigger>
 	<Drawer.Content>
-		<div class="mx-2">
-			{#if !useForRates}
-				<div class="mx-2 my-4 flex justify-end">
-					{#if addingNewField}
+		<div class="flex max-h-96 flex-col overflow-y-auto">
+			<div class="mx-2">
+				{#if !useForRates}
+					<div class="mx-2 my-4 flex justify-end">
+						{#if addingNewField}
+							<Button
+								variant="secondary"
+								on:click={() => {
+									addingNewField = !addingNewField;
+								}}>cancel</Button
+							>
+						{/if}
+					</div>
+				{/if}
+				{#if addingNewField}
+					<div class="mx-4 flex h-24">
+						<Input bind:value={name} placeholder="Enter Name" />
+						{#if nameError}
+							<p>{$t("type something")}</p>
+						{/if}
+					</div>
+					<Button
+						class="w-full"
+						on:click={() => {
+							if (name.length <= 0) {
+								toast.error('Enter Something');
+								return;
+							}
+							if (cache.has(name)) {
+								return;
+							}
+							addToList(name, amount);
+							addingNewField = false;
+							anajlist = [...anajlist, { name: name, amount: amount }];
+						}}>{$t("Create")}</Button
+					>
+				{:else}
+					<div class="grid max-h-[60%] grid-cols-2 gap-1 overflow-y-auto">
+						{#each anajlist as anaj}
+							{#if anaj}
+								<div on:click={() => addToList(anaj.name)}>
+									<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
+								</div>
+							{/if}
+						{/each}
 						<Button
-							variant="secondary"
+							variant="outline"
+							class="h-auto min-h-32 bg-blue-50"
 							on:click={() => {
 								addingNewField = !addingNewField;
-							}}>cancel</Button
+							}}
 						>
+							Create New
+						</Button>
+					</div>
+				{/if}
+			</div>
+			<div>
+				<Drawer.Footer>
+					{#if !addingNewField}
+						<Drawer.Close><Button class="w-full">{$t("Done")}</Button></Drawer.Close>
 					{/if}
-				</div>
-			{/if}
-			{#if addingNewField}
-				<div class="mx-4 flex h-24">
-					<Input bind:value={name} placeholder="Enter Name" />
-					{#if nameError}
-						<p>type something</p>
-					{/if}
-				</div>
-				<Button
-					class="w-full"
-					on:click={() => {
-						if (name.length <= 0) {
-							toast.error('Enter Something');
-							return;
-						}
-						if (cache.has(name)) {
-							return;
-						}
-						addToList(name, amount);
-						addingNewField = false;
-						anajlist = [...anajlist, { name: name, amount: amount }];
-					}}>Create</Button
-				>
-			{:else}
-				<div class="grid max-h-[60%] grid-cols-2 gap-1 overflow-y-auto">
-					{#each anajlist as anaj}
-						{#if anaj}
-							<div on:click={() => addToList(anaj.name)}>
-								<AnajCard {anaj} btn_clicked={cache.has(anaj.name)}></AnajCard>
-							</div>
-						{/if}
-					{/each}
-					<Button
-						variant="outline"
-						class="h-auto min-h-32 bg-blue-50"
-						on:click={() => {
-							addingNewField = !addingNewField;
-						}}
-					>
-						Create New
-					</Button>
-				</div>
-			{/if}
-		</div>
-		<Drawer.Footer>
-			{#if !addingNewField}
-				<Drawer.Close><Button class="w-full">Done</Button></Drawer.Close>
-			{/if}
-		</Drawer.Footer>
-	</Drawer.Content>
+				</Drawer.Footer>
+			</div>
+		</div></Drawer.Content
+	>
 </Drawer.Root>

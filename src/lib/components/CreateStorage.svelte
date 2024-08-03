@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Label } from '$lib/components/ui/label';
 	import type { Storage, StorageUnit } from '$lib/custom_types';
@@ -72,7 +73,7 @@
 	let anajSelectionTrigger: HTMLButtonElement;
 </script>
 
-<!-- <NameInput bind:TriggerButton={TriggerBtn} bind:name={storage_unit.name}></NameInput> -->
+                                                                                              
 <div id="alerts">
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={TriggerBtn}></AlertDialog.Trigger>
@@ -96,17 +97,16 @@
 							}}
 							class=" flex items-center gap-3"
 						>
-							<Label class="text-lg font-medium">Name:</Label>
+							<Label class="text-lg font-medium">{$t("Name:")}</Label>
 							<Input bind:value={storage_unit.name} type="text" autofocus />
-							<!-- <Label class="text-lg font-medium">Amount:</Label>
-						<Input bind:value={addAmount} type="number" autofocus /> -->
+							                                                                                                                          
 						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel class="hidden"
-					><button bind:this={CancelBtn}>Cancel</button></AlertDialog.Cancel
+					><button bind:this={CancelBtn}>{$t("Cancel")}</button></AlertDialog.Cancel
 				>
 				<AlertDialog.Action
 					type="submit"
@@ -122,7 +122,7 @@
 </div>
 <div class="mx-2 flex flex-col gap-2">
 	<div class="flex items-center gap-2">
-		<Label>Name:</Label>
+		<Label>{$t("Name:")}</Label>
 		<Input
 			name="name"
 			type="text"
@@ -130,7 +130,7 @@
 			bind:value={storage_unit.name}
 		/>
 	</div>
-	<p class="text-end text-sm font-semibold">(All in Kg)</p>
+	<p class="text-end text-sm font-semibold">{$t("(All in Kg)")}</p>
 	Selected Anaj:
 	{#if selected_anaj.length == 0}
 		<img src="/in_app/clickonAdd.png" alt="click on Add Button" />
@@ -147,8 +147,8 @@
 			bind:selected={selected_anaj}
 			anajlist={$unilist}
 		></AnajSelection>
-		<Button on:click={save} class="  rounded-lg">Create</Button>
+		<Button on:click={save} class="  rounded-lg">{$t("Create")}</Button>
 	</div>
 
-	<!-- <Button on:click={() => console.log(newUniList, unimap)}>TEST</Button> -->
+	                                                                               
 </div>

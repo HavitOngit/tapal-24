@@ -12,6 +12,7 @@
 	import { type DateValue } from '@internationalized/date';
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	export let data: PageData;
 
@@ -50,7 +51,7 @@
 
 	let submited_registers_group_id: number[] = [];
 	$: if ($submited_registers) {
-		console.log({ $submited_registers, workingDate }, 'color:blue');
+		// console.log({ $submited_registers, workingDate }, 'color:blue');
 
 		submited_registers_group_id = $submited_registers.map((obj) => obj.group_id);
 	}
@@ -96,7 +97,7 @@
 					on:click={() => {
 						date_location -= 1;
 						workingDate = dayjs(workingDate).subtract(1, 'day').toDate();
-						console.log('from button' + { workingDate });
+						// console.log('from button' + { workingDate });
 
 						calendeDate = calendeDate?.subtract(duration);
 					}}>-</Button
@@ -116,7 +117,7 @@
 			</Badge>
 		</div>
 		<div class="m-3">
-			<p class="text-xl font-bold">{dayjs(workingDate).format('dddd')}</p>
+			<p class="text-xl font-bold">{$t(dayjs(workingDate).format('ddd'))}</p>
 		</div>
 	{/if}
 
@@ -130,7 +131,7 @@
 		</div>
 	{:else}
 		<div class="flex min-h-8 w-auto items-center justify-center">
-			<p>No registers found</p>
+			<p>{$t('No registers found')}</p>
 		</div>
 	{/if}
 

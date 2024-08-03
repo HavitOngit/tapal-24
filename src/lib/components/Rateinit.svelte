@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as Card from '$lib/components/ui/card';
 	import type { CarouselAPI } from '$lib/components/ui/carousel/context';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
@@ -114,17 +115,16 @@
 							}}
 							class=" flex items-center gap-3"
 						>
-							<Label class="text-lg font-medium">Name:</Label>
+							<Label class="text-lg font-medium">{$t("Name:")}</Label>
 							<Input bind:value={name} type="text" autofocus />
-							<!-- <Label class="text-lg font-medium">Amount:</Label>
-						<Input bind:value={addAmount} type="number" autofocus /> -->
+							                                                                                                                          
 						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel class="hidden"
-					><button bind:this={CancelBtn}>Cancel</button></AlertDialog.Cancel
+					><button bind:this={CancelBtn}>{$t("Cancel")}</button></AlertDialog.Cancel
 				>
 				<AlertDialog.Action
 					type="submit"
@@ -141,7 +141,7 @@
 
 <div class="flex w-full flex-col gap-2">
 	<div class="flex items-center gap-2">
-		<Label>Name:</Label>
+		<Label>{$t("Name:")}</Label>
 		<Input bind:value={name} placeholder="Enter Profile Name" />
 	</div>
 
@@ -160,7 +160,7 @@
 								{#if isSaving}
 									<div class="flex min-h-96 items-center justify-center">
 										{#if saved}
-											<div>saved</div>
+											<div>{$t("saved")}</div>
 										{:else}
 											Saving...
 										{/if}
@@ -180,14 +180,14 @@
 <div class="fixed bottom-24 w-full">
 	<div class="mx-4 flex w-auto justify-between gap-10 bg-white">
 		{#if current_day != 0}
-			<Button class="w-full" variant="outline" on:click={Back}>Back</Button>
+			<Button class="w-full" variant="outline" on:click={Back}>{$t("Back")}</Button>
 		{/if}
 
 		{#if current_day == 6}
-			<Button on:click={Save} class=" w-full"><SaveIcon class="mr-2 size-6"></SaveIcon> Save</Button
+			<Button on:click={Save} class=" w-full"><SaveIcon class="mr-2 size-6"></SaveIcon>{$t("Save")}</Button
 			>
 		{:else}
-			<Button class="w-full" on:click={Next}>Next</Button>
+			<Button class="w-full" on:click={Next}>{$t("Next")}</Button>
 		{/if}
 	</div>
 </div>

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { t } from 'svelte-intl-precompile';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { onMount } from 'svelte';
 	import { Input } from '../ui/input';
@@ -27,7 +28,7 @@
 		<AlertDialog.Trigger bind:el={TriggerButton}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Name</AlertDialog.Title>
+				<AlertDialog.Title>{$t("Name")}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<form
 						on:submit={() => {
@@ -39,8 +40,8 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<!-- <AlertDialog.Cancel type="submit" bind:el={cancelBtn}>Cancel</AlertDialog.Cancel> -->
-				<AlertDialog.Action type="submit" bind:el={CancelBtn}>Save</AlertDialog.Action>
+				                                                                                          
+				<AlertDialog.Action type="submit" bind:el={CancelBtn}>{$t("Save")}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>

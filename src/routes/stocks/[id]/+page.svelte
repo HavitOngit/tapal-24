@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import AnajSlot from '$lib/components/AnajSlot.svelte';
@@ -68,13 +69,13 @@
 
 		newlySelected.forEach((obj) => {
 			obj.storage_unit_id = id;
-			if ($unilist.find((x) => x.name === obj.name)) {
+			if (!$unilist.find((x) => x.name === obj.name)) {
 				addinunilist.push({ name: obj.name, image: '/anaj_images/avg.png' });
 			}
 		});
-
-		db.transaction('rw', db.storage, async () => {
+		db.transaction('rw', db.storage, db.univarsalList, async () => {
 			await db.storage.bulkAdd(newlySelected);
+			await db.univarsalList.bulkAdd(addinunilist);
 		}).then(() => {
 			newlySelected = [];
 		});
@@ -139,7 +140,7 @@
 		></SelectionNav>
 
 		<div class="m-2 mr-7 flex justify-end gap-2">
-			<Label>Select All</Label>
+			<Label>{$t('Select All')}</Label>
 			<input type="checkbox" bind:checked={selectall} class="size-5" />
 		</div>
 	</div>
@@ -150,19 +151,18 @@
 		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Rename</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Rename')}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<Input bind:value={unit.name} />
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={nameUpdate}>Save Changes</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={nameUpdate}>{$t('Save Changes')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 
-	<!-- deletemode -->
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
@@ -185,10 +185,12 @@
 								>
 									{#if $usedBy.length > 0}
 										<div id="notice">
-											<p class="text-left">currently this stock is used by following Registers</p>
+											<p class="text-left">
+												{$t('currently this stock is used by following Registers')}
+											</p>
 										</div>
 										<div class="flex">
-											<Label class="text-base">UsedBy:</Label>
+											<Label class="text-base">{$t('UsedBy:')}</Label>
 											<div class="flex gap-3">
 												{#each $usedBy as reg}
 													<Badge variant="outline">{reg.name}</Badge>
@@ -198,26 +200,27 @@
 										<hr />
 										<div class="flex">
 											<p class="text-left">
-												To Delete this Stock Make Sure this stock not used by anyone
+												{$t('To Delete this Stock Make Sure this stock not used by anyone')}
 											</p>
 											<a href="/reg">
-												<Button>Fix</Button>
+												<Button>{$t('Fix')}</Button>
 											</a>
 										</div>
 									{:else}
 										<div>
-											<div class="flex items-start">this stock currently contain :</div>
+											<div class="flex items-start">{$t('this stock currently contain :')}</div>
 											{#each $list as item}
 												<div class="m-5 flex justify-between">
-													<div>{item.name}</div>
+													<div>{$t(item.name)}</div>
 													<div>{item.amount} kg</div>
 												</div>
 											{/each}
 										</div>
 										<hr />
 										<div class="flex text-wrap">
-											<Label class="text-base font-semibold">NOTE:</Label>
-											{stockName} will be deleted. cannot be restored once deleted.
+											<Label class="text-base font-semibold">{$t('NOTE:')}</Label>
+											{stockName}
+											{$t('will be deleted. cannot be restored once deleted')}
 										</div>
 									{/if}
 								</div>
@@ -227,11 +230,11 @@
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					on:click={deleteitems}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0 || deleteMode)}>Confirm</AlertDialog.Action
+					disabled={!($usedBy.length == 0 || deleteMode)}>{$t('Confirm')}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
@@ -261,17 +264,17 @@
 										TestButton.click();
 									}}
 								>
-									Rename
+									{$t('Rename')}
 								</DropdownMenu.Item>
 								{#if $list.length > 0}
 									<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
-										>Delete items</DropdownMenu.Item
+										>{$t('Delete items')}</DropdownMenu.Item
 									>
 								{/if}
 								<DropdownMenu.Item
 									on:click={() => {
 										deleteBtn.click();
-									}}>Delete</DropdownMenu.Item
+									}}>🗑️{$t('Delete')}</DropdownMenu.Item
 								>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
@@ -281,8 +284,8 @@
 		</Card.Root>
 	{/if}
 
-	<p class="text-end text-sm font-semibold">(All in Kg)</p>
-	<!-- <Button on:click={DeleteM}>Delete</Button> -->
+	<p class="text-end text-sm font-semibold">{$t('(All in Kg)')}</p>
+
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}
 			<div
@@ -300,7 +303,7 @@
 				}}
 			>
 				<AnajSlot {anaj} forStorageView={true} bind:deleteMode>
-					<input type="checkbox" bind:group={DeleteList} value={anaj} class="size-5" />
+					<input type="checkbox" bind:group={DeleteList} value={anaj} class="size-10 rounded" />
 				</AnajSlot>
 			</div>
 		{/each}
@@ -313,14 +316,14 @@
 			}}
 		>
 			<PackagePlus />
-			<p>Click To Add</p>
+			<p>{$t('Click To Add')}</p>
 		</Button>
 	</div>
 </div>
 
 <div id="newlyAdded">
 	{#if newlySelected.length > 0}
-		<div class="flex">New anajs</div>
+		<div class="flex">{$t('New anajs')}</div>
 
 		{#each newlySelected as anaj}
 			<AnajSlot {anaj}></AnajSlot>
@@ -338,10 +341,10 @@
 
 {#if newlySelected.length > 0}
 	<div class=" fixed bottom-24 flex w-full">
-		<Button on:click={SaveNewAnajs} class="mx-2 w-full">Save Changes</Button>
+		<Button on:click={SaveNewAnajs} class="mx-2 w-full">{$t('Save Changes')}</Button>
 	</div>
 {/if}
 
 {#if showEdit}
-	<Button on:click={Delete}>Delete</Button>
+	<Button on:click={Delete}>{$t('Delete')}</Button>
 {/if}

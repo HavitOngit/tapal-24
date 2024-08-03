@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
@@ -120,6 +121,8 @@
 		insilized = true;
 		regs = await db.group.get(id);
 		await getUsage(month, year);
+		// seting date values
+
 		const allUsage = await db.attendance.where({ group_id: Number($page.params.id) }).toArray();
 		allUsage.forEach((u) => {
 			if (!months.has(u.date.getMonth())) {
@@ -138,58 +141,57 @@
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		// to ensure that current date is present
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
+
+		console.log($monthlist);
 	});
 </script>
 
-<!-- {$page.params.id}
-<UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
-{#if $yearlist.length > 0}
+{#if $yearlist.length > 0 && $monthlist.length > 0}
 	<div id="selector" class=" m-3 flex gap-3">
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
 
 		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
 	</div>
-	<!-- <div class="m-3">
-	<p class="text-lg font-semibold">
-		Total:
-	</p>
-</div> -->
+
 	{#if $atndce}
-		{#if regs}
-			<div class="m-3 flex gap-1">
-				<p class="font-semibold">Registred:</p>
-				<Badge class="flex gap-2" variant="outline">
-					Boys
-					<span class="font-semibold">{regs.boys}</span>
-				</Badge> +
-				<Badge class="flex gap-2" variant="outline">
-					Girls
-					<span class="font-semibold">{regs.girls}</span>
-				</Badge>
-				=
-				<Badge class="flex gap-2">
-					total
-					<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
-				</Badge>
+		<div class="mt-5 gap-3">
+			{#if regs}
+				<div class="m-3 flex gap-1">
+					<p class="font-semibold">{$t('Registred:')}</p>
+					<Badge class="flex gap-2" variant="outline"
+						>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
+					</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
+						>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
+					</Badge>{$t('=')}<Badge class="flex gap-2"
+						>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
+					</Badge>
+				</div>
+			{/if}
+			<div class="m-3">
+				<p class="text-lg font-semibold">
+					{$t('Total Days')}: {$atndce.length}
+				</p>
 			</div>
-		{/if}
-		<div class="m-3">
-			<p class="text-lg font-semibold">
-				Total Days: {$atndce.length}
-			</p>
 		</div>
-		<!-- <div>
-		<Button on:click={downloadCSV}>Export CVS</Button>
-		</div> -->
+
 		<div id="table">
 			<Table>
-				<TableHeader>
+				<TableHeader class="sticky top-0 z-10">
 					<TableRow>
-						<TableHead>Date</TableHead>
+						<TableHead>{$t('Date')}</TableHead>
 
-						<TableHead>Boys</TableHead>
-						<TableHead>Girls</TableHead>
-						<TableHead>Total</TableHead>
+						<TableHead>{$t('Boys')}</TableHead>
+						<TableHead>{$t('Girls')}</TableHead>
+						<TableHead>{$t('Total')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -201,9 +203,12 @@
 							<TableHead>{item.total}</TableHead>
 						</TableRow>
 					{/each}
-
+				</TableBody>
+			</Table>
+			<Table>
+				<TableHeader>
 					<TableRow class="mt-3 rounded border bg-gray-200 p-1">
-						<TableHead>Total</TableHead>
+						<TableHead>{$t('Total')}</TableHead>
 						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
 						<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
 						<TableHead
@@ -211,12 +216,12 @@
 								((regs?.boys || 0.5) + (regs?.girls || 0.5))}</TableHead
 						>
 					</TableRow>
-				</TableBody>
+				</TableHeader>
 			</Table>
 		</div>
 	{/if}
 {:else}
 	<div class="m-10 flex justify-center">
-		<p>no Data Found</p>
+		<p>{$t('no Data Found')}</p>
 	</div>
 {/if}

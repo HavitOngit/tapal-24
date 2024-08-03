@@ -6,13 +6,31 @@
 	import { Calendar } from '$lib/components/ui/calendar';
 	import * as Popover from '$lib/components/ui/popover';
 	import Badge from '../ui/badge/badge.svelte';
+	import { locale } from 'svelte-intl-precompile';
+	import { onMount } from 'svelte';
 
-	const df = new DateFormatter('en-US', {
+	const lang: { value: string; lable: string }[] = [
+		{ value: 'en-US', lable: 'en' },
+		{ value: 'gu-IN', lable: 'gu' },
+		{ value: 'hi-IN', lable: 'hi' }
+	];
+
+	let df = new DateFormatter(lang.find((x) => x.lable === $locale)?.value || 'en-US', {
 		dateStyle: 'long'
 	});
 
 	export let value: DateValue | undefined = undefined;
 	export let today = new Date();
+
+	onMount(() => {
+		console.log('locale', $locale);
+		df = new DateFormatter(
+			lang.find((x) => x.lable === localStorage.getItem('locale'))?.value || 'en-US',
+			{
+				dateStyle: 'long'
+			}
+		);
+	});
 </script>
 
 <Popover.Root>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import { TableBody } from '$lib/components/ui/table';
@@ -152,11 +153,18 @@
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		// to ensure that current date is present
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
 	});
 </script>
 
-<!-- {$page.params.id}
-<UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
 {#if !noData}
 	<div id="selector" class=" m-3 flex gap-3">
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
@@ -170,25 +178,22 @@
 	{#if anaj_details.length > 0}
 		<div class="m-3">
 			<p class="text-lg font-semibold">
-				Total Usage:
+				{$t('Total Usage')}:
 				{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
 			</p>
-			<p>Total Days: {anaj_details[selected_anaj].days}</p>
+			<p>{$t('Total Days')}: {anaj_details[selected_anaj].days}</p>
 		</div>
 	{/if}
 	{#if $usage}
-		<!-- <div>
-	<Button on:click={downloadCSV}>Export CVS</Button>
-	</div> -->
 		<div id="table">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Date</TableHead>
-						<TableHead>Rate</TableHead>
-						<TableHead>Before</TableHead>
-						<TableHead>Usage</TableHead>
-						<TableHead>After</TableHead>
+						<TableHead>{$t('Date')}</TableHead>
+						<TableHead>{$t('Rate')}</TableHead>
+						<TableHead>{$t('Before')}</TableHead>
+						<TableHead>{$t('Usage')}</TableHead>
+						<TableHead>{$t('After')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -209,6 +214,6 @@
 	{/if}
 {:else}
 	<div class="m-10 flex justify-center">
-		<p>no Data Found</p>
+		<p>{$t('no Data Found')}</p>
 	</div>
 {/if}

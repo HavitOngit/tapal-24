@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from 'svelte-intl-precompile';
 	import * as Card from '$lib/components/ui/card';
 	import type { Rates, RegForm } from '$lib/custom_types';
 
@@ -92,12 +93,12 @@
 				class="border {data.currently_used
 					? 'border-green-400 text-green-600'
 					: 'border-yellow-400 text-yellow-600'}"
-				>{data.currently_used ? 'Active' : 'not in Use'}</Badge
+				>{data.currently_used ? $t('Active') : $t('not in Use')}</Badge
 			>
 			<Switch bind:checked={data.currently_used}></Switch>
 		</div>
 		<div class="flex items-center gap-2">
-			<Label>Name:</Label>
+			<Label>{$t('Name:')}</Label>
 			<Input
 				bind:value={data.name}
 				placeholder="Enter Name"
@@ -118,16 +119,16 @@
 
 		<div class="flex gap-2">
 			<div>
-				<Label>Boys:</Label>
+				<Label>{$t('Boys:')}</Label>
 				<Input bind:value={data.boys} type="number" />
 			</div>
 			<div>
-				<Label>Girls:</Label>
+				<Label>{$t('Girls:')}</Label>
 				<Input bind:value={data.girls} type="number" />
 			</div>
 		</div>
 		{#if !isLoading}
-			<div>
+			<div class="mt-2 grid grid-cols-2 gap-2">
 				<ListSelector
 					bind:list={stocklist}
 					name="Stock"
@@ -155,17 +156,11 @@
 
 			{#if !competable}
 				<div class="flex items-center gap-2">
-					<!-- <Badge variant="outline" class="border-red-700 bg-red-200 text-red-600"
-						>Some Anaj not in selected Stock
-					</Badge> -->
-					<Badge
-						variant="outline"
-						class="text-wrap border-yellow-700 bg-yellow-200 text-yellow-600"
+					<Badge variant="outline" class="text-wrap border-yellow-700 bg-yellow-200 text-yellow-600"
+						>{$t('To use this Combination First add following Anajs to selected Stock')}</Badge
 					>
-						To use this Combination First add following Anajs to selected Stock
-					</Badge>
 					<a href="/stocks/{data.storage_unit_id}">
-						<Button>Fix</Button>
+						<Button>{$t('Fix')}</Button>
 					</a>
 				</div>
 				<div class="flex flex-wrap gap-2">
