@@ -17,6 +17,9 @@
 	} from 'lucide-svelte';
 	import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/dialog';
 	import { Button } from '../ui/button';
+	import Avatar from '../ui/avatar/avatar.svelte';
+	import AvatarImage from '../ui/avatar/avatar-image.svelte';
+	import AvatarFallback from '../ui/avatar/avatar-fallback.svelte';
 	// import Table from './components/ui/table/table.svelte';
 	// import TableHeader from './components/ui/table/table-header.svelte';
 	// import TableRow from './components/ui/table/table-row.svelte';
@@ -42,27 +45,24 @@
 <header>
 	<Dialog>
 		<DialogTrigger>
-			<img src="/impatient-kitty.gif" class="size-8" alt="account" />
-			<!-- <Avatar class="border">
-				<AvatarImage
-					src={$page.data?.session?.user?.image ?? 'https://source.boringavatars.com/marble/120'}
-					alt="profile"
+			<!-- <img src="/impatient-kitty.gif" class="size-8" alt="account" /> -->
+			<Avatar class="border">
+				<AvatarImage src={$page.data?.session?.user?.image ?? '/impatient-kitty.gif'} alt="profile"
 				></AvatarImage>
 				<AvatarFallback>{$page.data?.session?.user?.name?.substring(0, 2)}</AvatarFallback>
-			</Avatar> -->
+			</Avatar>
 		</DialogTrigger>
 		<DialogContent>
 			<div class="flex flex-col gap-7">
 				<div class="rounded-3xl pb-3">
 					<div class="flex justify-center">
-						<!-- <Avatar class="size-28">
+						<Avatar class="size-28">
 							<AvatarImage
-								src={$page.data?.session?.user?.image ??
-									'https://source.boringavatars.com/marble/120'}
+								src={$page.data?.session?.user?.image ?? '/impatient-kitty.gif'}
 								alt="profile"
 							></AvatarImage>
 							<AvatarFallback>{$page.data?.session?.user?.name?.substring(0, 2)}</AvatarFallback>
-						</Avatar> -->
+						</Avatar>
 					</div>
 
 					<div>

@@ -1,25 +1,26 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Warehouse, LibraryBig, BadgePercent, ListTodo, Percent } from 'lucide-svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	const paths = [
 		{
-			name: 'To-Do',
+			name: $t('To-Do'),
 			href: '/dailywork',
 			icon: ListTodo
 		},
 		{
-			name: 'Registers',
+			name: $t('Registers'),
 			href: '/reg',
 			icon: LibraryBig
 		},
 		{
-			name: 'Rates',
+			name: $t('Rates'),
 			href: '/rates',
 			icon: Percent
 		},
 		{
-			name: 'Stocks',
+			name: $t('Stocks'),
 			href: '/stocks',
 			icon: Warehouse
 		}
