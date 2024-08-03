@@ -96,7 +96,8 @@
 			<AlertDialog.Header>
 				<AlertDialog.Title class="flex justify-between">
 					<div class="text-xl">
-						Add to {anaj.name}
+						{$t('Add in')}
+						{$t(anaj.name)}
 					</div>
 					<div>
 						<Calender bind:value={date}></Calender>
@@ -104,12 +105,13 @@
 				</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
 					<div class="text-lg">
+						{$t('Currently')}
 						{$t('Avalable')}:
 						{formatAmount(anaj.amount)} kg
 					</div>
 					{#if $effectedUsage && $effectedUsage.length > 0}
 						<div class="text-lg">
-							that Time: {formatAmount($effectedUsage[0].before_amount)}
+							{$t('that Time')}: {formatAmount($effectedUsage[0].before_amount)} kg
 						</div>
 					{/if}
 
@@ -136,15 +138,13 @@
 			</div>
 		{/if}
 		<div class="flex space-x-3">
-			<a href="/stocks/{$page.params.id}/{anaj.id}">
-				<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
-					<img
-						src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
-						alt={anaj.name}
-						class=" h-24 w-24 object-fill"
-					/>
-				</div>
-			</a>
+			<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
+				<img
+					src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
+					alt={anaj.name}
+					class=" h-24 w-24 object-fill"
+				/>
+			</div>
 
 			<div class="mt-3 flex flex-col flex-wrap">
 				<div class="text-lg font-medium">

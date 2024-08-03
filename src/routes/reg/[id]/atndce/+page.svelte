@@ -163,27 +163,29 @@
 	</div>
 
 	{#if $atndce}
-		{#if regs}
-			<div class="m-3 flex gap-1">
-				<p class="font-semibold">{$t('Registred:')}</p>
-				<Badge class="flex gap-2" variant="outline"
-					>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
-				</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
-					>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
-				</Badge>{$t('=')}<Badge class="flex gap-2"
-					>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
-				</Badge>
+		<div class="mt-5 gap-3">
+			{#if regs}
+				<div class="m-3 flex gap-1">
+					<p class="font-semibold">{$t('Registred:')}</p>
+					<Badge class="flex gap-2" variant="outline"
+						>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
+					</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
+						>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
+					</Badge>{$t('=')}<Badge class="flex gap-2"
+						>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
+					</Badge>
+				</div>
+			{/if}
+			<div class="m-3">
+				<p class="text-lg font-semibold">
+					{$t('Total Days')}: {$atndce.length}
+				</p>
 			</div>
-		{/if}
-		<div class="m-3">
-			<p class="text-lg font-semibold">
-				Total Days: {$atndce.length}
-			</p>
 		</div>
 
 		<div id="table">
 			<Table>
-				<TableHeader>
+				<TableHeader class="sticky top-0 z-10">
 					<TableRow>
 						<TableHead>{$t('Date')}</TableHead>
 

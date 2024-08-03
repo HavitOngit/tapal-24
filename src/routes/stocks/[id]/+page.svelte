@@ -211,7 +211,7 @@
 											<div class="flex items-start">{$t('this stock currently contain :')}</div>
 											{#each $list as item}
 												<div class="m-5 flex justify-between">
-													<div>{item.name}</div>
+													<div>{$t(item.name)}</div>
 													<div>{item.amount} kg</div>
 												</div>
 											{/each}
@@ -219,7 +219,8 @@
 										<hr />
 										<div class="flex text-wrap">
 											<Label class="text-base font-semibold">{$t('NOTE:')}</Label>
-											{stockName} will be deleted. cannot be restored once deleted.
+											{stockName}
+											{$t('will be deleted. cannot be restored once deleted')}
 										</div>
 									{/if}
 								</div>
@@ -263,17 +264,17 @@
 										TestButton.click();
 									}}
 								>
-									Rename
+									{$t('Rename')}
 								</DropdownMenu.Item>
 								{#if $list.length > 0}
 									<DropdownMenu.Item on:click={() => (deleteMode = !deleteMode)}
-										>Delete items</DropdownMenu.Item
+										>{$t('Delete items')}</DropdownMenu.Item
 									>
 								{/if}
 								<DropdownMenu.Item
 									on:click={() => {
 										deleteBtn.click();
-									}}>Delete</DropdownMenu.Item
+									}}>🗑️{$t('Delete')}</DropdownMenu.Item
 								>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
@@ -302,7 +303,7 @@
 				}}
 			>
 				<AnajSlot {anaj} forStorageView={true} bind:deleteMode>
-					<input type="checkbox" bind:group={DeleteList} value={anaj} class="size-5" />
+					<input type="checkbox" bind:group={DeleteList} value={anaj} class="size-10 rounded" />
 				</AnajSlot>
 			</div>
 		{/each}

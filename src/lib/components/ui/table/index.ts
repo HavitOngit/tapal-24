@@ -6,10 +6,12 @@ import Footer from "./table-footer.svelte";
 import Head from "./table-head.svelte";
 import Header from "./table-header.svelte";
 import Row from "./table-row.svelte";
+import Body2 from './table-y-of.svelte';
 
 export {
 	Root,
 	Body,
+	Body2,
 	Caption,
 	Cell,
 	Footer,

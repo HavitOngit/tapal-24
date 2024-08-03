@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Anajlist_init } from '$lib/custom_types';
 	import Button from './ui/button/button.svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	export let anaj: Anajlist_init;
 	export let btn_clicked: boolean;
@@ -22,7 +23,7 @@
 			/>
 		</div>
 		<div class="mt-2 text-wrap">
-			{anaj.name}
+			{$t(anaj.name)}
 		</div>
 		<!-- <input type="checkbox" bind:group={selected} value={{ name: anaj.name, amount: 0 }} /> -->
 	</div>

@@ -20,14 +20,14 @@
 </Card.Root> -->
 
 <div class="m-1 w-[80%] rounded-sm border border-gray-500 p-2">
-	<div class="flex justify-between">
-		<div class="text-lg font-medium">{$t(rateDetails.day)}</div>
+	<div class="flex justify-between p-1">
+		<div class="text-lg font-semibold">{$t(rateDetails.day)}</div>
 		<!-- <Button variant="outline">Edit</Button> -->
 		<RateEdit Ratedetails={rateDetails}></RateEdit>
 	</div>
 	<hr />
 
-	<div class="flex flex-col">
+	<div class="flex flex-col p-2">
 		{#each rateDetails.ratelist as rate}
 			<div class="flex justify-between">
 				<div>{$t(rate.name)}</div>

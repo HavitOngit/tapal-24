@@ -1,23 +1,22 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import { getAllUsedAnajs } from '$lib/api';
-	import RateView from '$lib/components/RateView.svelte';
 	import Rateslot from '$lib/components/Rateslot.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import type { Rate, Rates } from '$lib/custom_types';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import type { Rates } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
 	import { onMount } from 'svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { t } from 'svelte-intl-precompile';
 
-	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import { Input } from '$lib/components/ui/input';
-	import { Badge } from '$lib/components/ui/badge';
-	import Label from '$lib/components/ui/label/label.svelte';
-	import toast from 'svelte-french-toast';
-	import { Settings2 } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Input } from '$lib/components/ui/input';
+	import Label from '$lib/components/ui/label/label.svelte';
+	import { PenSquareIcon, Settings2, Trash2Icon, PencilLineIcon } from 'lucide-svelte';
+	import toast from 'svelte-french-toast';
 
 	const id = parseInt($page.params.id);
 
@@ -63,7 +62,7 @@ import { t } from 'svelte-intl-precompile';
 		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>{$t("Rename")}</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Rename')}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<Input bind:value={unit.name} />
 				</AlertDialog.Description>
@@ -72,14 +71,13 @@ import { t } from 'svelte-intl-precompile';
 				<AlertDialog.Cancel
 					on:click={() => {
 						unit = { ...$rateUnit };
-					}}>Cancel</AlertDialog.Cancel
+					}}>{$t('Cancel')}</AlertDialog.Cancel
 				>
-				<AlertDialog.Action on:click={nameUpdate}>{$t("Save Changes")}</AlertDialog.Action>
+				<AlertDialog.Action on:click={nameUpdate}>{$t('Save Changes')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 
-	                   
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
@@ -94,10 +92,12 @@ import { t } from 'svelte-intl-precompile';
 							>
 								{#if $usedBy.length > 0}
 									<div id="notice">
-										<p class="text-left">{$t("currently this Rate is used by following Registers")}</p>
+										<p class="text-left">
+											{$t('currently this Rate is used by following Registers')}
+										</p>
 									</div>
 									<div class="flex">
-										<Label class="text-base">{$t("UsedBy:")}</Label>
+										<Label class="text-base">{$t('UsedBy:')}</Label>
 										<div class="flex gap-3">
 											{#each $usedBy as reg}
 												<Badge variant="outline">{reg.name}</Badge>
@@ -107,21 +107,22 @@ import { t } from 'svelte-intl-precompile';
 									<hr />
 									<div class="flex justify-between">
 										<div class="flex flex-col gap-2">
-											<p class="text-left">{$t("To Delete this Rate")}</p>
+											<p class="text-left">{$t('To Delete this Rate')}</p>
 											<Badge class="border-yellow-700 bg-yellow-200 text-yellow-600"
-												>{$t("Make Sure this Rate not used by anyone")}</Badge
+												>{$t('Make Sure this Rate not used by anyone')}</Badge
 											>
 										</div>
 										<a href="/reg">
-											<Button>{$t("Fix")}</Button>
+											<Button>{$t('Fix')}</Button>
 										</a>
 									</div>
 								{:else}
 									<hr />
 									<div class="flex gap-2 text-wrap">
-										<Label class="text-base font-semibold">{$t("NOTE:")}</Label>
+										<Label class="text-base font-semibold">{$t('NOTE:')}</Label>
 										<p class=" text-left">
-											{$rateUnit?.name} will be deleted. cannot be restored once deleted.
+											{$rateUnit?.name}
+											{$t('will be deleted. cannot be restored once deleted')}
 										</p>
 									</div>
 								{/if}
@@ -131,18 +132,16 @@ import { t } from 'svelte-intl-precompile';
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					on:click={deletethis}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0)}>{$t("Confirm")}</AlertDialog.Action
+					disabled={!($usedBy.length == 0)}>{$t('Confirm')}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 </div>
-
-                                                                                                                                                                                                
 
 <div class="m-10 flex justify-between">
 	<p class="text-xl font-semibold">{$rateUnit?.name}</p>
@@ -157,23 +156,32 @@ import { t } from 'svelte-intl-precompile';
 					on:click={() => {
 						TestButton.click();
 					}}
+					class="flex gap-3"
 				>
-					Rename
+					<PencilLineIcon />
+					<p>
+						{$t('Rename')}
+					</p>
 				</DropdownMenu.Item>
 
 				<DropdownMenu.Item
 					on:click={() => {
 						deleteBtn.click();
-					}}>Delete</DropdownMenu.Item
+					}}
+					class="flex gap-3"
+				>
+					<Trash2Icon />
+					<p>
+						{$t('Delete')}
+					</p></DropdownMenu.Item
 				>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</div>
 </div>
-<p class="mr-10 text-end text-sm font-semibold">{$t("(All in grams)")}</p>
+<p class="mr-10 text-end text-sm font-semibold">{$t('(All in grams)')}</p>
 <div class="flex flex-col items-center justify-center">
 	{#each $list || [] as detail}
-		                                                   
 		<Rateslot rateDetails={detail}></Rateslot>
 	{/each}
 </div>

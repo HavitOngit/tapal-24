@@ -1,6 +1,7 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
 	import { onMount } from 'svelte';
+	import { t } from 'svelte-intl-precompile';
 
 	export let selected: number;
 	export let groupName: string;
@@ -18,14 +19,14 @@
 >
 	<Select.Trigger class="">
 		{#if list}
-			<Select.Value placeholder={list.find((m) => m.value === selected)?.label} />
+			{$t(list.find((m) => m.value === selected)?.label || 'loading...')}
 		{/if}
 	</Select.Trigger>
 	<Select.Content>
 		<Select.Group>
-			<Select.Label>{groupName}</Select.Label>
+			<Select.Label>{$t(groupName)}</Select.Label>
 			{#each list as item}
-				<Select.Item value={item.value} label={item.label}>{item.label}</Select.Item>
+				<Select.Item value={item.value} label={item.label}>{$t(item.label)}</Select.Item>
 			{/each}
 		</Select.Group>
 	</Select.Content>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import ReportCard from '$lib/components/stocks/reportCard.svelte';
@@ -208,6 +208,14 @@ import { t } from 'svelte-intl-precompile';
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
 	});
 
 	function formatAmount(amount: any) {
@@ -230,10 +238,9 @@ import { t } from 'svelte-intl-precompile';
 	}
 </script>
 
-                                                                                         
 {#if $yearlist.length === 0}
 	<div class="m-10 flex justify-center">
-		<p>{$t("no Data Found")}</p>
+		<p>{$t('no Data Found')}</p>
 	</div>
 {:else}
 	<div id="selector" class=" m-3 flex gap-3">

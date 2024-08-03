@@ -210,7 +210,7 @@
 				<AlertDialog.Description class="flex flex-col gap-2">
 					<div class="m-3 rounded-md bg-yellow-200">
 						<p class="text-wrap p-2 text-left">
-							In Order to use below Anajs they Must in stock of "{RegData.name}" Register
+							{$t('In Order to use below Anajs they Must in stock of')} "{RegData.name}"
 						</p>
 					</div>
 					<div class="m-1 ml-3 flex gap-2">
@@ -223,7 +223,7 @@
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
-					>Go to Stocks
+					>{$t('Go to Stocks')}
 				</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
@@ -275,7 +275,7 @@
 									showRate = !showRate;
 									rate = [...rate_Backup];
 								}}
-								variant="outline">{!showRate ? 'Change Rate' : 'Cancel'}</Button
+								variant="outline">{!showRate ? $t('Change Rate') : $t('Go Back')}</Button
 							></AlertDialog.Description
 						>
 					</AlertDialog.Header>

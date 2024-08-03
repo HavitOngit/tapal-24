@@ -11,8 +11,8 @@
 
 	const lang: { value: string; lable: string }[] = [
 		{ value: 'en-US', lable: 'en' },
-		{ value: 'gu-IN', lable: 'gj' },
-		{ value: 'hi-IN', lable: 'hn' }
+		{ value: 'gu-IN', lable: 'gu' },
+		{ value: 'hi-IN', lable: 'hi' }
 	];
 
 	let df = new DateFormatter(lang.find((x) => x.lable === $locale)?.value || 'en-US', {

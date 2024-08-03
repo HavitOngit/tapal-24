@@ -51,32 +51,34 @@
 	</Table.Header>
 
 	<Table.Body>
-		{#each temp_anajlist as anaj, i}
-			<Table.Row>
-				<Table.Cell class="font-medium">{$t(anaj.name)}</Table.Cell>
-				<Table.Cell class="flex gap-2">
-					{#if deleteMode}
-						<Input bind:value={anaj.rate} type="number" placeholder="enter rate" />
-					{:else}
-						<div class=" w-52 pl-3">
-							{anaj.rate}
-						</div>
-					{/if}
+		<div class="max-h-96 overflow-y-auto">
+			{#each temp_anajlist as anaj, i}
+				<Table.Row>
+					<Table.Cell class="font-medium">{$t(anaj.name)}</Table.Cell>
+					<Table.Cell class="flex gap-2">
+						{#if deleteMode}
+							<Input bind:value={anaj.rate} type="number" placeholder="enter rate" />
+						{:else}
+							<div class=" w-52 pl-3">
+								{anaj.rate}
+							</div>
+						{/if}
 
-					{#if deleteMode}
-						<Button
-							class=" rounded-sm"
-							variant="ghost"
-							on:click={() => {
-								remove(i, anaj.name);
-							}}
-						>
-							<Trash2></Trash2>
-						</Button>
-					{/if}
-				</Table.Cell>
-			</Table.Row>
-		{/each}
+						{#if deleteMode}
+							<Button
+								class=" rounded-sm"
+								variant="ghost"
+								on:click={() => {
+									remove(i, anaj.name);
+								}}
+							>
+								<Trash2></Trash2>
+							</Button>
+						{/if}
+					</Table.Cell>
+				</Table.Row>
+			{/each}
+		</div>
 	</Table.Body>
 </Table.Root>
 
