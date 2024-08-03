@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
@@ -121,6 +121,8 @@ import { t } from 'svelte-intl-precompile';
 		insilized = true;
 		regs = await db.group.get(id);
 		await getUsage(month, year);
+		// seting date values
+
 		const allUsage = await db.attendance.where({ group_id: Number($page.params.id) }).toArray();
 		allUsage.forEach((u) => {
 			if (!months.has(u.date.getMonth())) {
@@ -139,24 +141,37 @@ import { t } from 'svelte-intl-precompile';
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		// to ensure that current date is present
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
+
+		console.log($monthlist);
 	});
 </script>
 
-                                                                                         
-{#if $yearlist.length > 0}
+{#if $yearlist.length > 0 && $monthlist.length > 0}
 	<div id="selector" class=" m-3 flex gap-3">
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
 
 		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
 	</div>
-	                                                                                   
+
 	{#if $atndce}
 		{#if regs}
 			<div class="m-3 flex gap-1">
-				<p class="font-semibold">{$t("Registred:")}</p>
-				<Badge class="flex gap-2" variant="outline">{$t("Boys")}<span class="font-semibold">{regs.boys}</span>
-				</Badge>{$t("+")}<Badge class="flex gap-2" variant="outline">{$t("Girls")}<span class="font-semibold">{regs.girls}</span>
-				</Badge>{$t("=")}<Badge class="flex gap-2">{$t("total")}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
+				<p class="font-semibold">{$t('Registred:')}</p>
+				<Badge class="flex gap-2" variant="outline"
+					>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
+				</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
+					>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
+				</Badge>{$t('=')}<Badge class="flex gap-2"
+					>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
 				</Badge>
 			</div>
 		{/if}
@@ -165,16 +180,16 @@ import { t } from 'svelte-intl-precompile';
 				Total Days: {$atndce.length}
 			</p>
 		</div>
-		                                                                            
+
 		<div id="table">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>{$t("Date")}</TableHead>
+						<TableHead>{$t('Date')}</TableHead>
 
-						<TableHead>{$t("Boys")}</TableHead>
-						<TableHead>{$t("Girls")}</TableHead>
-						<TableHead>{$t("Total")}</TableHead>
+						<TableHead>{$t('Boys')}</TableHead>
+						<TableHead>{$t('Girls')}</TableHead>
+						<TableHead>{$t('Total')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -191,7 +206,7 @@ import { t } from 'svelte-intl-precompile';
 			<Table>
 				<TableHeader>
 					<TableRow class="mt-3 rounded border bg-gray-200 p-1">
-						<TableHead>{$t("Total")}</TableHead>
+						<TableHead>{$t('Total')}</TableHead>
 						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
 						<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
 						<TableHead
@@ -205,6 +220,6 @@ import { t } from 'svelte-intl-precompile';
 	{/if}
 {:else}
 	<div class="m-10 flex justify-center">
-		<p>{$t("no Data Found")}</p>
+		<p>{$t('no Data Found')}</p>
 	</div>
 {/if}

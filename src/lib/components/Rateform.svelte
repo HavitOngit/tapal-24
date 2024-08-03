@@ -1,7 +1,6 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
-	import * as Table from '$lib/components/ui/table';
 	import { t } from 'svelte-intl-precompile';
+	import * as Table from '$lib/components/ui/table';
 	export let ratelist: any;
 	export let anajlist;
 	export let forInit: boolean = true;
@@ -45,7 +44,7 @@ import { t } from 'svelte-intl-precompile';
 	});
 </script>
 
-<p class="text-end text-sm font-semibold">{$t("All in grams")}</p>
+<p class="text-end text-sm font-semibold">{$t('All in grams')}</p>
 <Table.Root>
 	<Table.Header>
 		<Table.Row></Table.Row>

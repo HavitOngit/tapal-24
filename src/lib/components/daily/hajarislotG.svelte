@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { goto } from '$app/navigation';
 	import { getDateID } from '$lib/api';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { type Group, type oneRate, type Storage, type Usage } from '$lib/custom_types';
@@ -7,6 +7,7 @@ import { t } from 'svelte-intl-precompile';
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import { t } from 'svelte-intl-precompile';
 	import { z } from 'zod';
 	import Rateform from '../Rateform.svelte';
 	import Badge from '../ui/badge/badge.svelte';
@@ -19,8 +20,6 @@ import { t } from 'svelte-intl-precompile';
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
-	import { goto } from '$app/navigation';
-	import { t } from 'svelte-intl-precompile';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -207,7 +206,7 @@ import { t } from 'svelte-intl-precompile';
 		<AlertDialog.Trigger bind:el={stock_nf_btn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>{$t("Following Anajs Not in Stocks")}</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Following Anajs Not in Stocks')}</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col gap-2">
 					<div class="m-3 rounded-md bg-yellow-200">
 						<p class="text-wrap p-2 text-left">
@@ -222,7 +221,7 @@ import { t } from 'svelte-intl-precompile';
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
 					>Go to Stocks
 				</AlertDialog.Action>
@@ -252,14 +251,13 @@ import { t } from 'svelte-intl-precompile';
 		</CardContent>
 		<CardFooter class="flex justify-between">
 			<div>{$t('Total')}: {total}</div>
-			                                
+
 			<AlertDialog.Root>
 				<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
 					><Button disabled={!isDone}>{$t('Submit')}</Button></AlertDialog.Trigger
 				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						                                                                           
 						<AlertDialog.Description
 							class="flex w-full
 						justify-between"
@@ -284,12 +282,12 @@ import { t } from 'svelte-intl-precompile';
 
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>{$t("Apply")}</Button>
+						<Button on:click={cal_usage}>{$t('Apply')}</Button>
 					{:else}
 						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row justify-around">
-							<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SavingToDB}>{$t("Confirm")}</AlertDialog.Action>
+							<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SavingToDB}>{$t('Confirm')}</AlertDialog.Action>
 						</AlertDialog.Footer>
 					{/if}
 				</AlertDialog.Content>

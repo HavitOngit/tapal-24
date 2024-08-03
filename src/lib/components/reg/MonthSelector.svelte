@@ -1,9 +1,14 @@
 <script lang="ts">
 	import * as Select from '$lib/components/ui/select';
+	import { onMount } from 'svelte';
 
 	export let selected: number;
 	export let groupName: string;
-	export let list: { value: number | string; label: string }[];
+	export let list: { value: number | string; label: string }[] = [];
+
+	onMount(() => {
+		console.log(list);
+	});
 </script>
 
 <Select.Root
@@ -12,8 +17,8 @@
 	}}
 >
 	<Select.Trigger class="">
-		{#if list.length > 0}
-			<Select.Value placeholder={list.filter((m) => m.value === selected)[0].label} />
+		{#if list}
+			<Select.Value placeholder={list.find((m) => m.value === selected)?.label} />
 		{/if}
 	</Select.Trigger>
 	<Select.Content>

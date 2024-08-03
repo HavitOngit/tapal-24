@@ -1,5 +1,5 @@
 <script>
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import NavigationBar from '$lib/finalize/NavigationBar.svelte';
 	import { navigating } from '$app/stores';
 	import '../app.pcss';
@@ -15,15 +15,18 @@ import { t } from 'svelte-intl-precompile';
 	import { addMessages, init } from 'svelte-intl-precompile';
 	import gj from '$lib/locales/gj.json';
 	import en from '$lib/locales/en.json';
+	import hn from '$lib/locales/hn.json';
 	import dayjs from 'dayjs';
 	addMessages('gj', gj);
 	addMessages('en', en);
+	addMessages('hn', hn);
 
 	onMount(() => {
 		console.log(gj);
+		const lang = localStorage.getItem('locale') || localStorage.setItem('locale', 'gj');
 
 		init({
-			initialLocale: 'gj',
+			initialLocale: String(lang),
 			fallbackLocale: 'en'
 		});
 	});
@@ -38,10 +41,11 @@ import { t } from 'svelte-intl-precompile';
 			class="flex"
 		>
 			<Badge variant="outline" class=" text-black">
-				<ChevronLeft></ChevronLeft>{$t("Back")}</Badge>
+				<ChevronLeft></ChevronLeft>{$t('Back')}</Badge
+			>
 		</button>
 	</div>
-	<a href="/" class="text-black">{$t("Home")}</a>
+	<a href="/" class="text-black">{$t('Home')}</a>
 	<Accpop></Accpop>
 </div>
 <Toaster></Toaster>
