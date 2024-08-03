@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import { TableBody } from '$lib/components/ui/table';
@@ -153,10 +153,18 @@ import { t } from 'svelte-intl-precompile';
 
 		$monthlist = Array.from(months.values());
 		$yearlist = Array.from(years.values());
+
+		// to ensure that current date is present
+		const currentMonthExists = $monthlist.some((item) => item.value === month);
+		const currentYearExists = $yearlist.some((item) => item.value === year);
+
+		if (!currentMonthExists || !currentYearExists) {
+			month = $monthlist[$monthlist.length - 1].value;
+			year = $yearlist[$yearlist.length - 1].value;
+		}
 	});
 </script>
 
-                                                                                         
 {#if !noData}
 	<div id="selector" class=" m-3 flex gap-3">
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
@@ -177,16 +185,15 @@ import { t } from 'svelte-intl-precompile';
 		</div>
 	{/if}
 	{#if $usage}
-		                                                                          
 		<div id="table">
 			<Table>
 				<TableHeader>
 					<TableRow>
-						<TableHead>{$t("Date")}</TableHead>
-						<TableHead>{$t("Rate")}</TableHead>
-						<TableHead>{$t("Before")}</TableHead>
-						<TableHead>{$t("Usage")}</TableHead>
-						<TableHead>{$t("After")}</TableHead>
+						<TableHead>{$t('Date')}</TableHead>
+						<TableHead>{$t('Rate')}</TableHead>
+						<TableHead>{$t('Before')}</TableHead>
+						<TableHead>{$t('Usage')}</TableHead>
+						<TableHead>{$t('After')}</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -207,6 +214,6 @@ import { t } from 'svelte-intl-precompile';
 	{/if}
 {:else}
 	<div class="m-10 flex justify-center">
-		<p>{$t("no Data Found")}</p>
+		<p>{$t('no Data Found')}</p>
 	</div>
 {/if}
