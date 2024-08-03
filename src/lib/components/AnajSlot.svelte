@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 
@@ -104,7 +104,8 @@ import { t } from 'svelte-intl-precompile';
 				</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6">
 					<div class="text-lg">
-						Available: {formatAmount(anaj.amount)}
+						{$t('Avalable')}:
+						{formatAmount(anaj.amount)} kg
 					</div>
 					{#if $effectedUsage && $effectedUsage.length > 0}
 						<div class="text-lg">
@@ -114,16 +115,15 @@ import { t } from 'svelte-intl-precompile';
 
 					<div>
 						<form on:submit={addToStore} class=" flex items-center gap-3">
-							<Label class="text-lg font-medium">{$t("Amount:")}</Label>
+							<Label class="text-lg font-medium">{$t('quantity')}:</Label>
 							<Input bind:value={addAmount} type="number" autofocus />
-							                                                                                                                          
 						</form>
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={addToStore} type="submit">{$t("ADD")}</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={addToStore} type="submit">{$t('ADD')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
@@ -148,13 +148,13 @@ import { t } from 'svelte-intl-precompile';
 
 			<div class="mt-3 flex flex-col flex-wrap">
 				<div class="text-lg font-medium">
-					{anaj.name}
+					{$t(anaj.name)}
 				</div>
 				{#if forStorageView}
 					<div class="flex flex-col">
 						<div class="flex flex-wrap items-center gap-2 text-nowrap text-lg">
-							Avalable :
-							                                                                                                         
+							{$t('Avalable')} :
+
 							{#if anaj.amount}
 								<div class="text-nowrap text-lg font-semibold">
 									{formatAmount(anaj.amount)} kg
@@ -167,19 +167,19 @@ import { t } from 'svelte-intl-precompile';
 									}}
 								>
 									<Badge variant="outline" class="flex gap-1 text-base">
-										<CircleFadingPlusIcon></CircleFadingPlusIcon>{$t("add")}</Badge>
+										<CircleFadingPlusIcon></CircleFadingPlusIcon>{$t('add')}</Badge
+									>
 								</button>
 							{/if}
 						</div>
 					</div>
 				{:else}
 					<div class="flex items-center">
-						<div>{$t("Amount:")}</div>
+						<div>{$t('quantity')}</div>
 						<div><Input bind:value={anaj.amount} type="number" class="w-full" /></div>
 					</div>
 				{/if}
 			</div>
-			                                                                                               
 		</div>
 	</Card.Content>
 </Card.Root>

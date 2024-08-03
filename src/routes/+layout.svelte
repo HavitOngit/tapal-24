@@ -1,29 +1,26 @@
 <script>
-	import { t } from 'svelte-intl-precompile';
-	import NavigationBar from '$lib/finalize/NavigationBar.svelte';
 	import { navigating } from '$app/stores';
-	import '../app.pcss';
-	import { ChevronLeft } from 'lucide-svelte';
-	import Badge from '$lib/components/ui/badge/badge.svelte';
-	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
-	import { Toaster } from 'svelte-french-toast';
-	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
-	import { onMount } from 'svelte';
 	import Accpop from '$lib/components/extraFeatures/accpop.svelte';
-
+	import LoadingBar from '$lib/components/extraFeatures/loadingBar.svelte';
+	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import NavigationBar from '$lib/finalize/NavigationBar.svelte';
+	import { ChevronLeft } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+	import { Toaster } from 'svelte-french-toast';
+	import { t } from 'svelte-intl-precompile';
+	import '../app.pcss';
 	// translations
-	import { addMessages, init } from 'svelte-intl-precompile';
-	import gj from '$lib/locales/gj.json';
 	import en from '$lib/locales/en.json';
-	import hn from '$lib/locales/hn.json';
-	import dayjs from 'dayjs';
-	addMessages('gj', gj);
+	import gu from '$lib/locales/gu.json';
+	import hi from '$lib/locales/hi.json';
+	import { addMessages, init } from 'svelte-intl-precompile';
+	addMessages('gu', gu);
 	addMessages('en', en);
-	addMessages('hn', hn);
+	addMessages('hi', hi);
 
 	onMount(() => {
-		console.log(gj);
-		const lang = localStorage.getItem('locale') || localStorage.setItem('locale', 'gj');
+		const lang = localStorage.getItem('locale') || localStorage.setItem('locale', 'gu');
 
 		init({
 			initialLocale: String(lang),

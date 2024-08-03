@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import AnajSlot from '$lib/components/AnajSlot.svelte';
@@ -140,7 +140,7 @@ import { t } from 'svelte-intl-precompile';
 		></SelectionNav>
 
 		<div class="m-2 mr-7 flex justify-end gap-2">
-			<Label>{$t("Select All")}</Label>
+			<Label>{$t('Select All')}</Label>
 			<input type="checkbox" bind:checked={selectall} class="size-5" />
 		</div>
 	</div>
@@ -151,19 +151,18 @@ import { t } from 'svelte-intl-precompile';
 		<AlertDialog.Trigger bind:el={TestButton}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>{$t("Rename")}</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Rename')}</AlertDialog.Title>
 				<AlertDialog.Description>
 					<Input bind:value={unit.name} />
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={nameUpdate}>{$t("Save Changes")}</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={nameUpdate}>{$t('Save Changes')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 
-	                   
 	<AlertDialog.Root>
 		<AlertDialog.Trigger bind:el={deleteBtn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
@@ -186,10 +185,12 @@ import { t } from 'svelte-intl-precompile';
 								>
 									{#if $usedBy.length > 0}
 										<div id="notice">
-											<p class="text-left">{$t("currently this stock is used by following Registers")}</p>
+											<p class="text-left">
+												{$t('currently this stock is used by following Registers')}
+											</p>
 										</div>
 										<div class="flex">
-											<Label class="text-base">{$t("UsedBy:")}</Label>
+											<Label class="text-base">{$t('UsedBy:')}</Label>
 											<div class="flex gap-3">
 												{#each $usedBy as reg}
 													<Badge variant="outline">{reg.name}</Badge>
@@ -198,14 +199,16 @@ import { t } from 'svelte-intl-precompile';
 										</div>
 										<hr />
 										<div class="flex">
-											<p class="text-left">{$t("To Delete this Stock Make Sure this stock not used by anyone")}</p>
+											<p class="text-left">
+												{$t('To Delete this Stock Make Sure this stock not used by anyone')}
+											</p>
 											<a href="/reg">
-												<Button>{$t("Fix")}</Button>
+												<Button>{$t('Fix')}</Button>
 											</a>
 										</div>
 									{:else}
 										<div>
-											<div class="flex items-start">{$t("this stock currently contain :")}</div>
+											<div class="flex items-start">{$t('this stock currently contain :')}</div>
 											{#each $list as item}
 												<div class="m-5 flex justify-between">
 													<div>{item.name}</div>
@@ -215,7 +218,7 @@ import { t } from 'svelte-intl-precompile';
 										</div>
 										<hr />
 										<div class="flex text-wrap">
-											<Label class="text-base font-semibold">{$t("NOTE:")}</Label>
+											<Label class="text-base font-semibold">{$t('NOTE:')}</Label>
 											{stockName} will be deleted. cannot be restored once deleted.
 										</div>
 									{/if}
@@ -226,11 +229,11 @@ import { t } from 'svelte-intl-precompile';
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action
 					on:click={deleteitems}
 					class="bg-red-500"
-					disabled={!($usedBy.length == 0 || deleteMode)}>{$t("Confirm")}</AlertDialog.Action
+					disabled={!($usedBy.length == 0 || deleteMode)}>{$t('Confirm')}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
@@ -280,8 +283,8 @@ import { t } from 'svelte-intl-precompile';
 		</Card.Root>
 	{/if}
 
-	<p class="text-end text-sm font-semibold">{$t("(All in Kg)")}</p>
-	                                                   
+	<p class="text-end text-sm font-semibold">{$t('(All in Kg)')}</p>
+
 	<div class="flex flex-col gap-2">
 		{#each $list || [] as anaj}
 			<div
@@ -312,14 +315,14 @@ import { t } from 'svelte-intl-precompile';
 			}}
 		>
 			<PackagePlus />
-			<p>{$t("Click To Add")}</p>
+			<p>{$t('Click To Add')}</p>
 		</Button>
 	</div>
 </div>
 
 <div id="newlyAdded">
 	{#if newlySelected.length > 0}
-		<div class="flex">{$t("New anajs")}</div>
+		<div class="flex">{$t('New anajs')}</div>
 
 		{#each newlySelected as anaj}
 			<AnajSlot {anaj}></AnajSlot>
@@ -337,10 +340,10 @@ import { t } from 'svelte-intl-precompile';
 
 {#if newlySelected.length > 0}
 	<div class=" fixed bottom-24 flex w-full">
-		<Button on:click={SaveNewAnajs} class="mx-2 w-full">{$t("Save Changes")}</Button>
+		<Button on:click={SaveNewAnajs} class="mx-2 w-full">{$t('Save Changes')}</Button>
 	</div>
 {/if}
 
 {#if showEdit}
-	<Button on:click={Delete}>{$t("Delete")}</Button>
+	<Button on:click={Delete}>{$t('Delete')}</Button>
 {/if}
