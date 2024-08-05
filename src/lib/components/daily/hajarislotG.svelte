@@ -149,13 +149,18 @@
 		console.log(workingDate, Date);
 
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
+			let catogaoryWiseData = RegData.catoWise;
+			if (!RegData.dailyCatogaoryWise) {
+				catogaoryWiseData = [];
+			}
 			await db.attendance.add({
 				boys: Number(boys),
 				girls: Number(girls),
 				total: Number(total),
 				group_id: RegData.id || 100,
 				date: Date,
-				date_id: workingDate.toDate().getTime()
+				date_id: workingDate.toDate().getTime(),
+				catoWise: catogaoryWiseData
 			});
 			await db.usage.bulkAdd(usage);
 			await db.storage.bulkUpdate([...forStoarageUpdate.values()]);
@@ -238,7 +243,14 @@
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
-			<Attendance bind:boys bind:girls bind:total></Attendance>
+			<Attendance
+				bind:catogaory_metadata={RegData.catoWise}
+				bind:boys
+				bind:girls
+				bind:total
+				fortodo={true}
+				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
+			></Attendance>
 			{#if result.error}
 				<div>
 					{#each result.error.errors as error}

@@ -141,5 +141,11 @@
   "Go Back": "Go Back",
   "Stocks": "Stocks",
   "Rates": "Rates",
-  "To-Do": "To-Do"
+  "To-Do": "To-Do",
+  "s": {
+    "t": "s.t",
+    "c": "s.c"
+  },
+  "obc": "obc",
+  "gen": "gen"
 }

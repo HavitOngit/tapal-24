@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from 'svelte-intl-precompile';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import type { RegForm } from '$lib/custom_types';
+	import type { Group } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { PenLineIcon, Plus } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -15,16 +15,23 @@
 	export let useForUpdaate: boolean = false;
 	export let updateBtn: HTMLButtonElement;
 
-	export let data: RegForm = {
+	export let data: Group = {
 		name: '',
 		storage_unit_id: 0,
 		rate_unit_id: 0,
 		currently_used: true,
 		boys: 0,
-		girls: 0
+		girls: 0,
+		dailyCatogaoryWise: false,
+		catoWise: [
+			{ category: 'ST', boys: 0, girls: 0 },
+			{ category: 'SC', boys: 0, girls: 0 },
+			{ category: 'GEN', boys: 0, girls: 0 },
+			{ category: 'OTHER', boys: 0, girls: 0 }
+		]
 	};
 
-	let preData: RegForm = { ...data };
+	let preData: Group = { ...data };
 
 	onMount(() => {
 		data = { ...preData };

@@ -6,7 +6,15 @@ export interface Group {
     rate_unit_id: number,
     currently_used: true | false
     boys?: number,
-    girls?: number
+    girls?: number,
+    catoWise: catogaoryWise[],
+    dailyCatogaoryWise?: boolean
+}
+
+export interface catogaoryWise {
+    category: "ST" | "SC" | "GEN" | "OTHER",
+    boys: number,
+    girls: number,
 }
 
 export interface Attendance {
@@ -17,6 +25,7 @@ export interface Attendance {
     girls: number,
     total: number,
     group_id: number,
+    catoWise: catogaoryWise[],
 }
 
 export interface StorageUnit {

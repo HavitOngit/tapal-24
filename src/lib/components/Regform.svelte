@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from 'svelte-intl-precompile';
 	import * as Card from '$lib/components/ui/card';
-	import type { Rates, RegForm } from '$lib/custom_types';
+	import type { catogaoryWise, Group, Rates, RegForm } from '$lib/custom_types';
 
 	import { db } from '$lib/db';
 	import { onMount } from 'svelte';
@@ -12,8 +12,9 @@
 	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
 	import Switch from './ui/switch/switch.svelte';
+	import Attendance from './daily/Attendance.svelte';
 
-	export let data: RegForm;
+	export let data: Group;
 
 	let stocklist: any;
 	let ratelist: any;
@@ -117,15 +118,21 @@
 			{/if}
 		{/if}
 
-		<div class="flex gap-2">
-			<div>
+		<div class="flex flex-col gap-2">
+			<!-- <div>
 				<Label>{$t('Boys:')}</Label>
 				<Input bind:value={data.boys} type="number" />
 			</div>
 			<div>
 				<Label>{$t('Girls:')}</Label>
 				<Input bind:value={data.girls} type="number" />
-			</div>
+			</div> -->
+			<Attendance
+				bind:catogaoryWise_entry={data.dailyCatogaoryWise}
+				bind:boys={data.boys}
+				bind:girls={data.girls}
+				bind:catogaory_metadata={data.catoWise}
+			></Attendance>
 		</div>
 		{#if !isLoading}
 			<div class="mt-2 grid grid-cols-2 gap-2">

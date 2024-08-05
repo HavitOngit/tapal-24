@@ -1,5 +1,6 @@
 import Dexie, { type Table } from "dexie";
 import * as custom_types from "$lib/custom_types";
+import { anajlist } from "./predefined";
 
 
 export interface univarsalList {
@@ -40,4 +41,11 @@ export class AnajDB extends Dexie {
 
 export const db = new AnajDB();
 
+db.transaction('rw', db.univarsalList, async () => {
+    const list = await db.univarsalList.toArray()
+    if (list.length === 0) {
+        db.univarsalList.bulkPut(anajlist)
+
+    }
+})
 

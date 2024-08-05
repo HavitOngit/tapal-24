@@ -1,5 +1,5 @@
 <script lang="ts">
-import { t } from 'svelte-intl-precompile';
+	import { t } from 'svelte-intl-precompile';
 	import {
 		type Group,
 		type oneRate,
@@ -329,6 +329,10 @@ import { t } from 'svelte-intl-precompile';
 		);
 
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
+			let catogaoryWiseData = AttendanceData.catoWise;
+			if (!RegData.dailyCatogaoryWise) {
+				catogaoryWiseData = [];
+			}
 			await db.attendance.put({
 				id: AttendanceData.id,
 				boys: Number(boys),
@@ -336,7 +340,8 @@ import { t } from 'svelte-intl-precompile';
 				total: Number(total),
 				group_id: RegData.id || 100,
 				date: workingDate.toDate(),
-				date_id: getDateID(workingDate.toDate())
+				date_id: getDateID(workingDate.toDate()),
+				catoWise: catogaoryWiseData
 			});
 
 			await db.usage.bulkPut(usage);
@@ -391,7 +396,7 @@ import { t } from 'svelte-intl-precompile';
 		<AlertDialog.Trigger bind:el={stock_nf_btn}></AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>{$t("Following Anajs Not in Stocks")}</AlertDialog.Title>
+				<AlertDialog.Title>{$t('Following Anajs Not in Stocks')}</AlertDialog.Title>
 				<AlertDialog.Description class="flex flex-col gap-2">
 					<div class="m-3 rounded-md bg-yellow-200">
 						<p class="text-wrap p-2 text-left">
@@ -406,7 +411,7 @@ import { t } from 'svelte-intl-precompile';
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
+				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={() => goto(`/stocks/${RegData.storage_unit_id}`)}
 					>Go to Stocks
 				</AlertDialog.Action>
@@ -423,16 +428,24 @@ import { t } from 'svelte-intl-precompile';
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
-			<Attendance bind:boys bind:girls bind:total></Attendance>
+			<Attendance
+				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
+				bind:catogaory_metadata={AttendanceData.catoWise}
+				bind:boys
+				bind:girls
+				bind:total
+				fortodo={true}
+			></Attendance>
 		</CardContent>
 		<CardFooter class="flex justify-between">
 			<div>Total: {total}</div>
-			                                
+
 			<AlertDialog.Root>
-				<AlertDialog.Trigger on:click={cal_usage}><Button>{$t("Update")}</Button></AlertDialog.Trigger>
+				<AlertDialog.Trigger on:click={cal_usage}
+					><Button>{$t('Update')}</Button></AlertDialog.Trigger
+				>
 				<AlertDialog.Content>
 					<AlertDialog.Header class="flex ">
-						                                                                 
 						<AlertDialog.Description
 							class="flex w-full
 						items-center justify-between"
@@ -453,12 +466,12 @@ import { t } from 'svelte-intl-precompile';
 
 					{#if showRate}
 						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>{$t("Apply")}</Button>
+						<Button on:click={cal_usage}>{$t('Apply')}</Button>
 					{:else}
 						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
 						<AlertDialog.Footer class="flex flex-row items-center justify-between">
-							<AlertDialog.Cancel>{$t("Cancel")}</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SavingToDB}>{$t("Confirm")}</AlertDialog.Action>
+							<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+							<AlertDialog.Action on:click={SavingToDB}>{$t('Confirm')}</AlertDialog.Action>
 						</AlertDialog.Footer>
 					{/if}
 				</AlertDialog.Content>
@@ -472,5 +485,4 @@ import { t } from 'svelte-intl-precompile';
 			</div>
 		{/if}
 	</Card>
-	                                                                                                    
 {/if}
