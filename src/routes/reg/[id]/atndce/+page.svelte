@@ -124,6 +124,28 @@
 
 	$: getUsage(month, year);
 
+	type catogoryWise = { category: string; boys: number; girls: number; total: number };
+
+	let currentSelected = 'ALL';
+	let categoryWiseTotals = new Map<number, catogoryWise>();
+
+	$: if (showing) {
+		currentSelected = catogories.find((x) => x.value === showing)?.label || 'ALL';
+		const initData = { category: currentSelected, boys: 0, girls: 0, total: 0 };
+		$atndce.forEach((y) => {
+			y.catoWise
+				.filter((x) => x.category === currentSelected)
+				.forEach((z) => {
+					initData.boys += z.boys;
+					initData.girls += z.girls;
+					initData.total += z.boys + z.girls;
+				});
+		});
+		if (!categoryWiseTotals.has(showing)) {
+			categoryWiseTotals.set(showing, initData);
+		}
+	}
+
 	// for catogory-wise data
 
 	let insilized = false;
@@ -178,13 +200,31 @@
 			{#if regs}
 				<div class="m-3 flex gap-1">
 					<p class="font-semibold">{$t('Registred:')}</p>
-					<Badge class="flex gap-2" variant="outline"
-						>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
-					</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
-						>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
-					</Badge>{$t('=')}<Badge class="flex gap-2"
-						>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span>
-					</Badge>
+					{#if showing === 0}
+						<Badge class="flex gap-2" variant="outline"
+							>{$t('Boys')}<span class="font-semibold">{regs.boys}</span>
+						</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
+							>{$t('Girls')}<span class="font-semibold">{regs.girls}</span>
+						</Badge>{$t('=')}<Badge class="flex gap-2"
+							>{$t('total')}<span class="font-semibold">{(regs.boys || 0) + (regs.girls || 0)}</span
+							>
+						</Badge>
+					{:else}
+						<Badge class="flex gap-2" variant="outline"
+							>{$t('Boys')}<span class="font-semibold"
+								>{regs.catoWise.find((x) => x.category === currentSelected)?.boys}</span
+							>
+						</Badge>{$t('+')}<Badge class="flex gap-2" variant="outline"
+							>{$t('Girls')}<span class="font-semibold"
+								>{regs.catoWise.find((x) => x.category === currentSelected)?.girls}</span
+							>
+						</Badge>{$t('=')}<Badge class="flex gap-2"
+							>{$t('total')}<span class="font-semibold"
+								>{(regs.catoWise.find((x) => x.category === currentSelected)?.girls || 0) +
+									(regs.catoWise.find((x) => x.category === currentSelected)?.boys || 0)}</span
+							>
+						</Badge>
+					{/if}
 				</div>
 			{/if}
 			<div class="m-3">
@@ -218,16 +258,16 @@
 							<TableRow>
 								<TableHead>{item.date.getDate()}</TableHead>
 								<TableHead
-									>{item.catoWise.find(
-										(x) => x.category === catogories.find((y) => y.value === showing)?.label
-									)?.boys}</TableHead
+									>{item.catoWise.find((x) => x.category === currentSelected)?.boys}</TableHead
 								>
 								<TableHead
-									>{item.catoWise.find(
-										(x) => x.category === catogories.find((y) => y.value === showing)?.label
-									)?.girls}</TableHead
+									>{item.catoWise.find((x) => x.category === currentSelected)?.girls}</TableHead
 								>
-								<TableHead>{item.total}</TableHead>
+								<TableHead
+									>{(item.catoWise.find((x) => x.category === currentSelected)?.girls || 0) +
+										(item.catoWise.find((x) => x.category === currentSelected)?.boys ||
+											0)}</TableHead
+								>
 							</TableRow>
 						{/if}
 					{/each}
@@ -237,12 +277,31 @@
 				<TableHeader>
 					<TableRow class="mt-3 rounded border bg-gray-200 p-1">
 						<TableHead>{$t('Total')}</TableHead>
-						<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
-						<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
-						<TableHead
-							>{totalData.total}/{$atndce.length *
-								((regs?.boys || 0.5) + (regs?.girls || 0.5))}</TableHead
-						>
+						{#if showing === 0}
+							<TableHead>{totalData.boys}/{$atndce.length * (regs?.boys || 1)}</TableHead>
+							<TableHead>{totalData.girls}/{$atndce.length * (regs?.girls || 1)}</TableHead>
+							<TableHead
+								>{totalData.total}/{$atndce.length *
+									((regs?.boys || 0.5) + (regs?.girls || 0.5))}</TableHead
+							>
+						{:else}
+							<TableHead
+								>{categoryWiseTotals.get(showing)?.boys}/{$atndce.length *
+									(regs?.catoWise.find((x) => x.category === currentSelected)?.boys ||
+										1)}</TableHead
+							>
+							<TableHead
+								>{categoryWiseTotals.get(showing)?.girls}/{$atndce.length *
+									(regs?.catoWise.find((x) => x.category === currentSelected)?.girls ||
+										1)}</TableHead
+							>
+							<TableHead
+								>{categoryWiseTotals.get(showing)?.total}/{$atndce.length *
+									((regs?.catoWise.find((x) => x.category === currentSelected)?.girls || 0) +
+										(regs?.catoWise.find((x) => x.category === currentSelected)?.boys ||
+											0))}</TableHead
+							>
+						{/if}
 					</TableRow>
 				</TableHeader>
 			</Table>

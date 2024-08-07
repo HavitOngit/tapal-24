@@ -43,6 +43,8 @@
 	function iscatowise(catodata: typeof data.catoWise): boolean {
 		let sum = 0;
 		catodata.forEach((x) => {
+			x.boys = Number(x.boys);
+			x.girls = Number(x.girls);
 			sum += x.boys + x.girls;
 			if (x.boys + x.girls > 0) {
 				data.sumitedcatos.push(x.category);
