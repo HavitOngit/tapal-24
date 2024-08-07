@@ -42,6 +42,10 @@
 	let effectedUsage: Usage[] = [];
 
 	async function getInfo(workingDate: dayjs.Dayjs) {
+		if (!RegData.dailyCatogaoryWise) {
+			boys = RegData.boys || 0;
+			girls = RegData.girls || 0;
+		}
 		const rates = await db.rate.get({
 			rate_unit_id: RegData.rate_unit_id,
 			day: workingDate.format('ddd')
@@ -70,7 +74,24 @@
 	let isBeforeAmountNan: boolean = false;
 	let not_in_storage: { name: string }[] = [];
 
+	function categoryNumCalc() {
+		console.log('calculating...');
+
+		let boysc = 0;
+		let girlsc = 0;
+		RegData.catoWise.forEach((item) => {
+			boysc += Number(item.boys);
+			girlsc += Number(item.girls);
+		});
+
+		boys = boysc;
+		girls = girlsc;
+		total = boysc + girls;
+	}
+
 	async function cal_usage() {
+		// cato-wise data
+		categoryNumCalc();
 		// checking storage
 		not_in_storage = [];
 		rate.forEach((r) => {

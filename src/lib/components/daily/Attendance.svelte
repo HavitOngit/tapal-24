@@ -28,9 +28,6 @@
 	let runOnce = false;
 
 	function categoryNumCalc() {
-		if (!catogaoryWise_entry) {
-			return;
-		}
 		console.log('calculating...');
 
 		let boysc = 0;

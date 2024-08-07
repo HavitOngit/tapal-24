@@ -430,14 +430,28 @@
 {#if RegData}
 	<Card class="mb-2">
 		<CardHeader>
-			<CardTitle>
-				{RegData.name}
+			<CardTitle class="flex justify-between">
+				<p>
+					{RegData.name}
+				</p>
+				{#if AttendanceData.catoWise}
+					<button
+						on:click={() => {
+							RegData.catodatafilled = !RegData.catodatafilled;
+						}}
+					>
+						<Badge
+							variant="outline"
+							class="border {RegData.catodatafilled ? 'border-green-500' : ''}">ctw</Badge
+						>
+					</button>
+				{/if}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
 			<Attendance
-				submitedCatos={RegData.sumitedcatos}
-				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
+				bind:submitedCatos={RegData.sumitedcatos}
+				bind:catogaoryWise_entry={RegData.catodatafilled}
 				bind:catogaory_metadata={AttendanceData.catoWise}
 				bind:boys
 				bind:girls
