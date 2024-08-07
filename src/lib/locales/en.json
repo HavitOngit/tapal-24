@@ -148,5 +148,9 @@
   },
   "obc": "obc",
   "gen": "gen",
-  "no data found": "no data found"
+  "no data found": "no data found",
+  "SC": "SC",
+  "ST": "ST",
+  "GEN": "GEN",
+  "OTHER": "OTHER"
 }
