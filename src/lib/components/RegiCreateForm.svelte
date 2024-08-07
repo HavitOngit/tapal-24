@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import Regform from './Regform.svelte';
 	import Button from './ui/button/button.svelte';
+	import toast from 'svelte-french-toast';
 
 	let name: string;
 	let storage_unit_id: number = 1;
@@ -23,6 +24,8 @@
 		boys: 0,
 		girls: 0,
 		dailyCatogaoryWise: false,
+		catodatafilled: false,
+		sumitedcatos: [],
 		catoWise: [
 			{ category: 'ST', boys: 0, girls: 0 },
 			{ category: 'SC', boys: 0, girls: 0 },
@@ -37,12 +40,27 @@
 		data = { ...preData };
 	});
 
+	function iscatowise(catodata: typeof data.catoWise): boolean {
+		let sum = 0;
+		catodata.forEach((x) => {
+			sum += x.boys + x.girls;
+			if (x.boys + x.girls > 0) {
+				data.sumitedcatos.push(x.category);
+			}
+		});
+		return sum > 0;
+	}
+
 	async function Save() {
 		if (!isDone) return;
-		data.boys = Number(data.boys);
-		data.girls = Number(data.girls);
-		const status = await db.group.put(data);
-		console.log(status);
+		data.sumitedcatos = [];
+		data.catodatafilled = iscatowise(data.catoWise);
+		db.transaction('rw', db.group, async () => {
+			data.boys = Number(data.boys);
+			data.girls = Number(data.girls);
+			const status = await db.group.put(data);
+			console.log(status);
+		}).then(() => toast.success(data.name + 'Created'));
 	}
 
 	let isDone: boolean = false;

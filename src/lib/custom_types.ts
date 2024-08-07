@@ -8,7 +8,9 @@ export interface Group {
     boys?: number,
     girls?: number,
     catoWise: catogaoryWise[],
-    dailyCatogaoryWise?: boolean
+    dailyCatogaoryWise?: boolean,
+    catodatafilled: boolean,
+    sumitedcatos: string[]
 }
 
 export interface catogaoryWise {

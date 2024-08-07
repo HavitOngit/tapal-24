@@ -20,6 +20,7 @@
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
+	import { writable } from 'svelte/store';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -151,8 +152,15 @@
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
 			let catogaoryWiseData = RegData.catoWise;
 			if (!RegData.dailyCatogaoryWise) {
-				catogaoryWiseData = [];
+				catogaoryWiseData.forEach((x) => {
+					x.boys = 0;
+					x.girls = 0;
+				});
 			}
+			catogaoryWiseData.forEach((x) => {
+				x.boys = Number(x.boys);
+				x.girls = Number(x.girls);
+			});
 			await db.attendance.add({
 				boys: Number(boys),
 				girls: Number(girls),
@@ -238,18 +246,34 @@
 {#if RegData}
 	<Card class="mb-2">
 		<CardHeader>
-			<CardTitle>
-				{RegData.name}
+			<CardTitle class="flex justify-between">
+				<p>
+					{RegData.name}
+				</p>
+				{#if RegData.catodatafilled}
+					<button
+						on:click={() => {
+							RegData.dailyCatogaoryWise = !RegData.dailyCatogaoryWise;
+						}}
+					>
+						<Badge
+							variant="outline"
+							class="border {RegData.dailyCatogaoryWise ? 'border-green-500' : ''}">ctw</Badge
+						>
+					</button>
+				{/if}
 			</CardTitle>
 		</CardHeader>
 		<CardContent>
 			<Attendance
 				bind:catogaory_metadata={RegData.catoWise}
+				bind:submitedCatos={RegData.sumitedcatos}
 				bind:boys
 				bind:girls
 				bind:total
 				fortodo={true}
 				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
+				forattendSub={true}
 			></Attendance>
 			{#if result.error}
 				<div>

@@ -10,6 +10,7 @@
 	import TableHeader from '../ui/table/table-header.svelte';
 	import TableRow from '../ui/table/table-row.svelte';
 	import Table from '../ui/table/table.svelte';
+	import { ChevronDownIcon } from 'lucide-svelte';
 
 	export let boys: number = 0;
 	export let girls: number = 0;
@@ -17,12 +18,19 @@
 	export let catogaory_metadata: catogaoryWise[];
 	export let catogaoryWise_entry = false;
 	export let fortodo: boolean = false;
+	export let forattendSub = false;
+	export let submitedCatos: string[];
 
 	$: total = Number(boys) + Number(girls);
 	$: boys = Number(boys);
 	$: girls = Number(girls);
 
+	let runOnce = false;
+
 	function categoryNumCalc() {
+		if (!catogaoryWise_entry) {
+			return;
+		}
 		console.log('calculating...');
 
 		let boysc = 0;
@@ -32,49 +40,70 @@
 			girlsc += Number(item.girls);
 		});
 
-		boys = boysc;
-		girls = girlsc;
+		if (runOnce || forattendSub) {
+			boys = boysc;
+			girls = girlsc;
+		}
+		runOnce = true;
 	}
 
 	onMount(() => {
 		categoryNumCalc();
 	});
+
+	let show = false;
 </script>
 
-<div class="m-2 flex justify-end gap-2">
-	<p class="text-left font-semibold">Catogaory Wise:</p>
-	<Switch bind:checked={catogaoryWise_entry} />
-</div>
+{#if !fortodo}
+	<div class="m-2 flex justify-end gap-2">
+		<p class="text-left font-semibold">Catogaory Wise:</p>
+		<Switch bind:checked={catogaoryWise_entry} />
+	</div>
+{/if}
 
 {#if catogaoryWise_entry}
 	{#if catogaory_metadata}
 		<Table>
 			<TableHeader>
 				<TableRow>
-					<TableHead></TableHead>
+					<TableHead
+						><button
+							on:click={() => {
+								show = !show;
+							}}
+						>
+							<ChevronDownIcon class={show ? 'rotate-180' : 'rotate-0'}></ChevronDownIcon>
+						</button></TableHead
+					>
 					<TableHead>{$t('Boys')}</TableHead>
 					<TableHead>{$t('Girls')}</TableHead>
 					<TableHead>{$t('Total')}</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{#each catogaory_metadata.filter((x) => x.boys + x.girls != 0 || !fortodo) as item}
-					<TableRow>
-						<TableHead>{$t(item.category)}</TableHead>
-						<TableHead
-							><Input bind:value={item.boys} on:change={categoryNumCalc} type="number" /></TableHead
-						>
-						<TableHead
-							><Input
-								bind:value={item.girls}
-								on:change={categoryNumCalc}
-								type="number"
-							/></TableHead
-						>
-						<TableHead>{Number(Number(item.boys) + Number(item.girls))}</TableHead>
-					</TableRow>
-				{/each}
-				<TableRow class="bg-gray-200">
+				{#if show}
+					{#each catogaory_metadata.filter((x) => submitedCatos.includes(x.category) || !fortodo || !forattendSub) as item}
+						<TableRow>
+							<TableHead>{$t(item.category)}</TableHead>
+							<TableHead
+								><Input
+									bind:value={item.boys}
+									on:change={categoryNumCalc}
+									type="number"
+								/></TableHead
+							>
+							<TableHead
+								><Input
+									bind:value={item.girls}
+									on:change={categoryNumCalc}
+									type="number"
+								/></TableHead
+							>
+							<TableHead>{Number(Number(item.boys) + Number(item.girls))}</TableHead>
+						</TableRow>
+					{/each}
+				{/if}
+				<TableRow class="bg-gray-200" on:click={() => (show = !show)}>
 					<TableHead>{$t('Total')}</TableHead>
 					<TableHead>{boys}</TableHead>
 					<TableHead>{girls}</TableHead>

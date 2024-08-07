@@ -128,6 +128,7 @@
 				<Input bind:value={data.girls} type="number" />
 			</div> -->
 			<Attendance
+				bind:submitedCatos={data.sumitedcatos}
 				bind:catogaoryWise_entry={data.dailyCatogaoryWise}
 				bind:boys={data.boys}
 				bind:girls={data.girls}

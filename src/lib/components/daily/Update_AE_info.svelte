@@ -331,8 +331,15 @@
 		db.transaction('rw', db.usage, db.storage, db.attendance, async () => {
 			let catogaoryWiseData = AttendanceData.catoWise;
 			if (!RegData.dailyCatogaoryWise) {
-				catogaoryWiseData = [];
+				catogaoryWiseData.forEach((x) => {
+					x.boys = 0;
+					x.girls = 0;
+				});
 			}
+			catogaoryWiseData.forEach((x) => {
+				x.boys = Number(x.boys);
+				x.girls = Number(x.girls);
+			});
 			await db.attendance.put({
 				id: AttendanceData.id,
 				boys: Number(boys),
@@ -429,6 +436,7 @@
 		</CardHeader>
 		<CardContent>
 			<Attendance
+				submitedCatos={RegData.sumitedcatos}
 				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
 				bind:catogaory_metadata={AttendanceData.catoWise}
 				bind:boys
