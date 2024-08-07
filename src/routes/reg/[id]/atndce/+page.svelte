@@ -103,6 +103,14 @@
 	let year: number = new Date().getFullYear();
 	let regs: Group | undefined;
 	let totalData: totals = { boys: 0, girls: 0, total: 0 };
+	let showing = 0;
+	const catogories = [
+		{ value: 0, label: 'ALL' },
+		{ value: 1, label: 'SC' },
+		{ value: 2, label: 'ST' },
+		{ value: 3, label: 'GEN' },
+		{ value: 4, label: 'OTHER' }
+	];
 
 	// function total(obj: anajDetails) {
 	// 	obj.total = 0;
@@ -115,6 +123,8 @@
 	// }
 
 	$: getUsage(month, year);
+
+	// for catogory-wise data
 
 	let insilized = false;
 	onMount(async () => {
@@ -160,6 +170,7 @@
 		<MonthSelector groupName="Month" bind:list={$monthlist} bind:selected={month}></MonthSelector>
 
 		<MonthSelector groupName="Year" bind:list={$yearlist} bind:selected={year}></MonthSelector>
+		<MonthSelector groupName="Catogaory" list={catogories} bind:selected={showing}></MonthSelector>
 	</div>
 
 	{#if $atndce}
@@ -196,12 +207,29 @@
 				</TableHeader>
 				<TableBody>
 					{#each $atndce.sort((a, b) => a.date_id - b.date_id).sort() as item}
-						<TableRow>
-							<TableHead>{item.date.getDate()}</TableHead>
-							<TableHead>{item.boys}</TableHead>
-							<TableHead>{item.girls}</TableHead>
-							<TableHead>{item.total}</TableHead>
-						</TableRow>
+						{#if showing === 0}
+							<TableRow>
+								<TableHead>{item.date.getDate()}</TableHead>
+								<TableHead>{item.boys}</TableHead>
+								<TableHead>{item.girls}</TableHead>
+								<TableHead>{item.total}</TableHead>
+							</TableRow>
+						{:else}
+							<TableRow>
+								<TableHead>{item.date.getDate()}</TableHead>
+								<TableHead
+									>{item.catoWise.find(
+										(x) => x.category === catogories.find((y) => y.value === showing)?.label
+									)?.boys}</TableHead
+								>
+								<TableHead
+									>{item.catoWise.find(
+										(x) => x.category === catogories.find((y) => y.value === showing)?.label
+									)?.girls}</TableHead
+								>
+								<TableHead>{item.total}</TableHead>
+							</TableRow>
+						{/if}
 					{/each}
 				</TableBody>
 			</Table>
