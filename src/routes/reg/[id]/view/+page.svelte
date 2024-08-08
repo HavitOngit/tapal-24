@@ -12,6 +12,7 @@
 
 	import { onMount } from 'svelte';
 	import { derived, writable } from 'svelte/store';
+	import StickyHeader from '$lib/components/extraFeatures/sticky-Header.svelte';
 
 	async function getUsage(month: number, year: number) {
 		if (!insilized) return;
@@ -186,24 +187,7 @@
 	{/if}
 	{#if $usage}
 		<div id="table">
-			<table class="sticky top-0 w-screen bg-white">
-				<TableHeader>
-					<TableRow>
-						<TableHead>{$t('Date')}</TableHead>
-						<TableHead>{$t('Rate')}</TableHead>
-						<TableHead>{$t('Before')}</TableHead>
-						<TableHead>{$t('Usage')}</TableHead>
-						<TableHead>{$t('After')}</TableHead>
-					</TableRow>
-				</TableHeader>
-			</table>
-			<!-- <div class="sticky top-0 grid min-w-full grid-cols-5 bg-white">
-				<div class="px-4">{$t('Date')}</div>
-				<div class="px-4">{$t('Rate')}</div>
-				<div class="px-4">{$t('Before')}</div>
-				<div class="px-4">{$t('Usage')}</div>
-				<div class="px-4">{$t('After')}</div>
-			</div> -->
+			<StickyHeader></StickyHeader>
 			<Table>
 				<TableHeader hidden>
 					<TableRow>
