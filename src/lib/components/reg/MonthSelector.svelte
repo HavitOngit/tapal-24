@@ -5,16 +5,17 @@
 
 	export let selected: number;
 	export let groupName: string;
-	export let list: { value: number | string; label: string }[] = [];
+	export let list: { value: number; label: string }[] = [];
 
 	onMount(() => {
-		console.log(list);
+		list = list.sort((a, b) => a.value - b.value);
 	});
 </script>
 
 <Select.Root
 	onSelectedChange={(v) => {
 		selected = Number(v?.value);
+		console.log(list.find((m) => m.value === selected));
 	}}
 >
 	<Select.Trigger class="">

@@ -186,7 +186,7 @@
 	{/if}
 	{#if $usage}
 		<div id="table">
-			<Table>
+			<table class="sticky top-0 w-screen bg-white">
 				<TableHeader>
 					<TableRow>
 						<TableHead>{$t('Date')}</TableHead>
@@ -196,6 +196,25 @@
 						<TableHead>{$t('After')}</TableHead>
 					</TableRow>
 				</TableHeader>
+			</table>
+			<!-- <div class="sticky top-0 grid min-w-full grid-cols-5 bg-white">
+				<div class="px-4">{$t('Date')}</div>
+				<div class="px-4">{$t('Rate')}</div>
+				<div class="px-4">{$t('Before')}</div>
+				<div class="px-4">{$t('Usage')}</div>
+				<div class="px-4">{$t('After')}</div>
+			</div> -->
+			<Table>
+				<TableHeader hidden>
+					<TableRow>
+						<TableHead>{$t('Date')}</TableHead>
+						<TableHead>{$t('Rate')}</TableHead>
+						<TableHead>{$t('Before')}</TableHead>
+						<TableHead>{$t('Usage')}</TableHead>
+						<TableHead>{$t('After')}</TableHead>
+					</TableRow>
+				</TableHeader>
+
 				<TableBody>
 					{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
 						{#if $anajs[selected_anaj].label === item.name}
