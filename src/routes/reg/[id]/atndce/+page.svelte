@@ -13,6 +13,7 @@
 
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
+	import StickyHeader from '$lib/components/extraFeatures/sticky-Header.svelte';
 
 	const id = Number($page.params.id);
 
@@ -235,8 +236,9 @@
 		</div>
 
 		<div id="table">
+			<StickyHeader headers={['Date', 'Boys', 'Girls', 'Total']}></StickyHeader>
 			<Table>
-				<TableHeader class="sticky top-0 z-10">
+				<TableHeader hidden>
 					<TableRow>
 						<TableHead>{$t('Date')}</TableHead>
 
