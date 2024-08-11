@@ -152,5 +152,7 @@
   "SC": "SC",
   "ST": "ST",
   "GEN": "GEN",
-  "OTHER": "OTHER"
+  "OTHER": "OTHER",
+  "New": "New",
+  "Added Successfully": "Added Successfully"
 }

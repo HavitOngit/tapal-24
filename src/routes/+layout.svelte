@@ -15,13 +15,14 @@
 	import gu from '$lib/locales/gu.json';
 	import hi from '$lib/locales/hi.json';
 	import { addMessages, init } from 'svelte-intl-precompile';
+	import { dev } from '$app/environment';
 	addMessages('gu', gu);
 	addMessages('en', en);
 	addMessages('hi', hi);
 
 	onMount(() => {
 		const lang = localStorage.getItem('locale') || localStorage.setItem('locale', 'gu');
-
+		navigator.serviceWorker.register('/service-worker.js', { type: dev ? 'module' : 'classic' });
 		init({
 			initialLocale: String(lang),
 			fallbackLocale: 'en'
