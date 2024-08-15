@@ -140,14 +140,16 @@
 					</div>
 				</div>
 
-				<div class="mt-2 flex gap-2" id="used_ anaj_list">
-					<Label>{$t('Anajs:')}</Label>
-					<div class="flex flex-wrap gap-2">
-						{#each $rate[0].used_anaj || [] as anaj}
-							<Badge variant="outline">{$t(anaj)}</Badge>
-						{/each}
+				{#if forUpdate}
+					<div class="mt-2 flex gap-2" id="used_ anaj_list">
+						<Label>{$t('Anajs:')}</Label>
+						<div class="flex flex-wrap gap-2">
+							{#each $rate[0].used_anaj || [] as anaj}
+								<Badge variant="outline">{$t(anaj)}</Badge>
+							{/each}
+						</div>
 					</div>
-				</div>
+				{/if}
 			</CardContent>
 		{/if}
 	</Card>
