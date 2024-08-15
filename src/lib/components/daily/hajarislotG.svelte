@@ -20,7 +20,6 @@
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
-	import { writable } from 'svelte/store';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -42,7 +41,7 @@
 	let effectedUsage: Usage[] = [];
 
 	async function getInfo(workingDate: dayjs.Dayjs) {
-		if (!RegData.dailyCatogaoryWise) {
+		if (!RegData.catodatafilled) {
 			boys = RegData.boys || 0;
 			girls = RegData.girls || 0;
 		}
@@ -84,14 +83,16 @@
 			girlsc += Number(item.girls);
 		});
 
-		boys = boysc;
-		girls = girlsc;
-		total = boysc + girls;
+		if (RegData.dailyCatogaoryWise) {
+			boys = boysc;
+			girls = girlsc;
+			total = boysc + girls;
+		}
 	}
 
 	async function cal_usage() {
 		// cato-wise data
-		categoryNumCalc();
+		// categoryNumCalc();
 		// checking storage
 		not_in_storage = [];
 		rate.forEach((r) => {
@@ -295,6 +296,7 @@
 				fortodo={true}
 				bind:catogaoryWise_entry={RegData.dailyCatogaoryWise}
 				forattendSub={true}
+				bind:catodatafilled={RegData.catodatafilled}
 			></Attendance>
 			{#if result.error}
 				<div>

@@ -20,6 +20,7 @@
 	export let fortodo: boolean = false;
 	export let forattendSub = false;
 	export let submitedCatos: string[];
+	export let catodatafilled: boolean = true;
 
 	$: total = Number(boys) + Number(girls);
 	$: boys = Number(boys);
@@ -29,6 +30,7 @@
 
 	function categoryNumCalc() {
 		console.log('calculating...');
+		console.log({ boys, girls });
 
 		let boysc = 0;
 		let girlsc = 0;
@@ -37,9 +39,10 @@
 			girlsc += Number(item.girls);
 		});
 
-		if (runOnce || forattendSub) {
+		if ((runOnce || forattendSub) && catodatafilled) {
 			boys = boysc;
 			girls = girlsc;
+			console.log({ boys, girls });
 		}
 		runOnce = true;
 	}
