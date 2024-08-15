@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Warehouse, LibraryBig, BadgePercent, ListTodo, Percent } from 'lucide-svelte';
+	import { Warehouse, LibraryBig, CalendarPlus, ListTodo, Percent } from 'lucide-svelte';
 	import { t } from 'svelte-intl-precompile';
 
 	const paths = [
 		{
-			name: $t('To-Do'),
+			name: 'Entry',
 			href: '/dailywork',
-			icon: ListTodo
+			icon: CalendarPlus
 		},
 		{
 			name: $t('Registers'),
@@ -58,7 +58,7 @@
 				<span
 					class={String($page.url.pathname).includes(elem.href)
 						? 'font-semibold opacity-100'
-						: 'opacity-70'}>{elem.name}</span
+						: 'opacity-70'}>{$t(elem.name)}</span
 				>
 			</a>
 		</div>
