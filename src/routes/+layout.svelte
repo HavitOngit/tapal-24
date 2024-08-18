@@ -17,6 +17,7 @@
 	import { addMessages, init } from 'svelte-intl-precompile';
 	import { dev } from '$app/environment';
 	import Headertwo from '$lib/finalize/headertwo.svelte';
+	import * as cDB from '$lib/changesDB'
 	addMessages('gu', gu);
 	addMessages('en', en);
 	addMessages('hi', hi);
