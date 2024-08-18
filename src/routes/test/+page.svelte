@@ -1,16 +1,13 @@
 <script lang="ts">
-	import { version } from '$app/environment';
-	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
-	onMount(async () => {
-		caches.open(`cache-${version}`).then(function (cache) {
-			cache.keys().then(function (requests) {
-				console.log(`Cache: ${version}`);
-				const images = requests.filter(function (request) {
-					return request.url.endsWith('.jpg') || request.url.endsWith('.png');
-				});
-				console.log({ images });
-			});
-		});
-	});
+	export let data: PageData;
 </script>
+
+<div class="flex flex-col gap-3">
+	{#each data.entries || [] as entry}
+		<p>
+			{entry.id}-- {entry.title}
+		</p>
+	{/each}
+</div>
