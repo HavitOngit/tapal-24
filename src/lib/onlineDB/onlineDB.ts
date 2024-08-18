@@ -5,8 +5,8 @@ import { env } from '$env/dynamic/private';
 
 config({ path: '.env' }); // or .env.local
 
-export const client = () => createClient({
-    url: env.TURSO_CONNECTION_URL!,
-    authToken: env.TURSO_AUTH_TOKEN!,
+export const client = (url: string, auth: string) => createClient({
+    url: url,
+    authToken: auth,
 });
 
