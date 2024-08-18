@@ -3,4 +3,5 @@ name = "tapal-24"
 pages_build_output_dir = ".svelte-kit/cloudflare"
 compatibility_date = "2024-03-06"
 compatibility_flags = [ "nodejs_compat" ]
+platform: 'node'
 
