@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { liveQuery } from 'dexie';
-	import type { PageData } from './$types';
 	import { changesDB } from '$lib/changesDB';
+	import type { Change } from '$lib/custom_types';
+	import { db } from '$lib/db';
+	import { liveQuery } from 'dexie';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 
@@ -82,10 +84,85 @@
 		const encoded = encoder.encode(str);
 		return encoded.byteLength;
 	}
+	type CombinedChanges = {
+		creating: Change[];
+		updating: Change[];
+		deleting: Change[];
+		filtered_IDs?: number[];
+		deleted_IDs?: number[];
+	};
+
+	function filterchanges(changesArray: Change[]): Record<string, CombinedChanges> {
+		const combinedChanges = changesArray.reduce(
+			(acc, change) => {
+				if (!acc[change.table]) {
+					acc[change.table] = {
+						creating: [],
+						updating: [],
+						deleting: []
+					};
+				}
+				acc[change.table][change.type].push(change);
+				return acc;
+			},
+			{} as Record<string, { creating: Change[]; updating: Change[]; deleting: Change[] }>
+		);
+
+		console.log(combinedChanges);
+		return combinedChanges;
+	}
+
+	function processChanges(changesArray: Change[]) {
+		const combinedChanges = filterchanges(changesArray);
+
+		for (const table in combinedChanges) {
+			const creatingAndUpdatingIDs = new Set<number>();
+			const deletedIDs = new Set<number>();
+
+			combinedChanges[table].creating.forEach((change) => creatingAndUpdatingIDs.add(change.db_ID));
+			combinedChanges[table].updating.forEach((change) => creatingAndUpdatingIDs.add(change.db_ID));
+
+			combinedChanges[table].deleting.forEach((change) => {
+				creatingAndUpdatingIDs.delete(change.db_ID);
+				deletedIDs.add(change.db_ID);
+			});
+
+			combinedChanges[table].filtered_IDs = Array.from(creatingAndUpdatingIDs);
+			combinedChanges[table].deleted_IDs = Array.from(deletedIDs);
+		}
+
+		return combinedChanges;
+	}
+
+	async function getProcessedData(changesArray: Change[]) {
+		const combinedChanges = processChanges(changesArray);
+		const result = [];
+
+		for (const table in combinedChanges) {
+			const { filtered_IDs, deleted_IDs } = combinedChanges[table];
+
+			if (filtered_IDs && filtered_IDs.length > 0) {
+				// Fetch data from the database for filtered_IDs
+				const updated_data = await db[table].where('id').anyOf(filtered_IDs).toArray();
+
+				// Get the latest timestamp from the updating changes
+
+				result.push({
+					tablename: table,
+					filtered_ID: filtered_IDs,
+					updated_data,
+					delete_IDs: deleted_IDs || [],
+					timestamp: new Date().getTime()
+				});
+			}
+		}
+
+		return result;
+	}
 	// Example usage
 	onMount(async () => {
 		const staticallchanges = await changesDB.changes.toArray();
-		const exampleData = JSON.stringify(staticallchanges);
+		const exampleData = await JSON.stringify(await getProcessedData(staticallchanges));
 
 		const compressedGzip = await compressWithStream(exampleData, 'gzip');
 		const decompressedGzip = await decompressWithStream(compressedGzip, 'gzip');
@@ -93,8 +170,10 @@
 
 		console.log('compressed-' + compressedGzip.byteLength);
 		console.log('decompressed-' + getByteSize(decompressedGzip));
+		filterchanges(staticallchanges);
+		console.log(await getProcessedData(staticallchanges));
 
 		// Download the changes as a JSON file
-		downloadJSON(JSON.parse(decompressedGzip), 'degzip.json');
+		// downloadJSON(JSON.parse(decompressedGzip), 'degzip.json');
 	});
 </script>
