@@ -5,6 +5,7 @@
 	import { liveQuery } from 'dexie';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
+	import Button from '$lib/components/ui/button/button.svelte';
 
 	export let data: PageData;
 
@@ -159,6 +160,20 @@
 
 		return result;
 	}
+	async function testPost() {
+		const staticallchanges = await changesDB.changes.toArray();
+		const exampleData = await JSON.stringify(await getProcessedData(staticallchanges));
+		const compressedGzip = await compressWithStream(exampleData, 'gzip');
+		const res = await fetch('/onlineDB', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ data: compressedGzip })
+		});
+		const data = await res.json();
+		console.log(data);
+	}
 	// Example usage
 	onMount(async () => {
 		const staticallchanges = await changesDB.changes.toArray();
@@ -167,13 +182,16 @@
 		const compressedGzip = await compressWithStream(exampleData, 'gzip');
 		const decompressedGzip = await decompressWithStream(compressedGzip, 'gzip');
 		console.log('original-' + getByteSize(exampleData));
+		console.log({ compressedGzip });
 
 		console.log('compressed-' + compressedGzip.byteLength);
 		console.log('decompressed-' + getByteSize(decompressedGzip));
 		filterchanges(staticallchanges);
-		console.log(await getProcessedData(staticallchanges));
 
+		// const preparedData = await getProcessedData(staticallchanges));
 		// Download the changes as a JSON file
 		// downloadJSON(JSON.parse(decompressedGzip), 'degzip.json');
 	});
 </script>
+
+<Button on:click={testPost}>Test POST</Button>

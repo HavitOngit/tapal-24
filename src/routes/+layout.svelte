@@ -44,13 +44,13 @@
 				<ChevronLeft></ChevronLeft>{$t('Back')}</Badge
 			>
 		</button> -->
-		<p class="text-xl font-semibold">MDM <span class="text-sm"> assistant </span></p>
+		<p class="text-xl font-semibold text-blue-400">MDM <span class="text-sm"> assistant </span></p>
 	</div>
 	<!-- <a href="/" class="text-black">{$t('Home')}</a> -->
-	<!-- <Accpop></Accpop> -->
 	<div class="flex items-center gap-3">
 		<!-- <LucideCloudOff></LucideCloudOff> -->
-		<Headertwo></Headertwo>
+		<Accpop></Accpop>
+		<!-- <Headertwo></Headertwo> -->
 	</div>
 </div>
 <hr />
