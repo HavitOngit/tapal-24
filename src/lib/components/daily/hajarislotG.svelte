@@ -55,6 +55,7 @@
 		stock = stocks;
 
 		effectedUsage = (await db.usage.where('date').above(workingDate.toDate()).toArray()) as Usage[];
+		effectedUsage = effectedUsage.filter((x) => x.storage_unit_id === RegData.storage_unit_id);
 		console.log('---------------');
 
 		console.log(effectedUsage);
@@ -120,10 +121,11 @@
 				date_id: any;
 				storage_unit_id: number;
 			}) => {
-				const unit = stock.find((item) => item.name == obj.name);
+				const unit = stock.find((item) => item.name === obj.name);
+				console.log('getting from stocks' + unit?.amount);
 
 				// adding
-				obj.before_amount = Number(unit?.amount);
+				obj.before_amount = Number(unit?.amount || 0);
 				obj.after_amount = obj.before_amount - obj.amount;
 
 				obj.group_id = RegData.id;
@@ -161,6 +163,8 @@
 		);
 
 		showRate = false;
+
+		console.log({ RegData, usage, stock });
 	}
 
 	// Savind to Database
