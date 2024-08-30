@@ -13,13 +13,15 @@
 		Cloud,
 		HelpCircle,
 		MessageCircleHeart,
-		Settings
+		Settings,
+		LogOutIcon
 	} from 'lucide-svelte';
 	import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/dialog';
 	import { Button } from '../ui/button';
 	import Avatar from '../ui/avatar/avatar.svelte';
 	import AvatarImage from '../ui/avatar/avatar-image.svelte';
 	import AvatarFallback from '../ui/avatar/avatar-fallback.svelte';
+	import { SignIn, SignOut } from '@auth/sveltekit/components';
 	// import Table from './components/ui/table/table.svelte';
 	// import TableHeader from './components/ui/table/table-header.svelte';
 	// import TableRow from './components/ui/table/table-row.svelte';
@@ -30,7 +32,7 @@
 	const lisnks = [
 		{ name: 'Account', href: '/account', icon: ContactIcon },
 		{ name: 'BackUp', href: '/backup', icon: Cloud },
-		{ name: 'Payments', href: '/payments', icon: ReceiptIndianRupee },
+
 		{ name: 'Feedback', href: '/feedback', icon: MessageCircleHeart },
 		{ name: 'Help', href: '/help', icon: HelpCircle },
 		{ name: 'Settings', href: '/settings', icon: Settings }
@@ -93,16 +95,16 @@
 				</div>
 				<div class="flex justify-center">
 					{#if $page.data.session}
-						<!-- <SignOut signOutPage="signout">
+						<SignOut signOutPage="signout">
 							<Button slot="submitButton">
 								<LogOutIcon></LogOutIcon>
 								<p>Sign Out</p></Button
 							>
-						</SignOut> -->
+						</SignOut>
 					{:else}
-						<!-- <SignIn>
+						<SignIn>
 							<Button slot="submitButton">Sign In</Button>
-						</SignIn> -->
+						</SignIn>
 					{/if}
 				</div>
 

@@ -16,7 +16,7 @@ import { t } from 'svelte-intl-precompile';
 <div>
 	<a href="/rates">{$t("rates")}</a>
 </div>
-<div>
+<div>``
 	<a href="/reg">{$t("Registers")}</a>
 </div>
 <div>

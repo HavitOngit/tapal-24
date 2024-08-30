@@ -5,7 +5,7 @@
 	import MobileConsole from '$lib/components/extraFeatures/mobile-console.svelte';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import NavigationBar from '$lib/finalize/NavigationBar.svelte';
-	import { ChevronLeft } from 'lucide-svelte';
+	import { ChevronLeft, Cloud, LucideCloudOff } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import { t } from 'svelte-intl-precompile';
@@ -17,6 +17,7 @@
 	import { addMessages, init } from 'svelte-intl-precompile';
 	import { dev } from '$app/environment';
 	import Headertwo from '$lib/finalize/headertwo.svelte';
+	import * as cDB from '$lib/changesDB';
 	addMessages('gu', gu);
 	addMessages('en', en);
 	addMessages('hi', hi);
@@ -31,9 +32,9 @@
 	});
 </script>
 
-<div class=" flex h-11 w-full items-center justify-between bg-white">
+<div class=" my-1 flex h-12 w-full items-center justify-between bg-white p-2">
 	<div class=" justify-start">
-		<button
+		<!-- <button
 			on:click={() => {
 				history.back();
 			}}
@@ -42,12 +43,17 @@
 			<Badge variant="outline" class=" text-black">
 				<ChevronLeft></ChevronLeft>{$t('Back')}</Badge
 			>
-		</button>
+		</button> -->
+		<p class="text-xl font-semibold text-blue-400">MDM <span class="text-sm"> assistant </span></p>
 	</div>
-	<a href="/" class="text-black">{$t('Home')}</a>
-	<!-- <Accpop></Accpop> -->
-	<Headertwo></Headertwo>
+	<!-- <a href="/" class="text-black">{$t('Home')}</a> -->
+	<div class="flex items-center gap-3">
+		<!-- <LucideCloudOff></LucideCloudOff> -->
+		<Accpop></Accpop>
+		<!-- <Headertwo></Headertwo> -->
+	</div>
 </div>
+<hr />
 <Toaster></Toaster>
 {#if $navigating}
 	<LoadingBar></LoadingBar>

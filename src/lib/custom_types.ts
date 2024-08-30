@@ -119,3 +119,11 @@ export interface Selector {
     id: number,
     name: string
 }
+
+export interface Change {
+    id?: number,
+    type: "creating" | "updating" | "deleting",
+    table: string,
+    timestamp: Date,
+    db_ID: number
+}
