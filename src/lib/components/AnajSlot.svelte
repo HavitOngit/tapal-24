@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { t } from 'svelte-intl-precompile';
-	import { page } from '$app/stores';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import { t } from 'svelte-intl-precompile';
 
 	import * as Card from '$lib/components/ui/card';
 	import type { Storage } from '$lib/custom_types';
@@ -15,6 +14,8 @@
 	import Badge from './ui/badge/badge.svelte';
 	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
+	import MonthSelector from './reg/MonthSelector.svelte';
+	import Button from './ui/button/button.svelte';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
@@ -25,6 +26,13 @@
 	$: sum = Number(addAmount) + Number(anaj.amount);
 
 	async function addToStore() {
+		if (Number(selectedOperation) === 2) {
+			await DedctionToStore();
+			return;
+		} else if (Number(selectedOperation) === 3) {
+			await SetTostore();
+			return;
+		}
 		const cal_effect = new Map();
 		if ($effectedUsage.length > 0) {
 			$effectedUsage.forEach((x) => {
@@ -55,6 +63,114 @@
 			await db.storage.update(anaj.id, { amount: sum });
 		}).then(() => {
 			toast.success(`${Number(addAmount)} kg added to ${anaj.name}`);
+			cal_effect.clear();
+			addAmount = 0;
+		});
+	}
+	async function DedctionToStore() {
+		sum = Number(anaj.amount) - Number(addAmount);
+		const cal_effect = new Map();
+		if ($effectedUsage.length > 0) {
+			$effectedUsage.forEach((x) => {
+				if (x.name === anaj.name) {
+					cal_effect.set(x.id, {
+						key: x.id,
+						changes: {
+							before_amount: x.before_amount - Number(addAmount),
+							after_amount: x.after_amount - Number(addAmount)
+						}
+					});
+				}
+			});
+
+			console.log(cal_effect);
+		}
+
+		db.transaction('rw', db.storage, db.storage_history, db.usage, async () => {
+			await db.storage_history.add({
+				name: anaj.name,
+				storage_unit_id: anaj.storage_unit_id,
+				before_amount: anaj.amount,
+				amount: Number(addAmount),
+				date: workingDate,
+				date_id: workingDate.getTime()
+			});
+			await db.usage.bulkUpdate([...cal_effect.values()]);
+			await db.storage.update(anaj.id, { amount: sum });
+		}).then(() => {
+			toast.success(`${Number(addAmount)} kg Dedcted to ${anaj.name}`);
+			cal_effect.clear();
+			addAmount = 0;
+		});
+	}
+
+	async function SetTostore() {
+		if ($effectedUsage.length === 0) {
+			return;
+		}
+
+		const thatTime = Number($effectedUsage[0].before_amount);
+
+		const needstoamount = thatTime - Number(addAmount);
+		const cal_effect = new Map();
+
+		if (needstoamount < 0) {
+			if ($effectedUsage.length > 0) {
+				$effectedUsage.forEach((x) => {
+					if (x.name === anaj.name) {
+						cal_effect.set(x.id, {
+							key: x.id,
+							changes: {
+								before_amount: x.before_amount - Number(needstoamount),
+								after_amount: x.after_amount - Number(needstoamount)
+							}
+						});
+					}
+				});
+
+				// console.log(cal_effect);
+			}
+		} else if (needstoamount > 0) {
+			if ($effectedUsage.length > 0) {
+				$effectedUsage.forEach((x) => {
+					if (x.name === anaj.name) {
+						cal_effect.set(x.id, {
+							key: x.id,
+							changes: {
+								before_amount: x.before_amount - Number(needstoamount),
+								after_amount: x.after_amount - Number(needstoamount)
+							}
+						});
+					}
+				});
+
+				// console.log(cal_effect);
+			}
+		}
+
+		// console.log({
+		// 	thatTime,
+		// 	needstoamount,
+		// 	cal_effect,
+		// 	addAmount,
+		// 	$effectedUsage,
+		// 	filtered_needs: Number(needstoamount)
+		// });
+
+		db.transaction('rw', db.storage, db.storage_history, db.usage, async () => {
+			await db.storage_history.add({
+				name: anaj.name,
+				storage_unit_id: anaj.storage_unit_id,
+				before_amount: anaj.amount,
+				amount: Number(addAmount),
+				date: workingDate,
+				date_id: workingDate.getTime()
+			});
+			await db.usage.bulkUpdate([...cal_effect.values()]);
+			// await db.storage.update(anaj.id, { amount: sum });
+		}).then(() => {
+			toast.success(`${thatTime}➡️${Number(addAmount)}`);
+			cal_effect.clear();
 			addAmount = 0;
 		});
 	}
@@ -87,6 +203,25 @@
 		// Handle non-numeric values
 		return '0'; // Or any other fallback logic
 	}
+
+	let add = true;
+
+	const operations = [
+		{
+			label: 'Add',
+			value: 1
+		},
+		{
+			label: 'Deduction',
+			value: 2
+		},
+		{
+			label: 'Set',
+			value: 3
+		}
+	];
+
+	let selectedOperation = 1;
 </script>
 
 <div id="alerts" hidden>
@@ -95,9 +230,12 @@
 		<AlertDialog.Content>
 			<AlertDialog.Header>
 				<AlertDialog.Title class="flex justify-between">
-					<div class="text-xl">
-						{$t('Add in')}
-						{$t(anaj.name)}
+					<div class="w-32">
+						<MonthSelector
+							bind:selected={selectedOperation}
+							groupName="Operation"
+							list={operations}
+						/>
 					</div>
 					<div>
 						<Calender bind:value={date}></Calender>
@@ -121,11 +259,14 @@
 							<Input bind:value={addAmount} type="number" autofocus />
 						</form>
 					</div>
+					<!-- <Button on:click={SetTostore}>Check</Button> -->
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={addToStore} type="submit">{$t('ADD')}</AlertDialog.Action>
+				<AlertDialog.Action on:click={addToStore} type="submit"
+					>{add ? $t('ADD') : $t('dedction')}</AlertDialog.Action
+				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
