@@ -97,7 +97,7 @@
 			await db.usage.bulkUpdate([...cal_effect.values()]);
 			await db.storage.update(anaj.id, { amount: sum });
 		}).then(() => {
-			toast.success(`${Number(addAmount)} kg Dedcted to ${anaj.name}`);
+			toast.success(`${Number(-addAmount)} kg Dedcted to ${anaj.name}`);
 			cal_effect.clear();
 			addAmount = 0;
 		});
@@ -214,15 +214,15 @@
 
 	const operations = [
 		{
-			label: 'Add',
+			label: $t('Add'),
 			value: 1
 		},
 		{
-			label: 'Deduction',
+			label: $t('Deduction'),
 			value: 2
 		},
 		{
-			label: 'Set',
+			label: $t('Set'),
 			value: 3
 		}
 	];
