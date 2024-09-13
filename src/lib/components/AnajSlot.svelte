@@ -11,11 +11,10 @@
 	import { CircleFadingPlusIcon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import Calender from './extraFeatures/Calender.svelte';
+	import MonthSelector from './reg/MonthSelector.svelte';
 	import Badge from './ui/badge/badge.svelte';
 	import Input from './ui/input/input.svelte';
 	import Label from './ui/label/label.svelte';
-	import MonthSelector from './reg/MonthSelector.svelte';
-	import Button from './ui/button/button.svelte';
 
 	export let anaj: Storage;
 	export let forStorageView: boolean = false;
@@ -91,7 +90,7 @@
 				name: anaj.name,
 				storage_unit_id: anaj.storage_unit_id,
 				before_amount: anaj.amount,
-				amount: Number(addAmount),
+				amount: Number(-addAmount),
 				date: workingDate,
 				date_id: workingDate.getTime()
 			});
@@ -106,6 +105,13 @@
 
 	async function SetTostore() {
 		if ($effectedUsage.length === 0) {
+			db.transaction('rw', db.storage, db.storage_history, db.usage, async () => {
+				await db.storage.update(anaj.id, { amount: Number(addAmount) });
+			}).then(() => {
+				toast.success(`${thatTime}➡️${Number(addAmount)}`);
+				cal_effect.clear();
+				addAmount = 0;
+			});
 			return;
 		}
 
