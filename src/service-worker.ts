@@ -31,8 +31,12 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+
+    // ignore requests to if device offline
+    if (!navigator.onLine) return;
     // ignore POST requests etc
     if (event.request.method !== 'GET') return;
+
 
     async function respond() {
         const url = new URL(event.request.url);
