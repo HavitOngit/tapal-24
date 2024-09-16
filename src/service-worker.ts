@@ -32,11 +32,12 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
 
-    // ignore requests to if device offline
-    if (!navigator.onLine) return;
-    // ignore POST requests etc
-    if (event.request.method !== 'GET') return;
+    // ignore requests to other origins
 
+    if (!navigator.onLine) {
+        alert('You are offline. Please check your internet connection.');
+        return
+    }
 
     async function respond() {
         const url = new URL(event.request.url);
@@ -50,6 +51,8 @@ self.addEventListener('fetch', (event) => {
                 return response;
             }
         }
+
+
 
         // for everything else, try the network first, but
         // fall back to the cache if we're offline
