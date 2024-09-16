@@ -160,19 +160,42 @@
 
 		return result;
 	}
-	async function testPost() {
-		const staticallchanges = await changesDB.changes.toArray();
-		const exampleData = await JSON.stringify(await getProcessedData(staticallchanges));
+
+	async function sendWithGziped(exampleData: string) {
 		const compressedGzip = await compressWithStream(exampleData, 'gzip');
 		const res = await fetch('/onlineDB', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Content-Encoding': 'gzip'
 			},
 			body: JSON.stringify({ data: compressedGzip })
 		});
 		const data = await res.json();
-		console.log(data);
+		console.log({ data });
+	}
+
+	async function sendNormal(exampleData: string) {
+		const res = await fetch('/onlineDB', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Content-Encoding': 'normal'
+			},
+			body: JSON.stringify({ data: exampleData })
+		});
+		const data = await res.json();
+		console.log({ data });
+	}
+	async function testPost() {
+		const staticallchanges = await changesDB.changes.toArray();
+		const exampleData = JSON.stringify(await getProcessedData(staticallchanges));
+		const size = getByteSize(exampleData);
+		if (size > 999999999) {
+			await sendWithGziped(exampleData);
+		} else {
+			await sendNormal(exampleData);
+		}
 	}
 	// Example usage
 	onMount(async () => {
