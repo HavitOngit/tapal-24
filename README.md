@@ -1,4 +1,4 @@
-#just imagine !
+# just imagine !
 
-##ToDo
-[ ] update stock section
+## ToDo
+- [x] update stock section
