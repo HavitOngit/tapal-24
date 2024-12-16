@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Warehouse, LibraryBig, CalendarPlus, ListTodo, Percent } from 'lucide-svelte';
+	import { LucideMoreHorizontal, LibraryBig, CalendarPlus, ListTodo, Percent } from 'lucide-svelte';
 	import { t } from 'svelte-intl-precompile';
 
 	const paths = [
@@ -15,14 +15,9 @@
 			icon: LibraryBig
 		},
 		{
-			name: $t('Rates'),
-			href: '/rates',
-			icon: Percent
-		},
-		{
-			name: $t('Stocks'),
-			href: '/stocks',
-			icon: Warehouse
+			name: $t('More'),
+			href: '/home',
+			icon: LucideMoreHorizontal
 		}
 	];
 </script>
