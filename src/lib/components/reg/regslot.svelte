@@ -64,7 +64,7 @@
 
 	<Card>
 		<CardHeader>
-			<CardTitle class="flex justify-between"
+			<CardTitle class="flex justify-between text-2xl"
 				>{regi.name}
 				<div class="flex items-center gap-2">
 					<Badge
