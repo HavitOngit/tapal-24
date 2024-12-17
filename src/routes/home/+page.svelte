@@ -2,29 +2,44 @@
 	import Accpop from '$lib/components/extraFeatures/accpop.svelte';
 	import type { MoreLinkSection } from '$lib/custom_types';
 	import LinkSection from '$lib/finalize/LinkSection.svelte';
+	import {
+		CalendarClockIcon,
+		CalendarHeartIcon,
+		CalendarRangeIcon,
+		PercentIcon,
+		WarehouseIcon
+	} from 'lucide-svelte';
 
 	let Entry: MoreLinkSection[] = [
 		{
-			name: 'day by day',
-			href: '/dailywork'
+			name: 'dayWise Entry',
+			href: '/dailywork',
+			icon: CalendarClockIcon,
+			color: 'gray'
 		},
 		{
 			name: 'monthly Entry',
-			href: '/monthlyEntry'
+			href: '/monthlyEntry',
+			icon: CalendarRangeIcon,
+			color: 'yellow'
 		}
 	];
 
 	let Anaj: MoreLinkSection[] = [
 		{
 			name: 'Rates',
-			href: '/rates'
+			href: '/rates',
+			icon: PercentIcon,
+			color: 'slate'
 		},
 		{
 			name: 'stocks',
-			href: '/stocks'
+			href: '/stocks',
+			icon: WarehouseIcon,
+			color: 'indigo'
 		},
 		{
-			name: 'Create report',
+			name: 'Report',
 			href: '/report'
 		}
 	];

@@ -1,4 +1,5 @@
 import type { Icon, icons } from "lucide-svelte"
+import type { ComponentType } from "svelte"
 
 export interface Group {
     id?: number,
@@ -131,7 +132,9 @@ export interface Change {
 
 export interface MoreLinkSection {
     name: string,
-    icon?: Icon,
+    icon?: ComponentType<Icon>,
     href: string,
-    discription?: string
+    discription?: string,
+    bg_color?: string,
+    color?: string
 }
