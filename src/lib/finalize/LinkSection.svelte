@@ -63,12 +63,11 @@
 		</a>
 	{/each}
 </div>
-
-<div>
+<!-- <div>
 	{#each colors as color}
 		<div class="flex items-center gap-2">
 			<div class="h-8 w-8 rounded-full bg-{color}-200"></div>
 			<p class="text-gray-700">{color}</p>
 		</div>
 	{/each}
-</div>
+</div> -->

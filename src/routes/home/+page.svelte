@@ -3,10 +3,16 @@
 	import type { MoreLinkSection } from '$lib/custom_types';
 	import LinkSection from '$lib/finalize/LinkSection.svelte';
 	import {
+		CalculatorIcon,
 		CalendarClockIcon,
 		CalendarHeartIcon,
 		CalendarRangeIcon,
+		HelpCircleIcon,
+		PercentCircleIcon,
 		PercentIcon,
+		ReceiptTextIcon,
+		SettingsIcon,
+		UserCircle2Icon,
 		WarehouseIcon
 	} from 'lucide-svelte';
 
@@ -40,33 +46,45 @@
 		},
 		{
 			name: 'Report',
-			href: '/report'
+			href: '/report',
+			icon: ReceiptTextIcon,
+			color: 'violet'
 		}
 	];
 
 	let Money: MoreLinkSection[] = [
 		{
 			name: 'Money Rates',
-			href: '/money-rates'
+			href: '/money-rates',
+			icon: PercentCircleIcon,
+			color: 'green'
 		},
 		{
 			name: 'Money Calculator',
-			href: '/money-calc'
+			href: '/money-calc',
+			icon: CalculatorIcon,
+			color: 'blue'
 		}
 	];
 
 	let Other: MoreLinkSection[] = [
 		{
 			name: 'help',
-			href: '/help'
+			href: '/help',
+			icon: HelpCircleIcon,
+			color: 'emerald'
 		},
 		{
 			name: 'Account',
-			href: '/acc'
+			href: '/acc',
+			icon: UserCircle2Icon,
+			color: 'amber'
 		},
 		{
 			name: 'settings',
-			href: '/settings'
+			href: '/settings',
+			icon: SettingsIcon,
+			color: 'rose'
 		}
 	];
 </script>
