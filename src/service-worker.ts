@@ -47,8 +47,6 @@ self.addEventListener('fetch', (event) => {
             }
         }
 
-
-
         // for everything else, try the network first, but
         // fall back to the cache if we're offline
         try {
