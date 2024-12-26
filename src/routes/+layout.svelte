@@ -19,7 +19,6 @@
 
 	onMount(() => {
 		const lang = localStorage.getItem('locale') || localStorage.setItem('locale', 'gu');
-		navigator.serviceWorker.register('/service-worker.js', { type: dev ? 'module' : 'classic' });
 		init({
 			initialLocale: String(lang),
 			fallbackLocale: 'en'
