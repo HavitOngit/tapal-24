@@ -16,8 +16,7 @@
 	import hi from '$lib/locales/hi.json';
 	import { addMessages, init } from 'svelte-intl-precompile';
 	import { dev } from '$app/environment';
-	import Headertwo from '$lib/finalize/headertwo.svelte';
-	import * as cDB from '$lib/changesDB';
+
 	addMessages('gu', gu);
 	addMessages('en', en);
 	addMessages('hi', hi);
@@ -52,7 +51,7 @@
 		<Accpop></Accpop>
 		<!-- <Headertwo></Headertwo> -->
 	</div>
-</div>
+</div> 
 <hr />
 <Toaster></Toaster>
 {#if $navigating}

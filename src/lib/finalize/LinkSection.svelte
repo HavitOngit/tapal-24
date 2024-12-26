@@ -4,31 +4,6 @@
 
 	export let sectionName: string = '';
 	export let list: MoreLinkSection[] = [];
-
-	let colors = [
-		'slate',
-		'gray',
-		'zinc',
-		'neutral',
-		'stone',
-		'red',
-		'orange',
-		'amber',
-		'yellow',
-		'lime',
-		'green',
-		'emerald',
-		'teal',
-		'cyan',
-		'sky',
-		'blue',
-		'indigo',
-		'violet',
-		'purple',
-		'fuchsia',
-		'pink',
-		'rose'
-	];
 </script>
 
 <div class="relative my-2 flex items-center">
@@ -44,10 +19,9 @@
 		<a href={data.href}>
 			<div class="flex flex-col gap-1">
 				<!-- <svelte:component this={data.icon}></svelte:component> -->
-				<div class=" flex justify-center rounded-full bg-{data.color}-200 p-3">
+				<div class=" flex justify-center rounded-full p-3">
 					{#if data.icon}
-						<svelte:component this={data.icon} class="size-7 text-{data.color}-800"
-						></svelte:component>
+						<svelte:component this={data.icon} class="size-7 text-gray-900"></svelte:component>
 					{:else}
 						<BoxIcon class="size-7"></BoxIcon>
 					{/if}

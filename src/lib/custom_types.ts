@@ -134,7 +134,5 @@ export interface MoreLinkSection {
     name: string,
     icon?: ComponentType<Icon>,
     href: string,
-    discription?: string,
-    bg_color?: string,
-    color?: string
+    discription?: string
 }

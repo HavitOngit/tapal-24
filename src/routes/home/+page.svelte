@@ -20,14 +20,12 @@
 		{
 			name: 'dayWise Entry',
 			href: '/dailywork',
-			icon: CalendarClockIcon,
-			color: 'gray'
+			icon: CalendarClockIcon
 		},
 		{
 			name: 'monthly Entry',
 			href: '/monthlyEntry',
-			icon: CalendarRangeIcon,
-			color: 'yellow'
+			icon: CalendarRangeIcon
 		}
 	];
 
@@ -35,20 +33,17 @@
 		{
 			name: 'Rates',
 			href: '/rates',
-			icon: PercentIcon,
-			color: 'slate'
+			icon: PercentIcon
 		},
 		{
 			name: 'stocks',
 			href: '/stocks',
-			icon: WarehouseIcon,
-			color: 'indigo'
+			icon: WarehouseIcon
 		},
 		{
 			name: 'Report',
 			href: '/report',
-			icon: ReceiptTextIcon,
-			color: 'violet'
+			icon: ReceiptTextIcon
 		}
 	];
 
@@ -56,14 +51,12 @@
 		{
 			name: 'Money Rates',
 			href: '/money-rates',
-			icon: PercentCircleIcon,
-			color: 'green'
+			icon: PercentCircleIcon
 		},
 		{
 			name: 'Money Calculator',
 			href: '/money-calc',
-			icon: CalculatorIcon,
-			color: 'blue'
+			icon: CalculatorIcon
 		}
 	];
 
@@ -71,20 +64,17 @@
 		{
 			name: 'help',
 			href: '/help',
-			icon: HelpCircleIcon,
-			color: 'emerald'
+			icon: HelpCircleIcon
 		},
 		{
 			name: 'Account',
 			href: '/acc',
-			icon: UserCircle2Icon,
-			color: 'amber'
+			icon: UserCircle2Icon
 		},
 		{
 			name: 'settings',
 			href: '/settings',
-			icon: SettingsIcon,
-			color: 'rose'
+			icon: SettingsIcon
 		}
 	];
 </script>
