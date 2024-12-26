@@ -1,3 +1,5 @@
+import type { Icon, icons } from "lucide-svelte"
+import type { ComponentType } from "svelte"
 
 export interface Group {
     id?: number,
@@ -126,4 +128,11 @@ export interface Change {
     table: string,
     timestamp: Date,
     db_ID: number
+}
+
+export interface MoreLinkSection {
+    name: string,
+    icon?: ComponentType<Icon>,
+    href: string,
+    discription?: string
 }

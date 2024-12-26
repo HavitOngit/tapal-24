@@ -5,12 +5,14 @@
 	import { db } from '$lib/db';
 	import Regslot from '$lib/components/reg/regslot.svelte';
 	import { t } from 'svelte-intl-precompile';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import { ReceiptTextIcon } from 'lucide-svelte';
 
 	const regilist = liveQuery(() => db.group.toArray());
 	let fakebtn: HTMLButtonElement;
 </script>
 
-<div class="m-3 my-5">
+<div class="m-3 my-5 flex items-center justify-between">
 	<p class="text-xl font-bold">{$t('Registers')}</p>
 </div>
 
