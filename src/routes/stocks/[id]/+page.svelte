@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { t } from 'svelte-intl-precompile';
 	import { page } from '$app/stores';
 	import AnajSelection from '$lib/components/AnajSelection.svelte';
 	import AnajSlot from '$lib/components/AnajSlot.svelte';
@@ -13,11 +12,11 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import type { Storage, StorageUnit } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import { anajlist } from '$lib/predefined';
 	import { liveQuery } from 'dexie';
 	import { PackagePlus, ReceiptTextIcon, Settings2 } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
+	import { t } from 'svelte-intl-precompile';
 
 	const id = parseInt($page.params.id);
 	const list = liveQuery(() => db.storage.where({ storage_unit_id: id }).toArray());

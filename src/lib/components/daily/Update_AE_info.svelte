@@ -431,7 +431,7 @@
 	<Card class="mb-2">
 		<CardHeader>
 			<CardTitle class="flex justify-between">
-				<p>
+				<p class="text-2xl">
 					{RegData.name}
 				</p>
 				{#if AttendanceData.catoWise}

@@ -100,7 +100,8 @@
 						// console.log('from button' + { workingDate });
 
 						calendeDate = calendeDate?.subtract(duration);
-					}}>-</Button
+					}}
+					class="text-xl">-</Button
 				>
 
 				<!-- {workingDate.toDateString()} -->
@@ -112,7 +113,8 @@
 						workingDate = dayjs(workingDate).add(1, 'day').toDate();
 
 						calendeDate = calendeDate?.add(duration);
-					}}>+</Button
+					}}
+					class="text-xl">+</Button
 				>
 			</Badge>
 		</div>
@@ -122,7 +124,7 @@
 	{/if}
 
 	{#if $registers}
-		<div class="">
+		<div class="grid grid-cols-1 gap-3">
 			{#each active_Registers as reg}
 				{#if !submited_registers_group_id.includes(reg.id || 1000)}
 					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
@@ -136,7 +138,17 @@
 	{/if}
 
 	{#if $submited_registers}
-		<div>
+		{#if $submited_registers.length < active_Registers.length}
+			<div class="relative my-2 flex items-center">
+				<hr
+					class="absolute left-0 right-0 top-1/2 z-0 -translate-y-1/2 transform border-t border-gray-300"
+				/>
+				<p class="relative z-10 m-2 inline-block bg-white px-4 text-lg text-gray-800 opacity-80">
+					{$t('Submited Registers')}
+				</p>
+			</div>
+		{/if}
+		<div class="grid grid-cols-1 gap-3">
 			{#each $submited_registers as hajari}
 				<UpdateAeInfo
 					AttendanceData={hajari}

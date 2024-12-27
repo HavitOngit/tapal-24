@@ -270,10 +270,10 @@
 </div>
 
 {#if RegData}
-	<Card class="mb-2">
+	<Card class="mb-2 ">
 		<CardHeader>
 			<CardTitle class="flex justify-between">
-				<p>
+				<p class="text-2xl">
 					{RegData.name}
 				</p>
 				{#if RegData.catodatafilled}

@@ -44,7 +44,7 @@
 			{value ? df.format(value.toDate(getLocalTimeZone())) : df.format(today)}
 		</Button> -->
 		<button>
-			<Badge>
+			<Badge class="text-base">
 				{value ? df.format(value.toDate(getLocalTimeZone())) : df.format(today)}
 			</Badge>
 		</button>
