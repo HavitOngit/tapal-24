@@ -220,7 +220,7 @@
 		{/if}
 		<!-- income total -->
 
-		{#if $storagehistory.filter((x) => x.type === 'add' && x.amount > 0 && x.name === anaj_details[selected_anaj].label).length > 0}
+		{#if anaj_details.length > 0 && $storagehistory.filter((x) => x.type === 'add' && x.amount > 0 && x.name === anaj_details[selected_anaj].label).length > 0}
 			<div class="m-3">
 				<p class="text-lg font-semibold">
 					{$t('Total Income')}:
