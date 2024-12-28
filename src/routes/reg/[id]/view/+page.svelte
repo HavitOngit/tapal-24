@@ -145,6 +145,13 @@
 		return total;
 	}
 
+	// function incomeData(selected_anaj: string, date: number) {
+	// 	const data = $storagehistory.find(
+	// 		(x) => x.date_id === date && x.name === selected_anaj && x.type === 'add'
+	// 	);
+	// 	return data;
+	// }
+
 	$: getUsage(month, year);
 
 	let insilized = false;
