@@ -7,11 +7,11 @@
 	import TableHeader from '$lib/components/ui/table/table-header.svelte';
 	import TableRow from '$lib/components/ui/table/table-row.svelte';
 	import Table from '$lib/components/ui/table/table.svelte';
-	import type { Usage } from '$lib/custom_types';
+	import type { Group, StorageHistory, Usage } from '$lib/custom_types';
 	import { db } from '$lib/db';
 
 	import { onMount } from 'svelte';
-	import { derived, writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import StickyHeader from '$lib/components/extraFeatures/sticky-Header.svelte';
 
 	async function getUsage(month: number, year: number) {
@@ -26,7 +26,7 @@
 					$anajs.push({ value: $anajs.length, label: u.name });
 				}
 			});
-			console.log(Array.from($anajs));
+			// for history
 
 			if ($anajs.length > 0) {
 				selected_anaj = Number($anajs[0].value);
@@ -39,6 +39,14 @@
 				anaj_details.push(total(obj));
 			});
 			console.log(anaj_details);
+
+			// income history
+			$storagehistory = await db.storage_history
+				.where({
+					storage_unit_id: Number(reg?.storage_unit_id || 1)
+				})
+				.filter((obj) => obj.date.getMonth() === month && obj.date.getFullYear() === year)
+				.toArray();
 		} catch (error) {
 			console.error(error);
 		}
@@ -46,6 +54,7 @@
 
 	let usage = writable<Usage[]>([]);
 	let anajs = writable<selector[]>([]);
+	let storagehistory = writable<StorageHistory[]>([]);
 
 	function createCSVString(data: Usage[]) {
 		let csvString = '';
@@ -126,17 +135,32 @@
 		return obj;
 	}
 
+	function incomeTotal(storage_history: StorageHistory[], selected_anaj: string) {
+		let total = 0;
+		storage_history.forEach((t) => {
+			if (selected_anaj === t.name && t.type === 'add') {
+				total += t.amount;
+			}
+		});
+		return total;
+	}
+
 	$: getUsage(month, year);
 
 	let insilized = false;
 	let noData = false;
+	let reg: Group;
 	onMount(async () => {
 		insilized = true;
+		// @ts-ignore
+		reg = await db.group.get(Number($page.params.id));
+
 		await getUsage(month, year);
 		const allUsage = await db.usage.where({ group_id: Number($page.params.id) }).toArray();
 		if (allUsage.length === 0) {
 			noData = true;
 		}
+
 		allUsage.forEach((u) => {
 			if (!months.has(u.date.getMonth())) {
 				months.set(u.date.getMonth(), {
@@ -176,15 +200,31 @@
 			></MonthSelector>
 		{/if}
 	</div>
-	{#if anaj_details.length > 0}
-		<div class="m-3">
-			<p class="text-lg font-semibold">
-				{$t('Total Usage')}:
-				{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
-			</p>
-			<p>{$t('Total Days')}: {anaj_details[selected_anaj].days}</p>
-		</div>
-	{/if}
+
+	<div class="flex justify-between">
+		{#if anaj_details.length > 0}
+			<div class="m-3">
+				<p class="text-lg font-semibold">
+					{$t('Total Usage')}:
+					{Number(anaj_details[selected_anaj].total.toFixed(3))} Kg
+				</p>
+				<p>{$t('Total Days')}: {anaj_details[selected_anaj].days}</p>
+			</div>
+		{/if}
+		<!-- income total -->
+
+		{#if $storagehistory.filter((x) => x.type === 'add' && x.amount > 0 && x.name === anaj_details[selected_anaj].label).length > 0}
+			<div class="m-3">
+				<p class="text-lg font-semibold">
+					{$t('Total Income')}:
+					{Number(incomeTotal($storagehistory, $anajs[selected_anaj].label).toFixed(3))} Kg
+				</p>
+				<a href="/stocks/{reg.storage_unit_id}/report">
+					<p class=" text-right text-sm text-gray-500">{$t('View in Details')}</p>
+				</a>
+			</div>
+		{/if}
+	</div>
 	{#if $usage}
 		<div id="table">
 			<StickyHeader></StickyHeader>
