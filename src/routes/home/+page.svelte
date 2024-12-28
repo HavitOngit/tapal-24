@@ -24,7 +24,7 @@
 		},
 		{
 			name: 'monthly Entry',
-			href: '/monthlyEntry',
+			href: '/monthly-entry',
 			icon: CalendarRangeIcon
 		}
 	];
@@ -42,7 +42,7 @@
 		},
 		{
 			name: 'Report',
-			href: '/report',
+			href: '/tapal',
 			icon: ReceiptTextIcon
 		}
 	];
@@ -50,12 +50,12 @@
 	let Money: MoreLinkSection[] = [
 		{
 			name: 'Money Rates',
-			href: '/money-rates',
+			href: '/money/rates',
 			icon: PercentCircleIcon
 		},
 		{
 			name: 'Money Calculator',
-			href: '/money-calc',
+			href: '/money/calc',
 			icon: CalculatorIcon
 		}
 	];
