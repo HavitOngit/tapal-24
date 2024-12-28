@@ -8,6 +8,8 @@
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 	import { t } from 'svelte-intl-precompile';
+	import { onMount } from 'svelte';
+	import type { Group } from '$lib/custom_types';
 
 	export let data: PageData;
 
@@ -58,12 +60,12 @@
 		let loaded = [
 			{
 				name: $t('Rate'),
-				url: `rates/${$reg_data[0].rate_unit_id}`,
+				url: `rates/${Reg.rate_unit_id}`,
 				icon: PercentIcon
 			},
 			{
 				name: $t('Stocks'),
-				url: `stocks/${$reg_data[0].storage_unit_id}`,
+				url: `stocks/${Reg.storage_unit_id}`,
 				icon: WarehouseIcon
 			}
 		];
@@ -71,6 +73,12 @@
 			paths = [...paths, ...loaded];
 		}
 	}
+
+	let Reg: Group;
+	onMount(async () => {
+		// @ts-ignore
+		Reg = await db.group.get(Number($page.params.id));
+	});
 </script>
 
 <!-- // for update -->

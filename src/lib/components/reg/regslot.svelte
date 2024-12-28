@@ -19,8 +19,8 @@
 	export let DeleteNow = false;
 	let triggerBtn: HTMLButtonElement;
 	let updateBtn: HTMLButtonElement;
-	const rateID = regi.rate_unit_id;
-	const stockID = regi.storage_unit_id;
+	let rateID = regi.rate_unit_id;
+	let stockID = regi.storage_unit_id;
 
 	$: rate = liveQuery(() => db.rates.where({ id: rateID }).toArray());
 	$: stock = liveQuery(() => db.storage_unit.where({ id: stockID }).toArray());
