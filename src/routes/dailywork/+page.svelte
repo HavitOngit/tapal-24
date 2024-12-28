@@ -138,7 +138,7 @@
 	{/if}
 
 	{#if $submited_registers}
-		{#if $submited_registers.length < active_Registers.length}
+		{#if $submited_registers.length < active_Registers.length && $submited_registers.length > 0}
 			<div class="relative my-2 flex items-center">
 				<hr
 					class="absolute left-0 right-0 top-1/2 z-0 -translate-y-1/2 transform border-t border-gray-300"
