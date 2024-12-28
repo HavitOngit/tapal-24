@@ -283,7 +283,7 @@
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
 				<AlertDialog.Action on:click={addToStore} type="submit"
-					>{add ? $t('ADD') : $t('dedction')}</AlertDialog.Action
+					>{operations[selectedOperation - 1].label}</AlertDialog.Action
 				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
