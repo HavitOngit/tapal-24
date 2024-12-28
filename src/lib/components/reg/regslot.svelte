@@ -110,7 +110,7 @@
 		</CardHeader>
 
 		{#if $rate}
-			<CardContent class="flex flex-col gap-2 ">
+			<CardContent class="m-1 flex flex-col gap-2">
 				{#if regi.boys || regi.girls}
 					<div class="flex gap-2">
 						<Badge variant="outline">{$t('Boys')} {regi.boys}</Badge>{$t('+')}<Badge
@@ -120,7 +120,7 @@
 						>
 					</div>
 				{/if}
-				<div class="mr-2 flex justify-between">
+				<!-- <div class="mr-2 flex justify-between">
 					{#if $stock}
 						<a href="/stocks/{regi.storage_unit_id}">
 							<div>
@@ -138,10 +138,10 @@
 							{$rate[0].name}
 						</a>
 					</div>
-				</div>
+				</div> -->
 
 				{#if forUpdate}
-					<div class="mt-2 flex gap-2" id="used_ anaj_list">
+					<div class="mt-4 flex gap-2" id="used_ anaj_list">
 						<Label>{$t('Anajs:')}</Label>
 						<div class="flex flex-wrap gap-2">
 							{#each $rate[0].used_anaj || [] as anaj}

@@ -16,7 +16,7 @@
 	<p class="text-xl font-bold">{$t('Registers')}</p>
 </div>
 
-<div class="m-2 flex flex-col gap-2">
+<div class="m-2 flex flex-col gap-3">
 	{#each $regilist || [] as regi}
 		{#if regi.currently_used}
 			<a href="/reg/{regi.id}">

@@ -4,7 +4,7 @@
 	import Regslot from '$lib/components/reg/regslot.svelte';
 	import { db } from '$lib/db';
 	import { liveQuery } from 'dexie';
-	import { CalendarCheck2Icon, SheetIcon } from 'lucide-svelte';
+	import { CalendarCheck2Icon, PercentIcon, SheetIcon, WarehouseIcon } from 'lucide-svelte';
 	import toast from 'svelte-french-toast';
 	import type { PageData } from './$types';
 	import { t } from 'svelte-intl-precompile';
@@ -13,15 +13,15 @@
 
 	const reg_data = liveQuery(() => db.group.where({ id: Number($page.params.id) }).toArray());
 
-	const paths = [
+	let paths = [
 		{
 			name: $t('Attendance'),
-			url: 'atndce',
+			url: `reg/${$page.params.id}/atndce`,
 			icon: CalendarCheck2Icon
 		},
 		{
 			name: $t('Usage'),
-			url: 'view',
+			url: `reg/${$page.params.id}/view`,
 			icon: SheetIcon
 		}
 	];
@@ -53,25 +53,42 @@
 	$: if (DeleteNow) {
 		deleteRegi();
 	}
+
+	$: if ($reg_data) {
+		let loaded = [
+			{
+				name: $t('Rate'),
+				url: `rates/${$reg_data[0].rate_unit_id}`,
+				icon: PercentIcon
+			},
+			{
+				name: $t('Stocks'),
+				url: `stocks/${$reg_data[0].storage_unit_id}`,
+				icon: WarehouseIcon
+			}
+		];
+		if (paths.length != 4) {
+			paths = [...paths, ...loaded];
+		}
+	}
 </script>
 
 <!-- // for update -->
-<div class="m-2 gap-2">
-	{#if $reg_data}
+{#if $reg_data}
+	<div class="m-2 gap-2">
 		<Regslot bind:DeleteNow forUpdate={true} regi={$reg_data[0]}></Regslot>
-	{/if}
-</div>
-<div class="m-2 grid grid-cols-2 gap-2">
-	{#each paths as elem}
-		<div class=" rounded-md border p-5">
-			<a href="/reg/{$page.params.id}/{elem.url}" class="flex flex-col items-center">
-				<div class="flex h-8 w-14 items-center justify-center rounded-xl">
-					<svelte:component this={elem.icon}></svelte:component>
-				</div>
-				<span>{elem.name}</span>
-			</a>
-		</div>
-	{/each}
-</div>
-
+	</div>
+	<div class="m-2 grid grid-cols-2 gap-2">
+		{#each paths as elem}
+			<div class=" rounded-md border p-5">
+				<a href="/{elem.url}" class="flex flex-col items-center">
+					<div class="flex h-8 w-14 items-center justify-center rounded-xl">
+						<svelte:component this={elem.icon}></svelte:component>
+					</div>
+					<span>{elem.name}</span>
+				</a>
+			</div>
+		{/each}
+	</div>
+{/if}
 <!-- <UpdateEntry group_id={Number($page.params.id)}></UpdateEntry> -->
