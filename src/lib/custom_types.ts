@@ -53,7 +53,8 @@ export interface StorageHistory {
     name: string,
     before_amount: number,
     amount: number,
-    storage_unit_id: number
+    storage_unit_id: number,
+    type: "add" | "deduct" | "set"
 }
 
 export interface Usage {

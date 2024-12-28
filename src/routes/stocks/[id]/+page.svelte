@@ -244,17 +244,17 @@
 	{#if !deleteMode}
 		<Card.Root>
 			<Card.Header>
-				<Card.Title class="m-2 flex  items-center justify-between">
-					<div>{unit?.name}</div>
-					<div class="flex gap-2">
+				<Card.Title class=" flex  items-center justify-between">
+					<div><p class="text-2xl">{unit?.name}</p></div>
+					<div class="flex gap-4">
 						<div>
 							<a href="{$page.url}/report">
-								<ReceiptTextIcon></ReceiptTextIcon>
+								<ReceiptTextIcon size={28}></ReceiptTextIcon>
 							</a>
 						</div>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
-								<Settings2 />
+								<Settings2 size={28} />
 							</DropdownMenu.Trigger>
 
 							<DropdownMenu.Content>

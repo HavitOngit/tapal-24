@@ -56,7 +56,8 @@
 				before_amount: anaj.amount,
 				amount: Number(addAmount),
 				date: workingDate,
-				date_id: workingDate.getTime()
+				date_id: workingDate.getTime(),
+				type: 'add'
 			});
 			await db.usage.bulkUpdate([...cal_effect.values()]);
 			await db.storage.update(anaj.id, { amount: sum });
@@ -92,7 +93,8 @@
 				before_amount: anaj.amount,
 				amount: Number(-addAmount),
 				date: workingDate,
-				date_id: workingDate.getTime()
+				date_id: workingDate.getTime(),
+				type: 'deduct'
 			});
 			await db.usage.bulkUpdate([...cal_effect.values()]);
 			await db.storage.update(anaj.id, { amount: sum });
@@ -107,6 +109,15 @@
 		if ($effectedUsage.length === 0) {
 			db.transaction('rw', db.storage, db.storage_history, db.usage, async () => {
 				await db.storage.update(anaj.id, { amount: Number(addAmount) });
+				await db.storage_history.add({
+					name: anaj.name,
+					storage_unit_id: anaj.storage_unit_id,
+					before_amount: anaj.amount,
+					amount: Number(-addAmount),
+					date: workingDate,
+					date_id: workingDate.getTime(),
+					type: 'set'
+				});
 			}).then(() => {
 				toast.success(`${thatTime}➡️${Number(addAmount)}`);
 				cal_effect.clear();
@@ -170,7 +181,8 @@
 				before_amount: anaj.amount,
 				amount: Number(addAmount),
 				date: workingDate,
-				date_id: workingDate.getTime()
+				date_id: workingDate.getTime(),
+				type: 'set'
 			});
 			await db.usage.bulkUpdate([...cal_effect.values()]);
 			// await db.storage.update(anaj.id, { amount: sum });
