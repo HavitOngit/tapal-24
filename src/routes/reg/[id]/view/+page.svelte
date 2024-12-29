@@ -247,7 +247,7 @@
 				</TableHeader>
 
 				<TableBody>
-					{#each $usage.sort((a, b) => a.date_id - b.date_id).sort() as item}
+					{#each $usage.sort((a, b) => a.date.getDate() - b.date.getDate()).sort() as item}
 						{#if $anajs[selected_anaj].label === item.name}
 							<TableRow>
 								<TableHead>{item.date.getDate()}</TableHead>
