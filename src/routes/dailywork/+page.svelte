@@ -13,6 +13,8 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import { t } from 'svelte-intl-precompile';
+	import { CheckCheck } from 'lucide-svelte';
+	import Switch from '$lib/components/ui/switch/switch.svelte';
 
 	export let data: PageData;
 
@@ -85,6 +87,8 @@
 		workingDate = dayjs(newDate).toDate();
 		console.log({ before, workingDate });
 	}
+
+	let quickMode = false;
 </script>
 
 <!--  -->
@@ -118,8 +122,15 @@
 				>
 			</Badge>
 		</div>
-		<div class="m-3">
+		<div class="m-3 flex justify-between">
 			<p class="text-xl font-bold">{$t(dayjs(workingDate).format('ddd'))}</p>
+			{#if $submited_registers}
+				{#if $submited_registers.length === active_Registers.length}
+					<CheckCheck class="text-blue-500"></CheckCheck>
+				{:else}
+					<Switch bind:checked={quickMode}></Switch>
+				{/if}
+			{/if}
 		</div>
 	{/if}
 
@@ -127,7 +138,7 @@
 		<div class="grid grid-cols-1 gap-3">
 			{#each active_Registers as reg}
 				{#if !submited_registers_group_id.includes(reg.id || 1000)}
-					<HajarislotG RegData={reg} bind:Date={workingDate}></HajarislotG>
+					<HajarislotG bind:quickMode RegData={reg} bind:Date={workingDate}></HajarislotG>
 				{/if}
 			{/each}
 		</div>

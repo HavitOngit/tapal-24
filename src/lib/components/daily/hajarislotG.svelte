@@ -23,6 +23,7 @@
 
 	export let RegData: Group;
 	export let Date: Date;
+	export let quickMode: boolean = false;
 
 	// only for some simplycity
 
@@ -236,6 +237,15 @@
 	}
 
 	let stock_nf_btn: HTMLButtonElement;
+
+	async function quickSubmit() {
+		try {
+			await cal_usage();
+			await SavingToDB();
+		} catch (error) {
+			toast.error('Error Saving Data!');
+		}
+	}
 </script>
 
 <Toaster />
@@ -315,46 +325,50 @@
 		<CardFooter class="flex justify-between">
 			<div>{$t('Total')}: {total}</div>
 
-			<AlertDialog.Root>
-				<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
-					><Button disabled={!isDone}>{$t('Submit')}</Button></AlertDialog.Trigger
-				>
-				<AlertDialog.Content>
-					<AlertDialog.Header class="flex ">
-						<AlertDialog.Description
-							class="flex w-full
+			{#if quickMode}
+				<Button on:click={quickSubmit} disabled={!isDone}>{$t('Quick Submit')}</Button>
+			{:else}
+				<AlertDialog.Root>
+					<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
+						><Button disabled={!isDone}>{$t('Submit')}</Button></AlertDialog.Trigger
+					>
+					<AlertDialog.Content>
+						<AlertDialog.Header class="flex ">
+							<AlertDialog.Description
+								class="flex w-full
 						justify-between"
-						>
-							<div class="text-left">
-								<Label>
-									{$t(workingDate.format('ddd'))}
-								</Label>
-								<p>
-									{$t('Total')}: {total}
-								</p>
-							</div>
-							<Button
-								on:click={() => {
-									showRate = !showRate;
-									rate = [...rate_Backup];
-								}}
-								variant="outline">{!showRate ? $t('Change Rate') : $t('Go Back')}</Button
-							></AlertDialog.Description
-						>
-					</AlertDialog.Header>
+							>
+								<div class="text-left">
+									<Label>
+										{$t(workingDate.format('ddd'))}
+									</Label>
+									<p>
+										{$t('Total')}: {total}
+									</p>
+								</div>
+								<Button
+									on:click={() => {
+										showRate = !showRate;
+										rate = [...rate_Backup];
+									}}
+									variant="outline">{!showRate ? $t('Change Rate') : $t('Go Back')}</Button
+								></AlertDialog.Description
+							>
+						</AlertDialog.Header>
 
-					{#if showRate}
-						<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
-						<Button on:click={cal_usage}>{$t('Apply')}</Button>
-					{:else}
-						<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
-						<AlertDialog.Footer class="flex flex-row justify-around">
-							<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
-							<AlertDialog.Action on:click={SavingToDB}>{$t('Confirm')}</AlertDialog.Action>
-						</AlertDialog.Footer>
-					{/if}
-				</AlertDialog.Content>
-			</AlertDialog.Root>
+						{#if showRate}
+							<Rateform forInit={false} anajlist={rate} bind:ratelist={rate}></Rateform>
+							<Button on:click={cal_usage}>{$t('Apply')}</Button>
+						{:else}
+							<UsageTable bind:usageData={usage} bind:Rates={rate}></UsageTable>
+							<AlertDialog.Footer class="flex flex-row justify-around">
+								<AlertDialog.Cancel>{$t('Cancel')}</AlertDialog.Cancel>
+								<AlertDialog.Action on:click={SavingToDB}>{$t('Confirm')}</AlertDialog.Action>
+							</AlertDialog.Footer>
+						{/if}
+					</AlertDialog.Content>
+				</AlertDialog.Root>
+			{/if}
 		</CardFooter>
 	</Card>
 {/if}
