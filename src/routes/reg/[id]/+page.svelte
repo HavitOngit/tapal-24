@@ -57,28 +57,24 @@
 	}
 
 	$: if ($reg_data) {
-		let loaded = [
-			{
-				name: $t('Rate'),
-				url: `rates/${Reg.rate_unit_id}`,
-				icon: PercentIcon
-			},
-			{
-				name: $t('Stocks'),
-				url: `stocks/${Reg.storage_unit_id}`,
-				icon: WarehouseIcon
+		if (!DeleteNow) {
+			let loaded = [
+				{
+					name: $t('Rate'),
+					url: `rates/${$reg_data[0].rate_unit_id}`,
+					icon: PercentIcon
+				},
+				{
+					name: $t('Stocks'),
+					url: `stocks/${$reg_data[0].storage_unit_id}`,
+					icon: WarehouseIcon
+				}
+			];
+			if (paths.length != 4) {
+				paths = [...paths, ...loaded];
 			}
-		];
-		if (paths.length != 4) {
-			paths = [...paths, ...loaded];
 		}
 	}
-
-	let Reg: Group;
-	onMount(async () => {
-		// @ts-ignore
-		Reg = await db.group.get(Number($page.params.id));
-	});
 </script>
 
 <!-- // for update -->
