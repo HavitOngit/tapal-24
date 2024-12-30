@@ -297,11 +297,11 @@
 			</div>
 		{/if}
 		<div class="flex space-x-3">
-			<div class=" relative mt-4 h-24 w-24 flex-none bg-orange-500">
+			<div class=" relative mt-4 h-24 w-24 flex-none rounded-md">
 				<img
 					src={anajlist.find((obj) => obj.name == anaj.name)?.image || '/anaj_images/avg.png'}
 					alt={anaj.name}
-					class=" h-24 w-24 object-fill"
+					class=" h-24 w-24 rounded-md object-fill"
 				/>
 			</div>
 
