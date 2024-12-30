@@ -15,6 +15,7 @@
 	import { t } from 'svelte-intl-precompile';
 	import { CheckCheck } from 'lucide-svelte';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
+	import QuickModeSwitch from '$lib/components/daily/quick-mode-switch.svelte';
 
 	export let data: PageData;
 
@@ -128,7 +129,7 @@
 				{#if $submited_registers.length === active_Registers.length}
 					<CheckCheck class="text-blue-500"></CheckCheck>
 				{:else}
-					<Switch bind:checked={quickMode}></Switch>
+					<QuickModeSwitch bind:checked={quickMode}></QuickModeSwitch>
 				{/if}
 			{/if}
 		</div>

@@ -20,6 +20,7 @@
 	import Label from '../ui/label/label.svelte';
 	import Attendance from './Attendance.svelte';
 	import UsageTable from './UsageTable.svelte';
+	import { ZapIcon } from 'lucide-svelte';
 
 	export let RegData: Group;
 	export let Date: Date;
@@ -326,7 +327,10 @@
 			<div>{$t('Total')}: {total}</div>
 
 			{#if quickMode}
-				<Button on:click={quickSubmit} disabled={!isDone}>{$t('Quick Submit')}</Button>
+				<Button on:click={quickSubmit} disabled={!isDone}>
+					<ZapIcon class="mr-1" fill="white"></ZapIcon>
+					{$t('Submit')}</Button
+				>
 			{:else}
 				<AlertDialog.Root>
 					<AlertDialog.Trigger on:click={cal_usage} disabled={!isDone}
