@@ -89,6 +89,14 @@ export interface Rates {
     used_anaj?: []
 }
 
+export interface MoneyRates {
+    id?: number,
+    name: string,
+    rates: oneRate[],
+    total: number
+}
+
+
 export interface BackUp {
     id?: number,
     date: Date,

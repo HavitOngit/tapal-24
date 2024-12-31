@@ -19,6 +19,7 @@ export class AnajDB extends Dexie {
     rate!: Table<custom_types.Rate>;
     backup!: Table<custom_types.BackUp>;
     univarsalList!: Table<univarsalList>;
+    money_rates!: Table<custom_types.MoneyRates>;
 
     constructor() {
         super('AnajDB');
@@ -33,7 +34,8 @@ export class AnajDB extends Dexie {
             rates: '++id, name',
             rate: '++id, day, ratelist, rate_unit_id',
             backup: '++id, date, date_id, start, end, action',
-            univarsalList: '++id, name'
+            univarsalList: '++id, name',
+            money_rates: '++id, name, rates, total'
         })
     }
 }
