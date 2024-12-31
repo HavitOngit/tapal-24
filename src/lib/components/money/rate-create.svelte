@@ -64,6 +64,7 @@
 			if (item.name.length < 1) {
 				anyEmpty = true;
 			}
+			item.rate = Number(item.rate);
 		});
 
 		if (anyEmpty) {
@@ -126,19 +127,30 @@
 		<AlertDialog.Content>
 			<AlertDialog.Header>
 				<AlertDialog.Title class="flex justify-between"></AlertDialog.Title>
-				<AlertDialog.Description class="flex flex-col items-start justify-start gap-6 p-2">
-					<Label class="text-xl font-medium">{$t('Name')}</Label>
-					<Input bind:value={RateName} class="mb-4" type="text" autofocus />
-					{#if isDuplicate}
-						<p class="text-red-500">{$t('Name already exists')}</p>
-					{/if}
-				</AlertDialog.Description>
+				<form
+					on:submit={(e) => {
+						e.preventDefault();
+						if (!isDuplicate) {
+							save();
+						}
+					}}
+				>
+					<AlertDialog.Description class="flex flex-col items-start justify-start gap-6 p-2">
+						<Label class="text-xl font-medium">{$t('Name')}</Label>
+						<Input bind:value={RateName} class="mb-4" type="text" autofocus />
+						{#if isDuplicate}
+							<p class="text-red-500">{$t('Name already exists')}</p>
+						{/if}
+					</AlertDialog.Description>
+				</form>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
 				<AlertDialog.Cancel
 					><button bind:this={CancelBtn}>{$t('Cancel')}</button></AlertDialog.Cancel
 				>
-				<AlertDialog.Action on:click={save}>{$t('Submit')}</AlertDialog.Action>
+				<AlertDialog.Action type="submit" disabled={isDuplicate} on:click={save}
+					>{$t('Submit')}</AlertDialog.Action
+				>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>
@@ -147,9 +159,10 @@
 <div class="mx-2 my-4 flex justify-between">
 	<div>
 		{#if forUpdate}
-			<Button variant="outline" class="rounded-full" on:click={() => goto('/money/rates/' + id)}>
-				<XIcon class="text-red-500"></XIcon>
-			</Button>
+			<div class="flex flex-col gap-2">
+				<p class="text-gray-400">Name</p>
+				<Input bind:value={RateName} type="text" placeholder="enter name" />
+			</div>
 		{:else}
 			<Badge variant="outline" class="rounded-xl bg-green-100 p-4 text-green-700">{$t('New')}</Badge
 			>
@@ -203,6 +216,18 @@
 
 <div class="fixed bottom-24 w-full">
 	<div class="mx-4 flex w-auto justify-between gap-10 bg-white">
+		{#if forUpdate}
+			<Button
+				on:click={() => {
+					forUpdate = false;
+					goto('/money/rates/' + id);
+				}}
+				variant="outline"
+				class="w-full gap-2 rounded-lg p-2"
+			>
+				{$t('Cancel')}
+			</Button>
+		{/if}
 		<Button on:click={save} class="w-full gap-2 rounded-lg p-2">
 			<SaveIcon></SaveIcon>
 			{#if forUpdate}
