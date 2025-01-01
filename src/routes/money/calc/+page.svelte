@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CalcShow from '$lib/components/money/calc-show.svelte';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -7,7 +8,7 @@
 	import Card from '$lib/components/ui/card/card.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import type { MoneyRates } from '$lib/custom_types';
+	import type { MoneyRates, oneRate } from '$lib/custom_types';
 	import { db } from '$lib/db';
 	import { CalculatorIcon, IndianRupeeIcon, SettingsIcon, X } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -20,15 +21,27 @@
 		value: number;
 		holding?: number;
 	}
+	interface calcData {
+		name: number;
+		money: number;
+		hajari: number;
+		items: {
+			rate_data: oneRate;
+			money: number;
+			vauture: Onevouture[];
+		}[];
+	}
 
 	let attendance: number = 0;
 
 	let loaded = false;
 
-	const data = [];
+	let data: calcData[] = [];
+
+	let isCalculated = false;
 
 	function calc(value: number) {
-		const hajari = Number(attendance % value);
+		const hajari = Number(attendance * value);
 		const money = moneyRate.total * hajari;
 		const items = moneyRate.rates.map((x) => {
 			const m = Number(x.rate * hajari);
@@ -40,8 +53,9 @@
 			};
 		});
 		return {
-			name: value,
+			name: value * 100,
 			money,
+			hajari,
 			items
 		};
 	}
@@ -55,17 +69,15 @@
 		}
 		loaded = true;
 		total_Money = Number(attendance * moneyRate.total);
-		sixty = calc(60);
-		forty = calc(40);
-		console.log(sixty, forty);
+		data = [calc(0.4), calc(0.6)];
+		isCalculated = true;
 	}
 	let moneyRate: MoneyRates;
 	let rates: MoneyRates[];
 	let selectedRate: number = 0;
 	let selectionlist: { value: number; label: string }[] = [];
 	let total_Money = 0;
-	let sixty;
-	let forty;
+
 	onMount(async () => {
 		rates = await db.money_rates.toArray();
 		// @ts-ignore
@@ -106,7 +118,7 @@
 	<div class="m-2 grid grid-cols-2 gap-3">
 		<Card class="relative flex justify-between">
 			<div class="flex justify-between gap-4 p-2">
-				<div class="m-2 text-lg">
+				<div class="m-2 text-lg text-gray-700">
 					<p>{$t('Rate')}: {moneyRate.name}</p>
 					<p>{$t('Money Rate')}: {moneyRate.total}</p>
 					<p>{$t('Attendance')}: {attendance}</p>
@@ -126,5 +138,13 @@
 				<p class="text-4xl font-semibold text-gray-700">{total_Money}</p>
 			</div>
 		</Card>
+	</div>
+{/if}
+
+{#if isCalculated}
+	<div class="flex flex-col gap-4">
+		{#each data as i}
+			<CalcShow data={i}></CalcShow>
+		{/each}
 	</div>
 {/if}
