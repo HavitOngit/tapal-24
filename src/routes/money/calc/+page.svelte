@@ -1,5 +1,6 @@
 <script lang="ts">
 	import CalcShow from '$lib/components/money/calc-show.svelte';
+	import Money from '$lib/components/prints/money.svelte';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -28,6 +29,7 @@
 		items: {
 			rate_data: oneRate;
 			money: number;
+			used: number;
 			vauture: Onevouture[];
 		}[];
 	}
@@ -49,6 +51,7 @@
 			return {
 				rate_data: x,
 				money: m,
+				used: 0,
 				vauture: vauture
 			};
 		});
@@ -147,4 +150,5 @@
 			<CalcShow data={i}></CalcShow>
 		{/each}
 	</div>
+	<!-- <Money data1={data[0]} data2={data[1]} date={new Date().toLocaleDateString()}></Money> -->
 {/if}

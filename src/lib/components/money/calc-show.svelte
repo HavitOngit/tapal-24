@@ -5,7 +5,11 @@
 	import Card from '../ui/card/card.svelte';
 	import Table from '../ui/table/table.svelte';
 	import TableRow from '../ui/table/table-row.svelte';
-
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import Label from '../ui/label/label.svelte';
+	import Input from '../ui/input/input.svelte';
+	import { t } from 'svelte-intl-precompile';
+	import ItemCalc from './item-calc.svelte';
 	interface Onevouture {
 		name: string;
 		value: number;
@@ -18,11 +22,15 @@
 		items: {
 			rate_data: oneRate;
 			money: number;
+			used: number;
 			vauture: Onevouture[];
 		}[];
 	}
 
 	export let data: calcData;
+	let TriggerBtn: HTMLButtonElement;
+
+	function save() {}
 </script>
 
 <div class="relative my-2 flex items-center justify-between">
@@ -50,9 +58,7 @@
 					<p class="text-gray-400">
 						₹ {item.money}
 					</p>
-					<button>
-						<CalculatorIcon size={24}></CalculatorIcon>
-					</button>
+					<ItemCalc bind:data={item} />
 				</div>
 			</TableRow>
 		{/each}
