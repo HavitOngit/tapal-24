@@ -26,6 +26,7 @@
 		name: number;
 		money: number;
 		hajari: number;
+		used: number;
 		items: {
 			rate_data: oneRate;
 			money: number;
@@ -59,6 +60,7 @@
 			name: value * 100,
 			money,
 			hajari,
+			used: 0,
 			items
 		};
 	}

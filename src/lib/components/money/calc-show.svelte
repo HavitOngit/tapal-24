@@ -18,6 +18,7 @@
 	interface calcData {
 		name: number;
 		money: number;
+		used: number;
 		hajari: number;
 		items: {
 			rate_data: oneRate;
@@ -29,8 +30,17 @@
 
 	export let data: calcData;
 	let TriggerBtn: HTMLButtonElement;
+	let recalculate: boolean = false;
 
-	function save() {}
+	function calcUsed(i) {
+		let total = 0;
+		data.items.forEach((i) => {
+			total += i.used;
+		});
+		data.used = total;
+	}
+
+	$: calcUsed(recalculate);
 </script>
 
 <div class="relative my-2 flex items-center justify-between">
@@ -46,6 +56,8 @@
 		₹ {data.money}
 	</p>
 </div>
+<div>used:{data.used}</div>
+<div>left: {data.money - data.used}</div>
 
 <div class="mx-4 flex flex-col gap-2">
 	<Table>
@@ -58,7 +70,7 @@
 					<p class="text-gray-400">
 						₹ {item.money}
 					</p>
-					<ItemCalc bind:data={item} />
+					<ItemCalc bind:data={item} bind:recalculate />
 				</div>
 			</TableRow>
 		{/each}

@@ -26,6 +26,7 @@
 	}
 
 	export let data: item;
+	export let recalculate: boolean;
 
 	function calcUsage() {
 		let total = 0;
@@ -34,6 +35,7 @@
 			total += i.value;
 		});
 		data.used = total;
+		recalculate = !recalculate;
 	}
 
 	function additem() {
