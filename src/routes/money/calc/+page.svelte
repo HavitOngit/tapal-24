@@ -1,17 +1,14 @@
 <script lang="ts">
 	import CalcShow from '$lib/components/money/calc-show.svelte';
-	import Money from '$lib/components/prints/money.svelte';
+	import SelectedData from '$lib/components/money/selected-data.svelte';
 	import MonthSelector from '$lib/components/reg/MonthSelector.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import CardHeader from '$lib/components/ui/card/card-header.svelte';
-	import CardTitle from '$lib/components/ui/card/card-title.svelte';
-	import Card from '$lib/components/ui/card/card.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import type { MoneyRates, oneRate } from '$lib/custom_types';
 	import { db } from '$lib/db';
-	import { CalculatorIcon, IndianRupeeIcon, SettingsIcon, X } from 'lucide-svelte';
+	import { SettingsIcon } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { t } from 'svelte-intl-precompile';
 	let CancelBtn: HTMLButtonElement;
@@ -36,6 +33,8 @@
 	}
 
 	let attendance: number = 0;
+	let allocatedMoney: number = 0;
+	let sukhadi_yojana = false
 
 	let loaded = false;
 
@@ -44,10 +43,10 @@
 	let isCalculated = false;
 
 	function calc(value: number) {
-		const hajari = Number(attendance * value);
-		const money = moneyRate.total * hajari;
+		const hajari = Number((attendance * value).toFixed(0));
+		const money = Number((moneyRate.total * hajari).toFixed(2));
 		const items = moneyRate.rates.map((x) => {
-			const m = Number(x.rate * hajari);
+			const m = Number((x.rate * hajari).toFixed(2));
 			const vauture: Onevouture[] = [];
 			return {
 				rate_data: x,
@@ -65,6 +64,14 @@
 		};
 	}
 
+	function handleData() {
+		if (sukhadi_yojana) {
+			return [calc(1)]
+		}else{
+			return [calc(0.60), calc(0.40)];
+		}
+	}
+
 	function init() {
 		// @ts-ignore
 		moneyRate = rates!.find((r) => r.id === selectedRate);
@@ -72,19 +79,22 @@
 		if (!moneyRate) {
 			return;
 		}
-		loaded = true;
-		total_Money = Number(attendance * moneyRate.total);
-		data = [calc(0.4), calc(0.6)];
+		total_Money = Number((attendance * moneyRate.total).toFixed(2));
+		data = handleData();
 		isCalculated = true;
+		console.log(data);
+		loaded = true;
 	}
 	let moneyRate: MoneyRates;
 	let rates: MoneyRates[];
+
 	let selectedRate: number = 0;
 	let selectionlist: { value: number; label: string }[] = [];
 	let total_Money = 0;
 
 	onMount(async () => {
 		rates = await db.money_rates.toArray();
+		
 		// @ts-ignore
 		selectionlist = rates.map((r) => ({ value: r.id, label: r.name }));
 		selectedRate = selectionlist[0].value;
@@ -104,11 +114,24 @@
 						init();
 					}}
 				>
-					<AlertDialog.Description class="flex flex-col items-start justify-start gap-6 p-2">
-						<Label class="text-xl font-medium">{$t('Rate')}</Label>
+					<AlertDialog.Description class="flex flex-col items-start justify-start gap-4 p-2">
+						<div class="flex flex-row justify-between w-full">
+							<div>
+
+								<p class="text-xl font-medium">{$t('Rate')}</p>
+							</div>
+							<div class="flex items-center gap-2">
+
+								<p>{$t('Sukhadi Yojana')}</p>
+								<Switch bind:checked={sukhadi_yojana} />
+							</div>
+						</div>
 						<MonthSelector groupName="Rates" bind:selected={selectedRate} list={selectionlist} />
 						<Label class="text-xl font-medium">{$t('Attendance')}</Label>
 						<Input bind:value={attendance} class="mb-4" type="number" autofocus />
+						<Label class="text-xl font-medium">{$t('Allocated Money')}</Label>
+						<Input bind:value={allocatedMoney} class="mb-4" type="number" />
+						
 					</AlertDialog.Description>
 				</form>
 			</AlertDialog.Header>
@@ -120,7 +143,16 @@
 </div>
 
 {#if loaded}
-	<div class="m-2 grid grid-cols-2 gap-3">
+	<SelectedData bind:Rate={moneyRate} allocatedMoney={allocatedMoney} bind:attendance Amount={data[0].money}>
+		<button
+			class="absolute right-0 top-0 p-1"
+			on:click={() => {
+				TriggerBtn.click();
+			}}><SettingsIcon></SettingsIcon></button
+		>
+	</SelectedData>
+
+	<!-- <div class="m-2 grid grid-cols-2 gap-3">
 		<Card class="relative flex justify-between">
 			<div class="flex justify-between gap-4 p-2">
 				<div class="m-2 text-lg text-gray-700">
@@ -143,10 +175,11 @@
 				<p class="text-4xl font-semibold text-gray-700">{total_Money}</p>
 			</div>
 		</Card>
-	</div>
+	</div> -->
 {/if}
 
 {#if isCalculated}
+
 	<div class="flex flex-col gap-4">
 		{#each data as i}
 			<CalcShow data={i}></CalcShow>

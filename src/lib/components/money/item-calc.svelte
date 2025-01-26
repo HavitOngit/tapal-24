@@ -16,7 +16,8 @@
 	interface Onevouture {
 		name: string;
 		value: number;
-		holding?: number;
+		holding: number;
+		price: number;
 	}
 	interface item {
 		rate_data: oneRate;
@@ -31,7 +32,9 @@
 	function calcUsage() {
 		let total = 0;
 		data.vauture.forEach((i) => {
-			i.value = Number(i.value);
+			const v = Number(i.price);
+			i.holding = Number(i.holding);
+			i.value = v * i.holding;
 			total += i.value;
 		});
 		data.used = total;
@@ -39,7 +42,7 @@
 	}
 
 	function additem() {
-		const defaultItem = { name: '', value: 0 };
+		const defaultItem = { name: '', value: 0, holding: 1, price: 1 };
 		data.vauture.push(defaultItem);
 		calcUsage();
 	}
@@ -79,7 +82,11 @@
 					{#each data.vauture as item, i}
 						<TableRow class="flex justify-evenly gap-4 p-2">
 							<Input bind:value={item.name} type="text" placeholder="name" />
-							<Input bind:value={item.value} type="number" on:change={calcUsage} />
+							<div class="grid grid-cols-2">
+								<Input bind:value={item.holding} type="number" on:change={calcUsage} />
+								<Input bind:value={item.price} type="number" on:change={calcUsage} />
+							</div>
+							<p>{item.value}</p>
 							<button
 								on:click={() => {
 									deleteItem(i);
